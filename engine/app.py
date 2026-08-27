@@ -431,6 +431,24 @@ class Handler(BaseHTTPRequestHandler):
                 return _json(self, {"stopping": True})
             if path == "/api/faculty/add":
                 return _json(self, add_researcher(b))
+            if path == "/api/faculty/remove":
+                # Not a deletion: their papers stay in the census, they simply
+                # stop counting as faculty. Every roster version is kept on
+                # disk, so this is undoable.
+                blob = FAC.load() or {"people": []}
+                people = blob.get("people") or []
+                key = X.name_key(b.get("name") or "")
+                kept = [p for p in people
+                        if X.name_key(p.get("name", "")) != key]
+                if len(kept) == len(people):
+                    return _json(self, {"error": "not on the roster"}, 404)
+                if not kept:
+                    return _json(self, {"error": "that would empty the roster"},
+                                 400)
+                FAC.save(kept, source="app",
+                         note="removed " + (b.get("name") or ""))
+                view(force=True)
+                return _json(self, {"ok": True, "people": len(kept)})
             if path == "/api/faculty/dismiss":
                 return _json(self, dismiss(b.get("name") or ""))
             if path == "/api/faculty/resolve":

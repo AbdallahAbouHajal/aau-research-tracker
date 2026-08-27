@@ -729,4 +729,27 @@ ROUND2 = [
     ("roster: the review button counts what is really waiting",
      '>8 need a decision</button>',
      '>{{ reviewLabel }}</button>'),
+    # ---- a way to take somebody off, next to each person -------------------
+    ("roster: an x on each person in a college",
+     '<div><span style="font-size:12px;font-weight:600;color:{{ a.tagFg }};'
+     'background:{{ a.tagBg }};padding:3px 9px;border-radius:4px">{{ a.tag }}'
+     '</span></div>',
+     '<div style="display:flex;align-items:center;gap:8px">'
+     '<span style="font-size:12px;font-weight:600;color:{{ a.tagFg }};'
+     'background:{{ a.tagBg }};padding:3px 9px;border-radius:4px">{{ a.tag }}'
+     '</span>'
+     '<button type="button" sc-camel-on-click="{{ a.drop }}" '
+     'title="{{ a.dropTitle }}" aria-label="{{ a.dropTitle }}" '
+     'style="background:none;border:0;padding:0 2px;cursor:pointer;'
+     'font-family:Archivo,sans-serif;font-size:15px;line-height:1;'
+     'color:#B9C4BD;visibility:{{ a.dropShow }}">&times;</button></div>'),
+    ("roster: each college row can drop that person",
+     "      open: () => this.setState({ screen: 'author', author: a.key, "
+     "college: null }),\n    }));",
+     "      open: () => this.setState({ screen: 'author', author: a.key, "
+     "college: null }),\n"
+     "      drop: () => window.__AAU\n"
+     "        && window.__AAU.removePerson(this, a.name, a.college),\n"
+     "      dropShow: a.tag === 'Faculty' ? 'visible' : 'hidden',\n"
+     "      dropTitle: 'Take ' + a.name + ' off the roster',\n    }));"),
 ]

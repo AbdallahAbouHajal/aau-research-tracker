@@ -737,6 +737,47 @@
       + 'font-family:' + FONT + ';font-size:14.5px;color:' + INK + ';outline:none"></div>';
   }
 
+  /* Taking somebody off the roster. Not a deletion: their papers stay in the
+   * census, they simply stop counting as faculty -- which is the whole meaning
+   * of the roster. Worth saying, because "remove" reads like erasure. */
+  function removePerson(component, name, college) {
+    if (!name) return;
+    modal({
+      width: 560,
+      eyebrow: 'Roster',
+      title: 'Take ' + name + ' off the roster?',
+      sub: 'Their papers stay in the census. They stop counting as faculty and '
+        + 'become outside faculty from the next run, and they show up again in '
+        + 'the "not on your roster" list if they keep publishing with an AAU '
+        + 'address. Every previous version of the roster is kept, so this can '
+        + 'be undone.',
+      choices: [{
+        label: 'Take them off',
+        hint: college ? ('Currently listed under ' + college + '.') : '',
+        go: function () {
+          badge('updating the roster…', G);
+          var ok = function () {
+            refresh(component);
+            badge('removed ' + name, G);
+          };
+          var bad = function (msg) {
+            badge('could not remove', RED);
+            modal({ eyebrow: 'Roster', title: 'Not removed', sub: msg,
+                    cancelLabel: 'Close' });
+          };
+          if (window.__AAU.canRun) {
+            api('/api/faculty/remove', { name: name })
+              .then(ok).catch(function (e) { bad(String(e.message || e)); });
+          } else {
+            viaProxy('/roster/remove', { name: name }, ok, bad);
+          }
+        },
+      }],
+      cancelLabel: 'Keep them',
+    });
+  }
+  window.__AAU.removePerson = removePerson;
+
   function needsLocal(what) {
     modal({
       eyebrow: 'Roster',

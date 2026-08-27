@@ -9,6 +9,7 @@
  *   POST /run            { passphrase, years?, scope?, date_from?, date_to? }
  *   POST /roster/add     { passphrase, name, college, title?, url? }
  *   POST /roster/import  { passphrase, csv }
+ *   POST /roster/remove  { passphrase, name }
  *   GET  /status                                    -> the live run, stage by stage
  *
  * The roster endpoints commit to the repository, so the passphrase can change
@@ -306,6 +307,21 @@ export default {
         blob.people = rows;
         blob.replaced_from_page = new Date().toISOString();
         message = 'Roster: import ' + rows.length + ' people';
+      } else if (path === '/roster/remove') {
+        const name = norm(body.name).slice(0, 120);
+        if (!name) return cors(json({ error: 'which person?' }, 400), origin);
+        const before = people.length;
+        const kept = people.filter((p) => key(p.name) !== key(name));
+        if (kept.length === before) {
+          return cors(json({ error: name + ' is not on the roster.' }, 404), origin);
+        }
+        if (kept.length === 0) {
+          return cors(json({ error: 'that would empty the roster' }, 400), origin);
+        }
+        blob.people = kept;
+        people.length = 0;
+        kept.forEach((x) => people.push(x));
+        message = 'Roster: remove ' + name;
       } else {
         return cors(json({ error: 'not found' }, 404), origin);
       }
