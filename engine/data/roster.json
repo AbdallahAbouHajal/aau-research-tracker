@@ -5266,23 +5266,6 @@
    "auid_tier": "",
    "auid_candidates": [],
    "added_from_page": true
-  },
-  {
-   "name": "Roundtrip Check",
-   "college": "College of Nursing",
-   "title": "Lecturer",
-   "profile_url": "",
-   "email": "",
-   "department": "",
-   "staff_type": "academic",
-   "is_academic": true,
-   "colleges": [
-    "College of Nursing"
-   ],
-   "scopus_auid": "",
-   "auid_tier": "",
-   "auid_candidates": [],
-   "added_from_page": true
   }
  ]
 }
