@@ -53,8 +53,8 @@ jobs:
         working-directory: engine
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -79,7 +79,7 @@ jobs:
       # Keeps the Scopus/OpenAlex cache between runs, so a weekly refresh only
       # pays for what is genuinely new.
       - name: Restore the fetch cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: engine/.cache
           key: aau-cache-${{ github.run_id }}
@@ -142,6 +142,24 @@ jobs:
           done
           echo "::error::could not push the refresh after 3 attempts"
           exit 1
+
+      # The previous failure did all six stages, then silently discarded the
+      # result and still reported the step as successful. A run must not be
+      # able to finish green unless its own output is really on main, so this
+      # reads the pushed file back and compares the timestamp it just wrote.
+      - name: Verify the refresh actually landed
+        working-directory: .
+        run: |
+          MINE=$(python -c "import json;print(json.load(open('docs/data/state.json'))['generated'])")
+          git fetch origin main
+          LIVE=$(git show origin/main:docs/data/state.json | python -c "import json,sys;print(json.load(sys.stdin)['generated'])")
+          echo "this run generated : $MINE"
+          echo "on main now        : $LIVE"
+          if [ "$MINE" != "$LIVE" ]; then
+            echo "::error::the run finished but its output is not on main ($LIVE)"
+            exit 1
+          fi
+          echo "confirmed: the published page is serving this run"
 
       # Reporting must never fail a run that worked.
       - name: Summary
