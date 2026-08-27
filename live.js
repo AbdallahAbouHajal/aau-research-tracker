@@ -245,21 +245,29 @@
     });
   }
 
-  /* A day-level window. Scopus is asked by year, because that is the filter
-   * these keys reliably have, and the exact range is applied to the cover date
-   * printed on each paper that comes back. */
+  /* Month and year is the useful grain: Scopus prints a cover date whose day
+   * is often the first of the month anyway, and nobody asks for "papers since
+   * the 14th". The month is expanded to its full span before filtering, so
+   * "March 2025 to June 2026" means 2025-03-01 through 2026-06-30 inclusive. */
+  function monthEnd(ym) {                    // '2026-06' -> '2026-06-30'
+    var y = +ym.slice(0, 4), m = +ym.slice(5, 7);
+    return ym + '-' + String(new Date(y, m, 0).getDate()).padStart(2, '0');
+  }
+
   function askDates(component, scope) {
     var today = new Date();
-    var iso = function (d) { return d.toISOString().slice(0, 10); };
-    var deflt_to = iso(today);
-    var deflt_from = iso(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()));
+    var ym = function (d) {
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    };
+    var deflt_to = ym(today);
+    var deflt_from = ym(new Date(today.getFullYear() - 1, today.getMonth(), 1));
 
     var field = function (id, label, val) {
       return '<div style="flex:1;min-width:0">'
         + '<div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;'
         + 'text-transform:uppercase;color:' + META + ';margin-bottom:6px">'
         + esc(label) + '</div>'
-        + '<input id="' + id + '" type="date" value="' + esc(val) + '" '
+        + '<input id="' + id + '" type="month" value="' + esc(val) + '" '
         + 'style="width:100%;box-sizing:border-box;border:1px solid #D5DED8;'
         + 'border-radius:6px;padding:11px 12px;font-family:' + FONT + ';'
         + 'font-size:14.5px;color:' + INK + ';outline:none;background:#fff"></div>';
@@ -268,15 +276,15 @@
     var m = modal({
       width: 560,
       eyebrow: 'New run',
-      title: 'Pick the window',
+      title: 'Pick the months',
       sub: 'Papers are counted by the publication date Scopus prints on them.',
       html: '<div style="display:flex;gap:14px;align-items:flex-end">'
         + field('aauFrom', 'From', deflt_from)
         + field('aauTo', 'To', deflt_to)
         + '</div>'
         + '<div id="aauDateNote" style="font-size:12.5px;color:' + META
-        + ';margin-top:10px;line-height:1.5;min-height:18px">Both dates are '
-        + 'included. A wider window takes longer.</div>',
+        + ';margin-top:10px;line-height:1.5;min-height:18px">Both months are '
+        + 'included, start to end. A wider window takes longer.</div>',
       submit: {
         label: 'Run it',
         go: function () {
@@ -286,22 +294,24 @@
           var note = box.querySelector('#aauDateNote');
           if (!f || !t) {
             note.style.color = RED;
-            note.textContent = 'Pick both dates.';
+            note.textContent = 'Pick both months.';
             return;
           }
           if (f > t) {
             note.style.color = RED;
-            note.textContent = 'The first date is after the second one.';
+            note.textContent = 'The first month is after the second one.';
             return;
           }
-          if (+new Date(t) - +new Date(f) > 6 * 366 * 86400000) {
+          var months = (+t.slice(0, 4) - +f.slice(0, 4)) * 12
+            + (+t.slice(5, 7) - +f.slice(5, 7));
+          if (months > 72) {
             note.style.color = RED;
             note.textContent = 'That is more than six years. Narrow it, or the run will take a very long time.';
             return;
           }
           m.close();
           startRun(component, { mode: 'refresh', scope: scope,
-                                date_from: f, date_to: t });
+                                date_from: f + '-01', date_to: monthEnd(t) });
         },
       },
     });
@@ -400,135 +410,83 @@
    * needs a token, which lives only in this browser's localStorage: never in
    * the repo, never sent anywhere but api.github.com.
    */
-  var REPO = 'AbdallahAbouHajal/aau-research-tracker';
-  var WF = 'refresh.yml';
-  var TOKEN_KEY = 'aau_gh_token';
+  var WORKER = 'https://aau-tracker-run.abouhajal.workers.dev';
+  var PASS_KEY = 'aau_run_pass';
 
-  function token() {
-    try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
+  /* No GitHub account, no token, nothing installed. The GitHub credential
+   * lives as a secret on the proxy and never reaches a browser; a reader
+   * proves they are allowed with a passphrase. Asking the proxy what the run
+   * is doing needs no passphrase at all, because reporting starts nothing --
+   * so the progress bar moves for everyone. */
+  function pass() {
+    try { return localStorage.getItem(PASS_KEY) || ''; } catch (e) { return ''; }
   }
-  function setToken(v) {
-    try { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); }
+  function setPass(v) {
+    try { v ? localStorage.setItem(PASS_KEY, v) : localStorage.removeItem(PASS_KEY); }
     catch (e) {}
   }
-  window.__AAU.forgetToken = function () { setToken(''); badge('token cleared', META); };
+  window.__AAU.forgetPassphrase = function () {
+    setPass(''); badge('passphrase cleared', META);
+  };
 
-  function gh(path, opt) {
-    opt = opt || {};
-    opt.headers = Object.assign({
-      'Accept': 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'Authorization': 'Bearer ' + token(),
-    }, opt.headers || {});
-    return fetch('https://api.github.com/repos/' + REPO + path, opt);
-  }
-
-  function askToken(then) {
+  function askPass(then) {
     var m = modal({
-      width: 620,
+      width: 560,
       eyebrow: 'One-time setup',
-      title: 'A token, so this page can start a run',
-      sub: 'GitHub will not let a web page start a workflow without one. It is '
-        + 'stored only in this browser and never leaves it except to reach '
-        + 'github.com. You can clear it at any time.',
-      html: '<div style="font-size:13.5px;line-height:1.6;color:' + META + ';'
-        + 'margin-bottom:14px">1. Open <b style="color:' + INK + '">github.com'
-        + '/settings/personal-access-tokens/new</b><br>'
-        + '2. Repository access: <b style="color:' + INK + '">only</b> '
-        + '<b style="color:' + INK + '">aau-research-tracker</b><br>'
-        + '3. Permissions &rsaquo; Repository &rsaquo; <b style="color:' + INK
-        + '">Actions: Read and write</b><br>'
-        + '4. Generate, copy, paste below.</div>',
-      input: { placeholder: 'github_pat_…', note: 'Stored in this browser only.' },
+      title: 'The passphrase for starting a run',
+      sub: 'Whoever set this up will have given you one. It is remembered in '
+        + 'this browser, so you are asked once.',
+      input: { placeholder: 'passphrase', note: 'Kept in this browser only.' },
       submit: {
         label: 'Save and continue',
         go: function () {
           var v = (m.__input.value || '').trim();
-          if (v.length < 20) {
-            m.__note.style.color = RED;
-            m.__note.textContent = 'That does not look like a token.';
-            return;
-          }
-          m.__ok.disabled = true; m.__ok.textContent = 'Checking…';
-          setToken(v);
-          gh('/actions/workflows/' + WF, {}).then(function (r) {
-            if (!r.ok) throw new Error('GitHub refused it (HTTP ' + r.status + ')');
-            m.close(); then();
-          }).catch(function (e) {
-            setToken('');
-            m.__ok.disabled = false; m.__ok.textContent = 'Save and continue';
-            m.__note.style.color = RED;
-            m.__note.textContent = String(e.message || e);
-          });
+          if (!v) { m.__note.textContent = 'Type the passphrase.'; return; }
+          setPass(v);
+          m.close();
+          then();
         },
       },
-    });
-    var box = document.getElementById('__aau_modal');
-    box.addEventListener('click', function (e) {
-      if (e.target.tagName === 'B' && /settings/.test(e.target.textContent)) {
-        window.open('https://github.com/settings/personal-access-tokens/new', '_blank');
-      }
-    });
-  }
-
-  /* Only whoever looks after the repository can start a run: GitHub will not
-   * let a web page do it without a credential, and a credential on a public
-   * page is a credential everyone has. Anyone else does not need one -- the
-   * census refreshes itself weekly and they are reading the result. So say
-   * that first, and offer the token only to the person it is actually for. */
-  function explainSchedule(component, options) {
-    var st = window.__AAU.state || {};
-    var when = st.generated ? st.generated.slice(0, 10) : 'recently';
-    modal({
-      width: 600,
-      eyebrow: 'Run',
-      title: 'This updates itself every Monday',
-      sub: 'The census is rebuilt on GitHub at 07:00 Gulf time each Monday, and '
-        + 'again whenever it is asked to. The figures on screen are from the run '
-        + 'on ' + when + '. Nothing is needed from you to read them.',
-      choices: [
-        {
-          label: 'I look after this project — let me start a run now',
-          hint: 'Needs a GitHub token once, kept in this browser only. If you '
-            + 'are not the person who set this up, this is not for you.',
-          go: function () { askToken(function () { dispatch(options, component); }); },
-        },
-      ],
-      cancelLabel: 'Close',
     });
   }
 
   function dispatch(options, comp) {
-    var years = (options.years || []).join(',');
-    var df = options.date_from || '';
-    var dt = options.date_to || '';
-    badge('asking GitHub to run…', G);
-    gh('/actions/workflows/' + WF + '/dispatches', {
+    badge('asking for a run…', G);
+    fetch(WORKER + '/run', {
       method: 'POST',
-      body: JSON.stringify({ ref: 'main',
-        inputs: { years: years, scope: options.scope || 'compare',
-                  date_from: df, date_to: dt } }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        passphrase: pass(),
+        years: (options.years || []).join(','),
+        scope: options.scope || 'compare',
+        date_from: options.date_from || '',
+        date_to: options.date_to || '',
+      }),
     }).then(function (r) {
-      if (r.status === 204) { watchGithub(options, comp); return; }
-      return r.json().then(function (j) {
-        throw new Error(j.message || ('HTTP ' + r.status));
-      });
+      return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+    }).then(function (res) {
+      if (res.j && res.j.already) {
+        badge('a run is already going', G);
+        watchRun(comp);
+        return;
+      }
+      if (!res.ok || !res.j || !res.j.started) {
+        var msg = (res.j && res.j.error) || 'The run could not be started.';
+        badge('could not start the run', RED);
+        if (/passphrase/i.test(msg)) setPass('');
+        modal({
+          eyebrow: 'Run', title: 'It did not start', sub: msg,
+          cancelLabel: 'Close',
+        });
+        return;
+      }
+      watchRun(comp, true);
     }).catch(function (e) {
-      badge('could not start the run', RED);
-      modal({
-        eyebrow: 'Run', title: 'GitHub would not start it',
-        sub: String(e.message || e) + '  If the token was revoked, clear it and '
-          + 'paste a new one.',
-        choices: [{ label: 'Forget the saved token', hint: 'Then press Run now again.',
-                    go: function () { window.__AAU.forgetToken(); } }],
-        cancelLabel: 'Close',
-      });
+      badge('could not reach the run service', RED);
+      console.error(e);
     });
   }
 
-  /* The six workflow steps are named exactly as the six stages, so mapping
-   * them is a lookup rather than a guess. queued/in_progress/completed on a
-   * step is what moves the bar -- nothing here is on a timer. */
   var STAGE_NAMES = ['Read the faculty roster', 'Find each person in Scopus',
     'Collect the papers', 'Check the extra papers found',
     'Sort faculty from students', 'Build the census and compare'];
@@ -545,68 +503,50 @@
           ? { pct: 100, active: false, label: 'Done' }
           : { pct: 100, active: false, label: st.conclusion || 'failed' };
       }
-      if (st.status === 'in_progress') {
-        return { pct: 55, active: true, label: 'Working' };
-      }
+      if (st.status === 'in_progress') return { pct: 55, active: true, label: 'Working' };
       return { pct: 0, active: false, label: 'Waiting' };
     });
   }
 
-  function watchGithub(options, component) {
+  function watchRun(component, announce) {
     var started = Date.now();
-    modal({
-      eyebrow: 'Run started on GitHub',
-      title: 'It is running now',
-      sub: 'The engine is fetching Scopus on GitHub’s machines. A full run '
-        + 'takes a few minutes; this page updates itself when it lands. You can '
-        + 'close this and keep working.',
-      choices: [{ label: 'Watch it on GitHub',
-                  hint: 'The live log, stage by stage.',
-                  go: function () {
-                    window.open('https://github.com/' + REPO + '/actions/workflows/' + WF, '_blank');
-                  } }],
-      cancelLabel: 'Close',
-    });
+    if (announce) {
+      modal({
+        eyebrow: 'Run started',
+        title: 'It is running now',
+        sub: 'The census is being rebuilt. It takes a few minutes, and this '
+          + 'page updates itself when it lands. You can close this and keep '
+          + 'reading.',
+        cancelLabel: 'Close',
+      });
+    }
     if (component) component.setState({ running: true });
     (function poll() {
       if (Date.now() - started > 50 * 60 * 1000) return;
-      gh('/actions/workflows/' + WF + '/runs?per_page=1', {})
-        .then(function (r) { return r.json(); })
-        .then(function (j) {
-          var run = (j.workflow_runs || [])[0];
-          if (!run) return setTimeout(poll, 8000);
-          return gh('/actions/runs/' + run.id + '/jobs', {})
-            .then(function (r) { return r.json(); })
-            .then(function (jj) {
-              var job = (jj.jobs || [])[0] || {};
-              var st = stagesFromSteps(job.steps);
-              window.__AAU.status = {
-                running: run.status !== 'completed',
-                stages: st,
-                findings: (window.__AAU.state || {}).findings || [],
-              };
-              if (component) component.forceUpdate();
-              var doneN = st.filter(function (x) { return x.pct >= 100; }).length;
-              if (run.status !== 'completed') {
-                badge('running on GitHub · stage ' + Math.min(6, doneN + 1)
-                      + ' of 6', G);
-                return setTimeout(poll, 6000);
-              }
-              window.__AAU.status.running = false;
-              if (component) component.setState({ running: false });
-              if (run.conclusion === 'success') {
-                /* Reloading dropped the reader back on the welcome screen,
-                 * which reads as "it did not work". Pull the new data in
-                 * place and stay on the dashboard where the result is. */
-                badge('run finished · loading the new figures', G);
-                refresh(component).then(function () {
-                  window.__AAU.status = null;
-                  if (component) component.setState({ screen: 'dash', running: false });
-                }).catch(function () { location.reload(); });
-              } else {
-                badge('run ' + (run.conclusion || 'failed'), RED);
-              }
-            });
+      fetch(WORKER + '/status').then(function (r) { return r.json(); })
+        .then(function (d) {
+          var st = stagesFromSteps(d.steps);
+          window.__AAU.status = {
+            running: !!d.running, stages: st,
+            findings: (window.__AAU.state || {}).findings || [],
+          };
+          if (component) component.forceUpdate();
+          var done = st.filter(function (x) { return x.pct >= 100; }).length;
+          if (d.running) {
+            badge('running · stage ' + Math.min(6, done + 1) + ' of 6', G);
+            return setTimeout(poll, 6000);
+          }
+          window.__AAU.status.running = false;
+          if (component) component.setState({ running: false });
+          if (d.conclusion === 'success') {
+            badge('run finished · loading the new figures', G);
+            refresh(component).then(function () {
+              window.__AAU.status = null;
+              if (component) component.setState({ screen: 'dash', running: false });
+            }).catch(function () { location.reload(); });
+          } else {
+            badge('run ' + (d.conclusion || 'failed'), RED);
+          }
         })
         .catch(function () { setTimeout(poll, 12000); });
     })();
@@ -614,7 +554,7 @@
 
   function startRun(component, options) {
     if (!window.__AAU.canRun) {          // published page -> run it on GitHub
-      if (!token()) { explainSchedule(component, options); return; }
+      if (!pass()) { explainSchedule(component, options); return; }
       dispatch(options, component);
       return;
     }
