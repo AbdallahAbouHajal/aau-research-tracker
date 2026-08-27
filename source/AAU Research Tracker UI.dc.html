@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#0A7A3A"/><g fill="none" stroke="#ffffff" stroke-width="14"><rect x="90" y="140" width="90" height="70"/><rect x="220" y="140" width="90" height="70"/><path d="M180 175h40"/></g><text x="112" y="300" font-family="Archivo, Arial, sans-serif" font-size="54" font-weight="800" fill="#ffffff">AAU</text></svg></template>
+<style>
+  a { color: #0A7A3A; }
+  a:hover { color: #0FA64F; }
+  body { margin: 0; background: #E9EDEA; }
+  @keyframes uiRise { from { opacity: 0; transform: translateY(10px); } }
+  @keyframes uiFade { from { opacity: 0; } }
+  @keyframes uiBar { from { transform: scaleX(0); } }
+  @keyframes uiArc { from { stroke-dashoffset: var(--arc); } }
+  @keyframes uiFlow {
+    0% { transform: translateX(0); opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { transform: translateX(var(--d, 22px)); opacity: 0; }
+  }
+  @keyframes uiDrop {
+    0% { transform: translate(0, 0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translate(10px, 58px); opacity: 0; }
+  }
+  @keyframes uiSpin { to { transform: rotate(360deg); } }
+  @keyframes uiSweep { 0% { left: -35%; } 100% { left: 100%; } }
+  @keyframes uiBlink { 50% { opacity: .3; } }
+  @keyframes flowDash { to { stroke-dashoffset: -48; } }
+  @keyframes flowPop { from { opacity: 0; transform: translateY(8px); } }
+  [data-dash] { animation: flowDash 1.15s linear infinite; }
+  [data-node] { animation: flowPop .5s cubic-bezier(.22,.7,.2,1) both; }
+  [data-rise] { animation: uiRise .42s cubic-bezier(.22,.7,.2,1) both; }
+  [data-fade] { animation: uiFade .5s ease both; }
+  [data-bar] { animation: uiBar .7s cubic-bezier(.2,.85,.25,1) both; transform-origin: left center; }
+  [data-arc] { animation: uiArc 1.1s cubic-bezier(.25,.85,.25,1) both; }
+  [data-flow] { animation: uiFlow 2.1s linear infinite; }
+  [data-drop] { animation: uiDrop 2.1s ease-in infinite; }
+  [data-spin] { animation: uiSpin 1s linear infinite; }
+  [data-sweep] { animation: uiSweep 1.6s ease-in-out infinite; }
+  [data-blink] { animation: uiBlink 1.4s ease-in-out infinite; }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#E9EDEA;font-family:Archivo,sans-serif;color:#1A1A1A;display:block;overflow-x:auto;padding:28px 24px 48px">
+<div style="width:1392px;max-width:100%;min-width:1180px;margin:0 auto;background:#F4F6F5;border-radius:12px;overflow:hidden;box-shadow:0 24px 70px -24px rgba(10,60,35,.35),0 4px 12px rgba(10,60,35,.08)">
+
+  <div style="height:38px;background:#0F1512;display:flex;align-items:center;padding:0 16px;gap:9px">
+    <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+    <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+    <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+    <div style="flex:1;text-align:center;font-size:13px;color:#8A938D;letter-spacing:.04em">AAU Research Tracker — localhost:8765</div>
+    <div style="width:60px"></div>
+  </div>
+
+  <sc-if value="{{ onWelcome }}" hint-placeholder-val="{{ false }}">
+  <div style="background:{{ accent }};color:#ffffff;min-height:812px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 96px;text-align:center;position:relative;overflow:hidden">
+    <div style="position:absolute;left:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.05)"></div>
+    <div style="position:absolute;right:-160px;bottom:-160px;width:520px;height:520px;border-radius:50%;background:rgba(255,255,255,.05)"></div>
+    <div data-rise style="background:#ffffff;padding:20px 28px;border-radius:10px;display:inline-flex">
+      <img src="assets/aau-logo.png" alt="Al Ain University" style="height:78px;width:auto;display:block">
+    </div>
+    <h1 data-rise style="animation-delay:.08s;margin:34px 0 0;font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1.08">Hi, welcome to your quick<br>AAU Authors Outputs</h1>
+    <p data-rise style="animation-delay:.16s;margin:22px 0 0;font-size:20px;line-height:1.55;max-width:760px;color:#E4F3EA">This app keeps your author census current. The faculty roster decides who belongs to Al Ain University, Scopus supplies the papers, and every run rebuilds the picture and tells you exactly what moved since last time. Nothing is counted unless the paper itself prints an AAU address.</p>
+    <div data-rise style="animation-delay:.24s;display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;justify-content:center">
+      <sc-for list="{{ welcomeChips }}" as="w" hint-placeholder-count="3">
+        <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:14px 22px;text-align:left;min-width:180px">
+          <div style="font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1">{{ w.v }}</div>
+          <div style="font-size:13.5px;color:#D5E8DC;margin-top:4px">{{ w.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div data-rise style="animation-delay:.32s;font-size:22px;font-weight:600;margin-top:44px;line-height:1.45;max-width:680px">Good work deserves to be counted properly.</div>
+    <button type="button" onClick="{{ enter }}" data-rise style="animation-delay:.4s;margin-top:26px;background:#ffffff;color:{{ accent }};border:0;border-radius:8px;padding:17px 44px;font-family:Archivo,sans-serif;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px -10px rgba(0,0,0,.35)">Press here to begin</button>
+    <div data-fade style="animation-delay:.6s;display:flex;align-items:center;gap:14px;margin-top:46px;background:#ffffff;border-radius:8px;padding:10px 18px">
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B7B71">Powered by</span>
+      <img src="assets/scopus-elsevier.png" alt="Elsevier Scopus" style="height:30px;width:auto;display:block">
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ inApp }}" hint-placeholder-val="{{ true }}">
+  <div style="background:{{ accent }};color:#ffffff;display:flex;align-items:stretch;height:64px;padding:0 22px">
+    <div style="display:flex;align-items:center;gap:13px;padding-right:26px;flex:0 0 auto">
+      <div style="background:#ffffff;padding:5px 8px;border-radius:4px;display:flex"><img src="assets/aau-logo.png" alt="Al Ain University" style="height:26px;width:auto;display:block"></div>
+      <div style="font-size:16px;font-weight:700;letter-spacing:-.01em;white-space:nowrap">Research Tracker</div>
+    </div>
+    <div style="display:flex;align-items:stretch;gap:2px;flex:0 0 auto">
+      <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="6">
+        <button type="button" onClick="{{ tab.go }}" style="background:{{ tab.bg }};border:0;border-bottom:3px solid {{ tab.line }};color:{{ tab.fg }};padding:0 17px;font-family:Archivo,sans-serif;font-size:14px;font-weight:{{ tab.weight }};cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap">
+          {{ tab.label }}
+          <sc-if value="{{ tab.badge }}" hint-placeholder-val="{{ false }}">
+            <span style="background:#E0303F;color:#ffffff;font-size:12px;font-weight:700;border-radius:9px;padding:1px 7px;line-height:1.5">{{ tab.badge }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <div style="flex:1;min-width:12px"></div>
+    <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:#D5E8DC;white-space:nowrap;flex:0 0 auto">
+      <span>Window 2025–2026</span>
+      <span style="width:1px;height:20px;background:rgba(255,255,255,.3)"></span>
+      <span>Roster 2026-08-27</span>
+    </div>
+  </div>
+
+  <!-- ============ DASHBOARD ============ -->
+  <sc-if value="{{ onDash }}" hint-placeholder-val="{{ true }}">
+  <div style="padding:24px 26px 30px">
+
+    <div data-rise style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px">
+      <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="3">
+        <div style="background:#ffffff;border-radius:8px;padding:18px 20px;border-top:4px solid {{ t.color }}">
+          <div style="font-size:38px;font-weight:800;letter-spacing:-.025em;line-height:1.02;font-variant-numeric:tabular-nums">{{ t.v }}</div>
+          <div style="font-size:14px;font-weight:600;margin-top:7px">{{ t.l }}</div>
+          <div style="font-size:13px;color:#6B7B71;margin-top:3px;line-height:1.4">{{ t.sub }}</div>
+        </div>
+      </sc-for>
+    </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px">
+
+      <div data-rise style="animation-delay:.05s;background:#ffffff;border-radius:8px;padding:20px 22px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }}">Run</div>
+            <div style="font-size:20px;font-weight:700;margin-top:6px">{{ runTitle }}</div>
+            <div style="font-size:13.5px;color:#6B7B71;margin-top:3px">{{ runMeta }}</div>
+          </div>
+          <sc-if value="{{ running }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:9px;background:#F1F6F3;padding:8px 14px;border-radius:20px">
+              <span data-spin style="width:15px;height:15px;border:2px solid #CFE0D6;border-top-color:{{ accent }};border-radius:50%;display:block"></span>
+              <span style="font-size:13.5px;color:{{ accent }};font-weight:700;white-space:nowrap">Stage 4 of 6</span>
+            </div>
+          </sc-if>
+          <button type="button" onClick="{{ toggleRun }}" style="background:{{ runBtnBg }};color:#ffffff;border:0;border-radius:6px;padding:11px 22px;font-family:Archivo,sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap">{{ runBtnLabel }}</button>
+        </div>
+
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ stages }}" as="s" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:28px 1fr 150px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #F0F3F1">
+              <div style="width:22px;height:22px;border-radius:50%;background:{{ s.dotBg }};border:2px solid {{ s.dotBorder }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:{{ s.numColor }}">{{ s.mark }}</div>
+              <div>
+                <div style="font-size:14.5px;font-weight:{{ s.weight }};color:{{ s.labelColor }}">{{ s.label }}</div>
+                <div style="font-size:13px;color:#6B7B71;line-height:1.4;margin-top:2px">{{ s.plain }}</div>
+              </div>
+              <div>
+                <div style="height:6px;background:#EDF1EE;border-radius:3px;overflow:hidden;position:relative">
+                  <div data-bar style="height:6px;width:{{ s.pct }}%;background:{{ s.barColor }};border-radius:3px;animation-delay:{{ s.delay }}"></div>
+                  <sc-if value="{{ s.active }}" hint-placeholder-val="{{ false }}">
+                    <span data-sweep style="position:absolute;top:0;width:35%;height:6px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.9),rgba(255,255,255,0))"></span>
+                  </sc-if>
+                </div>
+                <div style="font-size:12.5px;color:{{ s.statusColor }};margin-top:5px;text-align:right;font-weight:{{ s.statusWeight }}">{{ s.status }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:18px;background:#F4F6F5;border-radius:7px;padding:16px 18px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px">
+            <sc-if value="{{ running }}" hint-placeholder-val="{{ false }}">
+              <span data-blink style="width:8px;height:8px;border-radius:50%;background:{{ accent }};flex:0 0 auto"></span>
+            </sc-if>
+            <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }}">{{ findingsTitle }}</div>
+          </div>
+          <sc-for list="{{ findings }}" as="f" hint-placeholder-count="4">
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:7px 0">
+              <span style="width:7px;height:7px;border-radius:50%;background:{{ f.color }};flex:0 0 auto;margin-top:7px"></span>
+              <div style="font-size:14px;color:#2A3A31;line-height:1.45">{{ f.text }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div data-rise style="animation-delay:.1s;background:#ffffff;border-radius:8px;padding:20px 22px">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:6px">Share of papers by college</div>
+          <div style="display:flex;align-items:center;gap:18px">
+            <svg width="176" height="176" viewBox="0 0 240 240" style="display:block;flex:0 0 auto">
+              <circle cx="120" cy="120" r="100" fill="none" stroke="#EDF1EE" stroke-width="42"></circle>
+              <g fill="none" stroke-width="42">
+                <sc-for list="{{ pie }}" as="p" hint-placeholder-count="10">
+                  <circle data-arc cx="120" cy="120" r="100" stroke="{{ p.color }}" stroke-dasharray="{{ p.dash }}" stroke-dashoffset="0" transform="{{ p.rot }}" style="--arc:{{ p.arc }};animation-delay:{{ p.delay }}"></circle>
+                </sc-for>
+              </g>
+              <text x="120" y="114" text-anchor="middle" font-family="Archivo, sans-serif" font-size="40" font-weight="800" fill="#1A1A1A">1,351</text>
+              <text x="120" y="140" text-anchor="middle" font-family="Archivo, sans-serif" font-size="18" font-weight="600" fill="#6B7B71">CREDITS</text>
+            </svg>
+            <div style="flex:1;min-width:0">
+              <sc-for list="{{ colleges }}" as="c" hint-placeholder-count="10">
+                <div style="display:grid;grid-template-columns:12px 1fr 40px;gap:9px;align-items:center;padding:3px 0">
+                  <span style="width:11px;height:11px;background:{{ c.color }};border-radius:2px"></span>
+                  <span style="font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.name }}</span>
+                  <span style="font-size:12.5px;text-align:right;color:#3A4A41;font-variant-numeric:tabular-nums">{{ c.papers }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding-top:13px;border-top:1px solid #F0F3F1;font-size:12.5px;color:#6B7B71;line-height:1.45">A paper written across two colleges is credited to both, so the credits add up to more than the paper count.</div>
+        </div>
+
+        <div data-rise style="animation-delay:.15s;background:#ffffff;border-radius:8px;padding:20px 22px">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:12px">Since the last run</div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0">
+            <span style="width:9px;height:9px;border-radius:50%;background:#9BB0A4;flex:0 0 auto"></span>
+            <div style="font-size:14.5px;color:#3A4A41;line-height:1.45">Nothing changed. No new papers, no new people.</div>
+          </div>
+          <div style="font-size:12.5px;color:#6B7B71;line-height:1.5;border-top:1px solid #F0F3F1;padding-top:11px">Run it twice on the same data and this stays empty. If it ever reports something new here, the papers are being matched wrongly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ ROSTER: step 1, colleges ============ -->
+  <sc-if value="{{ rosterList }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:24px 26px 30px">
+    <div data-rise style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px">
+      <div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }}">Faculty roster · version 2026-08-27</div>
+        <div style="font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:6px">208 people across eight colleges</div>
+        <div style="font-size:13.5px;color:#6B7B71;margin-top:5px">152 of the 160 academics resolved to a Scopus author. Open a college to see its authors.</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button type="button" style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;border-radius:6px;padding:10px 17px;font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer">Import roster CSV</button>
+        <button type="button" onClick="{{ goReview }}" style="background:#E0303F;color:#ffffff;border:0;border-radius:6px;padding:10px 17px;font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer">8 need a decision</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px">
+      <sc-for list="{{ rosterCols }}" as="c" hint-placeholder-count="8">
+        <button type="button" onClick="{{ c.open }}" style="text-align:left;background:#ffffff;border:1px solid #E4EAE6;border-top:4px solid {{ accent }};border-radius:8px;padding:18px 20px;font-family:Archivo,sans-serif;cursor:pointer;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#0A7A3A;box-shadow:0 6px 18px -8px rgba(10,60,35,.28)">
+          <div style="font-size:16.5px;font-weight:700;line-height:1.25;color:#1A1A1A;min-height:42px">{{ c.name }}</div>
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span style="font-size:34px;font-weight:800;letter-spacing:-.025em;line-height:1;color:#1A1A1A">{{ c.n }}</span>
+            <span style="font-size:13px;color:#6B7B71">people</span>
+          </div>
+          <div style="height:6px;background:#EDF1EE;border-radius:3px">
+            <div data-bar style="height:6px;width:{{ c.pct }}%;background:{{ accent }};border-radius:3px;animation-delay:{{ c.delay }}"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:#6B7B71">
+            <span>{{ c.papers }} papers</span>
+            <sc-if value="{{ c.review }}" hint-placeholder-val="{{ false }}">
+              <span style="color:#E0303F;font-weight:600">{{ c.review }} to decide</span>
+            </sc-if>
+            <span style="flex:1"></span>
+            <span style="color:{{ accent }};font-weight:700">Open ›</span>
+          </div>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ ROSTER: step 2, one college ============ -->
+  <sc-if value="{{ rosterDetail }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:24px 26px 30px">
+    <div data-rise style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <button type="button" onClick="{{ backToColleges }}" style="background:#ffffff;color:#3A4A41;border:1px solid #D5DED8;border-radius:6px;padding:9px 15px;font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer">‹ All colleges</button>
+      <div style="flex:1">
+        <div style="font-size:23px;font-weight:700;letter-spacing:-.02em">{{ colName }}</div>
+        <div style="font-size:13.5px;color:#6B7B71;margin-top:3px">{{ colMeta }}</div>
+      </div>
+      <button type="button" style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;border-radius:6px;padding:9px 15px;font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer">Export this college</button>
+    </div>
+    <div style="background:#ffffff;border-radius:8px;padding:20px 22px">
+      <div style="display:grid;grid-template-columns:1.7fr 1.1fr 90px 78px 90px 120px;gap:14px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B7B71;padding-bottom:10px;border-bottom:1px solid #E4EAE6">
+        <div>Name</div><div>Title</div><div style="text-align:right">Papers</div><div style="text-align:right">h</div><div>Status</div><div>Profile</div>
+      </div>
+      <sc-for list="{{ colAuthors }}" as="a" hint-placeholder-count="8">
+        <div style="display:grid;grid-template-columns:1.7fr 1.1fr 90px 78px 90px 120px;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid #F0F3F1">
+          <button type="button" onClick="{{ a.open }}" style="text-align:left;background:none;border:0;padding:0;font-family:Archivo,sans-serif;font-size:14.5px;font-weight:600;color:{{ accent }};cursor:pointer">{{ a.name }}</button>
+          <div style="font-size:13px;color:#3A4A41">{{ a.title }}</div>
+          <div style="font-size:14px;text-align:right;font-variant-numeric:tabular-nums">{{ a.papers }}</div>
+          <div style="font-size:13.5px;text-align:right;color:#3A4A41">{{ a.h }}</div>
+          <div><span style="font-size:12px;font-weight:600;color:{{ a.tagFg }};background:{{ a.tagBg }};padding:3px 9px;border-radius:4px">{{ a.tag }}</span></div>
+          <div><a href="{{ a.url }}" style="font-size:12.5px;text-decoration:none">aau.ac.ae ↗</a></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ REVIEW QUEUE ============ -->
+  <sc-if value="{{ onReview }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:24px 26px 30px">
+    <div data-rise style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <button type="button" onClick="{{ backToColleges }}" style="background:#ffffff;color:#3A4A41;border:1px solid #D5DED8;border-radius:6px;padding:9px 15px;font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer">‹ Roster</button>
+      <div style="flex:1">
+        <div style="font-size:23px;font-weight:700;letter-spacing:-.02em">Eight names need a decision</div>
+        <div style="font-size:13.5px;color:#6B7B71;margin-top:3px">152 of 160 academics resolved on their own. These eight match more than one Scopus author, and picking automatically would be a guess.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+      <div data-rise style="background:#ffffff;border-radius:8px;padding:20px 22px">
+        <div style="display:flex;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid #E4EAE6">
+          <div style="flex:1">
+            <div style="font-size:18px;font-weight:700">Muhammad Ilyas</div>
+            <div style="font-size:13px;color:#6B7B71;margin-top:3px">College of Engineering · Associate Professor</div>
+          </div>
+          <div style="font-size:12.5px;font-weight:700;color:#E0303F;background:#FCE9EB;padding:5px 11px;border-radius:5px;white-space:nowrap">13 candidates</div>
+        </div>
+        <sc-for list="{{ candidates }}" as="c" hint-placeholder-count="3">
+          <div style="padding:13px 0;display:grid;grid-template-columns:1fr 120px 92px 104px;gap:14px;align-items:center;border-bottom:1px solid #F0F3F1">
+            <div>
+              <div style="font-size:14.5px;font-weight:600">{{ c.name }}</div>
+              <div style="font-size:12.5px;color:#6B7B71;margin-top:2px">{{ c.affil }}</div>
+            </div>
+            <div style="font-size:12.5px;color:#3A4A41">{{ c.auid }}</div>
+            <div style="font-size:12.5px;color:#6B7B71;text-align:right">{{ c.papers }}</div>
+            <div style="display:flex;justify-content:flex-end">
+              <button type="button" style="background:{{ c.btnBg }};color:{{ c.btnFg }};border:1px solid {{ c.btnBorder }};border-radius:5px;padding:8px 15px;font-family:Archivo,sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">{{ c.btnLabel }}</button>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex;align-items:center;gap:12px;padding-top:14px">
+          <div style="font-size:13px;color:#6B7B71">Ten more candidates, none with an AAU paper in the window.</div>
+          <div style="flex:1"></div>
+          <button type="button" style="background:#ffffff;color:#3A4A41;border:1px solid #D5DED8;border-radius:5px;padding:8px 14px;font-family:Archivo,sans-serif;font-size:13px;cursor:pointer">Show all</button>
+        </div>
+      </div>
+      <div data-rise style="animation-delay:.06s;background:#ffffff;border-radius:8px;padding:20px 22px">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:12px">Rest of the queue</div>
+        <sc-for list="{{ queue }}" as="q" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:1fr 110px 22px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #F0F3F1">
+            <div>
+              <div style="font-size:14px;font-weight:600">{{ q.name }}</div>
+              <div style="font-size:12.5px;color:#6B7B71;margin-top:2px">{{ q.college }}</div>
+            </div>
+            <div style="font-size:12.5px;color:#6B7B71;text-align:right">{{ q.cands }}</div>
+            <div style="font-size:15px;color:#6B7B71;text-align:right">›</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ AUTHORS ============ -->
+  <sc-if value="{{ onAuthor }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:24px 26px 30px;display:grid;grid-template-columns:330px 1fr;gap:16px">
+
+    <div data-rise style="background:#ffffff;border-radius:8px;padding:18px 18px 12px;display:flex;flex-direction:column">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:12px">Choose an author</div>
+      <div style="display:flex;align-items:center;gap:9px;border:1px solid #D5DED8;border-radius:6px;padding:9px 12px;background:#FAFBFA">
+        <span style="color:#6B7B71;font-size:14px">⌕</span>
+        <input type="text" placeholder="Search 511 people…" style="border:0;background:transparent;outline:none;font-family:Archivo,sans-serif;font-size:13.5px;width:100%;color:#1A1A1A">
+      </div>
+      <div style="display:flex;gap:6px;margin-top:11px;flex-wrap:wrap">
+        <sc-for list="{{ authorFilters }}" as="f" hint-placeholder-count="3">
+          <button type="button" style="background:{{ f.bg }};color:{{ f.fg }};border:1px solid {{ f.border }};border-radius:14px;padding:5px 12px;font-family:Archivo,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer">{{ f.label }}</button>
+        </sc-for>
+      </div>
+      <div style="margin-top:12px;flex:1">
+        <sc-for list="{{ authorList }}" as="a" hint-placeholder-count="8">
+          <button type="button" onClick="{{ a.pick }}" style="width:100%;text-align:left;background:{{ a.bg }};border:0;border-left:3px solid {{ a.mark }};padding:10px 12px;font-family:Archivo,sans-serif;cursor:pointer;display:block;border-radius:0 5px 5px 0;margin-bottom:3px">
+            <div style="font-size:14px;font-weight:{{ a.weight }};color:#1A1A1A">{{ a.name }}</div>
+            <div style="font-size:12.5px;color:#6B7B71;margin-top:2px;display:flex;gap:8px">
+              <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.college }}</span>
+              <span>{{ a.papers }}</span>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div data-rise style="animation-delay:.05s;background:#ffffff;border-radius:8px;padding:22px 24px">
+        <div style="display:flex;align-items:flex-start;gap:18px">
+          <div style="width:60px;height:60px;border-radius:50%;background:{{ accent }};color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex:0 0 auto">{{ pick.initials }}</div>
+          <div style="flex:1">
+            <div style="font-size:24px;font-weight:700;letter-spacing:-.015em;line-height:1.2">{{ pick.name }}</div>
+            <div style="font-size:14px;color:#6B7B71;margin-top:4px;line-height:1.45">{{ pick.role }}</div>
+            <div style="display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;align-items:center">
+              <span style="background:#E7F2EB;color:{{ accent }};font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:5px">{{ pick.tag }}</span>
+              <span style="background:#F4F6F5;color:#3A4A41;font-size:12.5px;padding:5px 11px;border-radius:5px">{{ pick.active }}</span>
+              <a href="{{ pick.url }}" style="font-size:13px;font-weight:600;text-decoration:none;padding:5px 11px;border:1px solid #C3D6CA;border-radius:5px">Staff profile on aau.ac.ae ↗</a>
+            </div>
+          </div>
+          <div style="text-align:right;flex:0 0 auto">
+            <div style="font-size:12.5px;color:#6B7B71">Scopus author</div>
+            <div style="font-size:13.5px;font-weight:600;margin-top:3px">{{ pick.auid }}</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;border-top:1px solid #F0F3F1;padding-top:18px">
+          <sc-for list="{{ pick.stats }}" as="st" hint-placeholder-count="4">
+            <div>
+              <div style="font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1">{{ st.v }}</div>
+              <div style="font-size:13px;color:#6B7B71;margin-top:4px;line-height:1.35">{{ st.l }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div data-rise style="animation-delay:.09s;background:#ffffff;border-radius:8px;padding:20px 22px;flex:1">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }}">Papers in the window · {{ pick.papers }}</div>
+          <div style="font-size:12.5px;color:#6B7B71">newest first</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 68px 64px 80px;gap:12px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B7B71;padding-bottom:9px;border-bottom:1px solid #E4EAE6">
+          <div>Title</div><div style="text-align:right">Year</div><div style="text-align:right">Cited</div><div style="text-align:right">Source</div>
+        </div>
+        <sc-for list="{{ papers }}" as="p" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:1fr 68px 64px 80px;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid #F0F3F1">
+            <div>
+              <div style="font-size:13.5px;font-weight:500;line-height:1.35">{{ p.title }}</div>
+              <div style="font-size:12.5px;color:#6B7B71;margin-top:3px">{{ p.venue }}</div>
+            </div>
+            <div style="font-size:13px;color:#6B7B71;text-align:right">{{ p.year }}</div>
+            <div style="font-size:13px;color:#3A4A41;text-align:right;font-variant-numeric:tabular-nums">{{ p.cited }}</div>
+            <div style="text-align:right"><span style="font-size:11.5px;font-weight:600;color:{{ p.srcFg }};background:{{ p.srcBg }};padding:3px 8px;border-radius:4px">{{ p.src }}</span></div>
+          </div>
+        </sc-for>
+        <div style="display:flex;align-items:center;gap:12px;padding-top:14px">
+          <div style="font-size:13px;color:#6B7B71">{{ pick.more }} more papers</div>
+          <div style="flex:1"></div>
+          <button type="button" style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;border-radius:5px;padding:8px 15px;font-family:Archivo,sans-serif;font-size:13px;font-weight:600;cursor:pointer">Show all</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ EXPORTS ============ -->
+  <sc-if value="{{ onExport }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:24px 26px 30px">
+    <div data-rise style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px">
+      <div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }}">Export run 20260827-010252</div>
+        <div style="font-size:25px;font-weight:700;letter-spacing:-.02em;margin-top:6px">Everything from this run, three ways</div>
+        <div style="font-size:13.5px;color:#6B7B71;margin-top:5px">Each file is stamped with the run id and the roster version, so any number can be traced back.</div>
+      </div>
+      <button type="button" style="background:{{ accent }};color:#ffffff;border:0;border-radius:6px;padding:12px 24px;font-family:Archivo,sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap">Export all three</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+      <sc-for list="{{ exports }}" as="e" hint-placeholder-count="3">
+        <div data-rise style="background:#ffffff;border-radius:8px;padding:20px 22px;display:flex;flex-direction:column;animation-delay:{{ e.delay }}">
+          <div style="display:flex;align-items:flex-start;gap:13px">
+            <div style="width:44px;height:44px;border-radius:7px;background:#E7F2EB;color:{{ accent }};display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;flex:0 0 auto">{{ e.kind }}</div>
+            <div style="flex:1">
+              <div style="font-size:18px;font-weight:700">{{ e.title }}</div>
+              <div style="font-size:13px;color:#6B7B71;margin-top:3px;line-height:1.4">{{ e.sub }}</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;flex:1">
+            <sc-for list="{{ e.items }}" as="it" hint-placeholder-count="6">
+              <div style="display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid #F4F6F5">
+                <span style="color:{{ accent }};font-size:13px;font-weight:700;flex:0 0 auto;line-height:1.5">✓</span>
+                <span style="font-size:13px;color:#2A3A31;line-height:1.45;flex:1">{{ it.label }}</span>
+                <span style="font-size:12.5px;color:#6B7B71;white-space:nowrap">{{ it.meta }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <button type="button" style="margin-top:16px;background:{{ e.btnBg }};color:{{ e.btnFg }};border:1px solid {{ e.btnBorder }};border-radius:6px;padding:11px 18px;font-family:Archivo,sans-serif;font-size:13.5px;font-weight:700;cursor:pointer">{{ e.btn }}</button>
+          <div style="font-size:12.5px;color:#6B7B71;margin-top:9px;line-height:1.4">{{ e.path }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div data-rise style="animation-delay:.16s;background:#ffffff;border-radius:8px;padding:20px 22px;margin-top:16px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:14px">Charts written into every export</div>
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px">
+        <sc-for list="{{ chartKinds }}" as="k" hint-placeholder-count="5">
+          <div style="border:1px solid #E4EAE6;border-radius:7px;padding:14px 15px">
+            <div style="height:52px;display:flex;align-items:flex-end;gap:4px;margin-bottom:11px">
+              <sc-for list="{{ k.bars }}" as="b" hint-placeholder-count="5">
+                <div style="flex:1;height:{{ b.h }}%;background:{{ b.color }};border-radius:2px 2px 0 0"></div>
+              </sc-for>
+            </div>
+            <div style="font-size:13px;font-weight:600;line-height:1.3">{{ k.label }}</div>
+            <div style="font-size:12.5px;color:#6B7B71;margin-top:3px;line-height:1.35">{{ k.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ SCHEDULE ============ -->
+  <sc-if value="{{ onSchedule }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:24px 26px 30px">
+    <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:16px">
+      <div data-rise style="background:#ffffff;border-radius:8px;padding:22px 24px">
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }}">Weekly run</div>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px 18px;background:#F4F6F5;border-radius:7px">
+          <button type="button" onClick="{{ toggleSched }}" style="width:52px;height:30px;border-radius:15px;border:0;background:{{ schedTrackBg }};position:relative;cursor:pointer;flex:0 0 auto;padding:0">
+            <span style="position:absolute;top:3px;left:{{ schedKnobLeft }};width:24px;height:24px;border-radius:50%;background:#ffffff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .18s cubic-bezier(.2,.7,.2,1)"></span>
+          </button>
+          <div style="flex:1">
+            <div style="font-size:16px;font-weight:600">{{ schedTitle }}</div>
+            <div style="font-size:13px;color:#6B7B71;margin-top:2px">{{ schedSub }}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px">
+          <div>
+            <div style="font-size:12.5px;font-weight:600;color:#3A4A41;margin-bottom:7px">Day</div>
+            <div style="display:flex;gap:4px">
+              <sc-for list="{{ days }}" as="d" hint-placeholder-count="7">
+                <button type="button" onClick="{{ d.pick }}" style="flex:1;background:{{ d.bg }};color:{{ d.fg }};border:1px solid {{ d.border }};border-radius:5px;padding:9px 0;font-family:Archivo,sans-serif;font-size:12.5px;font-weight:{{ d.weight }};cursor:pointer">{{ d.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12.5px;font-weight:600;color:#3A4A41;margin-bottom:7px">Time</div>
+            <div style="display:flex;align-items:center;gap:10px;border:1px solid #D5DED8;border-radius:5px;padding:8px 12px;background:#ffffff">
+              <span style="font-size:15px;font-weight:600;font-variant-numeric:tabular-nums">06:00</span>
+              <span style="font-size:12.5px;color:#6B7B71">after the Scopus nightly update</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:20px;border-top:1px solid #F0F3F1;padding-top:18px">
+          <div style="font-size:12.5px;font-weight:600;color:#3A4A41;margin-bottom:11px">Next four runs</div>
+          <sc-for list="{{ nextRuns }}" as="r" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #F0F3F1">
+              <span style="width:7px;height:7px;border-radius:50%;background:{{ r.dot }};flex:0 0 auto"></span>
+              <span style="font-size:13.5px;flex:1">{{ r.when }}</span>
+              <span style="font-size:12.5px;color:#6B7B71">{{ r.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div data-rise style="animation-delay:.06s;background:#ffffff;border-radius:8px;padding:20px 22px">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:14px">Health</div>
+          <sc-for list="{{ health }}" as="h" hint-placeholder-count="5">
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid #F0F3F1">
+              <span style="width:8px;height:8px;border-radius:50%;background:{{ h.color }};flex:0 0 auto;margin-top:6px"></span>
+              <div style="flex:1">
+                <div style="font-size:13.5px;font-weight:500">{{ h.label }}</div>
+                <div style="font-size:12.5px;color:#6B7B71;margin-top:2px;line-height:1.45">{{ h.note }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div data-rise style="animation-delay:.1s;background:#ffffff;border-radius:8px;padding:20px 22px">
+          <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E0303F;margin-bottom:12px">Decide the college map</div>
+          <div style="font-size:13.5px;color:#3A4A41;line-height:1.5">Two groups are folded into a parent college until you decide. Both appear in the census under the parent, not their own name.</div>
+          <div style="margin-top:14px;display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13.5px;background:#F4F6F5;padding:11px 13px;border-radius:6px">
+              <span style="font-weight:600;flex:1">Computer and Information Sciences</span>
+              <span style="color:#6B7B71">28 people</span>
+              <span style="color:#6B7B71">→</span>
+              <span style="font-weight:600">Engineering</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13.5px;background:#F4F6F5;padding:11px 13px;border-radius:6px">
+              <span style="font-weight:600;flex:1">Health Sciences</span>
+              <span style="color:#6B7B71">1 person</span>
+              <span style="color:#6B7B71">→</span>
+              <span style="font-weight:600">Nursing</span>
+            </div>
+          </div>
+          <button type="button" style="margin-top:16px;background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;border-radius:6px;padding:9px 16px;font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer">Edit the map</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ WORKFLOW ============ -->
+  <sc-if value="{{ onFlow }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:26px 26px 34px">
+    <div data-rise style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px">
+      <div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }}">What happens on a run</div>
+        <div style="font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:6px">Six stages, roster first, Scopus second</div>
+      </div>
+      <div style="font-size:13.5px;color:#6B7B71;text-align:right;line-height:1.5">The roster decides who belongs to the university.<br>Scopus supplies the papers, never the membership.</div>
+    </div>
+
+    <div style="position:relative;width:1308px;height:450px">
+      <svg width="1308" height="450" viewBox="0 0 1308 450" style="position:absolute;left:0;top:0;overflow:visible">
+        <defs>
+          <marker id="fcArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9 z" fill="#8FA69A"></path>
+          </marker>
+          <marker id="fcArrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9 z" fill="#E0303F"></path>
+          </marker>
+        </defs>
+        <g fill="none" stroke="#D3DDD7" stroke-width="2" marker-end="url(#fcArrow)">
+          <path d="M236,64 C252,64 252,140 268,140"></path>
+          <path d="M236,216 C252,216 252,140 268,140"></path>
+          <path d="M504,140 C518,140 522,64 536,64"></path>
+          <path d="M504,140 C518,140 522,216 536,216"></path>
+          <path d="M772,216 H823"></path>
+          <path d="M772,64 H1150 C1172,64 1190,74 1190,92"></path>
+          <path d="M1021,216 C1042,216 1050,154 1072,154"></path>
+          <path d="M1190,216 V350"></path>
+        </g>
+        <g fill="none" stroke="#E0303F" stroke-width="2" marker-end="url(#fcArrowRed)">
+          <path d="M922,315 V350"></path>
+        </g>
+        <g fill="none" stroke-width="2.5" stroke-dasharray="8 16" stroke-linecap="round">
+          <path data-dash d="M236,64 C252,64 252,140 268,140" stroke="{{ accent }}" style="animation-delay:0s"></path>
+          <path data-dash d="M236,216 C252,216 252,140 268,140" stroke="#F27524" style="animation-delay:.12s"></path>
+          <path data-dash d="M504,140 C518,140 522,64 536,64" stroke="{{ accent }}" style="animation-delay:.2s"></path>
+          <path data-dash d="M504,140 C518,140 522,216 536,216" stroke="{{ accent }}" style="animation-delay:.28s"></path>
+          <path data-dash d="M772,216 H823" stroke="{{ accent }}" style="animation-delay:.36s"></path>
+          <path data-dash d="M772,64 H1150 C1172,64 1190,74 1190,92" stroke="{{ accent }}" style="animation-delay:.44s"></path>
+          <path data-dash d="M1021,216 C1042,216 1050,154 1072,154" stroke="{{ accent }}" style="animation-delay:.52s"></path>
+          <path data-dash d="M922,315 V350" stroke="#E0303F" style="animation-delay:.6s"></path>
+          <path data-dash d="M1190,216 V350" stroke="{{ accent }}" style="animation-delay:.68s"></path>
+        </g>
+      </svg>
+
+      <div data-node style="position:absolute;left:0;top:16px;width:236px;height:96px;background:#ffffff;border-radius:8px;border-left:4px solid {{ accent }};padding:14px 16px;box-sizing:border-box">
+        <div style="display:flex;align-items:center;gap:9px">
+          <img src="assets/aau-logo.png" alt="Al Ain University" style="height:20px;width:auto;display:block">
+          <span style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B7B71">Source</span>
+        </div>
+        <div style="font-size:15.5px;font-weight:700;margin-top:8px">Faculty roster</div>
+        <div style="font-size:12.5px;color:#6B7B71;margin-top:3px">208 people · 8 colleges · who belongs to AAU</div>
+      </div>
+
+      <div data-node style="animation-delay:.08s;position:absolute;left:0;top:168px;width:236px;height:96px;background:#ffffff;border-radius:8px;border-left:4px solid #F27524;padding:14px 16px;box-sizing:border-box">
+        <div style="display:flex;align-items:center;gap:9px">
+          <img src="assets/scopus-mark.png" alt="Scopus" style="height:20px;width:auto;display:block;border-radius:3px">
+          <span style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B7B71">Source</span>
+        </div>
+        <div style="font-size:15.5px;font-weight:700;margin-top:8px">Scopus</div>
+        <div style="font-size:12.5px;color:#6B7B71;margin-top:3px">Papers, author records and citations</div>
+      </div>
+
+      <div data-node style="animation-delay:.16s;position:absolute;left:268px;top:92px;width:236px;height:96px;background:#ffffff;border-radius:8px;border-top:4px solid {{ accent }};padding:13px 16px;box-sizing:border-box">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-size:11.5px;font-weight:800;color:{{ accent }}">01</span>
+          <span style="font-size:15.5px;font-weight:700">Match names to authors</span>
+        </div>
+        <div style="font-size:12.5px;color:#6B7B71;margin-top:5px;line-height:1.4">Tiered, ending with near-miss spellings</div>
+        <div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">
+          <span style="font-size:20px;font-weight:800;letter-spacing:-.02em;color:{{ accent }}">152</span>
+          <span style="font-size:12.5px;color:#6B7B71">of 160 resolved</span>
+        </div>
+      </div>
+
+      <div data-node style="animation-delay:.24s;position:absolute;left:536px;top:16px;width:236px;height:96px;background:#ffffff;border-radius:8px;border-top:4px solid {{ accent }};padding:13px 16px;box-sizing:border-box">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-size:11.5px;font-weight:800;color:{{ accent }}">02</span>
+          <span style="font-size:15.5px;font-weight:700">Papers under AAU</span>
+        </div>
+        <div style="font-size:12.5px;color:#6B7B71;margin-top:5px;line-height:1.4">The window Scopus files under the university</div>
+        <div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">
+          <span style="font-size:20px;font-weight:800;letter-spacing:-.02em;color:{{ accent }}">1,330</span>
+          <span style="font-size:12.5px;color:#6B7B71">papers, 2025–2026</span>
+        </div>
+      </div>
+
+      <div data-node style="animation-delay:.32s;position:absolute;left:536px;top:168px;width:236px;height:96px;background:#ffffff;border-radius:8px;border-top:4px solid {{ accent }};padding:13px 16px;box-sizing:border-box">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-size:11.5px;font-weight:800;color:{{ accent }}">03</span>
+          <span style="font-size:15.5px;font-weight:700">Sweep each author</span>
+        </div>
+        <div style="font-size:12.5px;color:#6B7B71;margin-top:5px;line-height:1.4">Catches papers the university tag missed</div>
+        <div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">
+          <span style="font-size:20px;font-weight:800;letter-spacing:-.02em;color:{{ accent }}">73</span>
+          <span style="font-size:12.5px;color:#6B7B71">candidates returned</span>
+        </div>
+      </div>
+
+      <div data-node style="animation-delay:.4s;position:absolute;left:852px;top:146px;width:140px;height:140px;background:#ffffff;border:2px solid #E0303F;border-radius:10px;transform:rotate(45deg);box-sizing:border-box"></div>
+      <div style="position:absolute;left:852px;top:146px;width:140px;height:140px;display:flex;align-items:center;justify-content:center;pointer-events:none">
+        <div style="width:98px;text-align:center">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#E0303F">Gate</div>
+          <div style="font-size:12.5px;font-weight:700;line-height:1.3;margin-top:4px">Does the paper print an AAU address?</div>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:1024px;top:170px;background:#F4F6F5;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:700;color:{{ accent }}">yes</div>
+      <div style="position:absolute;left:930px;top:318px;background:#F4F6F5;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:700;color:#E0303F">no</div>
+
+      <div data-node style="animation-delay:.48s;position:absolute;left:1072px;top:92px;width:236px;height:124px;background:#ffffff;border-radius:8px;border-top:4px solid {{ accent }};padding:14px 16px;box-sizing:border-box">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-size:11.5px;font-weight:800;color:{{ accent }}">04</span>
+          <span style="font-size:15.5px;font-weight:700">The census</span>
+        </div>
+        <div style="font-size:12.5px;color:#6B7B71;margin-top:5px;line-height:1.4">Sorted into faculty and students, placed in colleges, compared with last run</div>
+        <div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">
+          <span style="font-size:22px;font-weight:800;letter-spacing:-.02em;color:{{ accent }}">1,336</span>
+          <span style="font-size:12.5px;color:#6B7B71">papers · 511 people</span>
+        </div>
+      </div>
+
+      <div data-node style="animation-delay:.56s;position:absolute;left:838px;top:350px;width:250px;height:84px;background:#FCF4F5;border-radius:8px;border:1px dashed #E7A9B0;padding:13px 16px;box-sizing:border-box">
+        <div style="display:flex;align-items:baseline;gap:9px">
+          <span style="font-size:24px;font-weight:800;color:#E0303F;line-height:1">67</span>
+          <span style="font-size:13.5px;font-weight:700;color:#8B2A32">rejected</span>
+        </div>
+        <div style="font-size:12.5px;color:#8B2A32;line-height:1.4;margin-top:5px">Not one author on them printed an Al Ain University address</div>
+      </div>
+
+      <div data-node style="animation-delay:.64s;position:absolute;left:1072px;top:350px;width:236px;height:84px;background:#ffffff;border-radius:8px;border-top:4px solid {{ accent }};padding:13px 16px;box-sizing:border-box">
+        <div style="font-size:15.5px;font-weight:700">Files to download</div>
+        <div style="font-size:12.5px;color:#6B7B71;margin-top:5px;line-height:1.4">Workbook, slide deck and chart pack, each stamped with the run id</div>
+      </div>
+    </div>
+
+    <div data-fade style="animation-delay:.8s;display:flex;align-items:center;gap:14px;margin-top:6px;padding:12px 16px;background:#ffffff;border-radius:8px;width:1308px;box-sizing:border-box">
+      <span style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B7B71;flex:0 0 auto">Data sources</span>
+      <img src="assets/scopus-elsevier.png" alt="Elsevier Scopus" style="height:34px;width:auto;display:block">
+      <span style="font-size:13px;color:#6B7B71;flex:1;line-height:1.45">Papers, author records and citation counts come from Scopus. Membership of the university comes from the AAU faculty roster, never from Scopus.</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px">
+      <div data-rise style="animation-delay:.1s;background:#ffffff;border-radius:8px;padding:18px 20px;border-left:4px solid {{ accent }}">
+        <div style="font-size:14.5px;font-weight:700">Why the gate exists</div>
+        <div style="font-size:13px;color:#6B7B71;line-height:1.5;margin-top:7px">A sweep by author returns everything that person published anywhere. Asking for one professor's papers returns 53, and only 30 print an AAU address. Without the gate the census re-inflates by hundreds of papers belonging to other universities.</div>
+      </div>
+      <div data-rise style="animation-delay:.14s;background:#ffffff;border-radius:8px;padding:18px 20px;border-left:4px solid {{ accent }}">
+        <div style="font-size:14.5px;font-weight:700">Why a name can be missed</div>
+        <div style="font-size:13px;color:#6B7B71;line-height:1.5;margin-top:7px">The roster writes Al-Takhayneh, Scopus prints Al-Tkhayneh. One vowel apart. Exact matching misses it and a professor with 39 papers disappears, so near-misses are checked separately before anyone is called new.</div>
+      </div>
+      <div data-rise style="animation-delay:.18s;background:#ffffff;border-radius:8px;padding:18px 20px;border-left:4px solid {{ accent }}">
+        <div style="font-size:14.5px;font-weight:700">What a healthy run looks like</div>
+        <div style="font-size:13px;color:#6B7B71;line-height:1.5;margin-top:7px">Run it twice on unchanged data and the second run reports nothing new. If it invents an addition, the papers are being matched wrongly, and that is a bug rather than a discovery.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+  </sc-if>
+
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:940},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#0A7A3A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#0A7A3A&quot;,&quot;#0F1512&quot;,&quot;#1F5C8B&quot;],&quot;section&quot;:&quot;Theme&quot;}}">
+const COLLEGE_DATA = [
+  { name: 'College of Education', people: 44, papers: 284, review: 2, color: '#0FA64F' },
+  { name: 'College of Engineering', people: 38, papers: 245, review: 3, color: '#0A7A3A' },
+  { name: 'College of Pharmacy', people: 32, papers: 274, review: 1, color: '#E0303F' },
+  { name: 'College of Business', people: 29, papers: 268, review: 1, color: '#1A1A1A' },
+  { name: 'College of Law', people: 24, papers: 44, review: 1, color: '#B9BEBA' },
+  { name: 'Communication and Media', people: 18, papers: 58, review: 0, color: '#3F8F6B' },
+  { name: 'Humanities and Social Sciences', people: 15, papers: 45, review: 0, color: '#C98F6F' },
+  { name: 'College of Nursing', people: 8, papers: 6, review: 0, color: '#6FC98F' },
+];
+
+const AUTHORS = [
+  { key: 'tkhayneh', name: 'Khawlah M. Al-Tkhayneh', college: 'College of Education', title: 'Professor', papers: 39, h: 7, cites: 205, corr: 12, auid: '57194543210', tag: 'Faculty', slug: 'khawlah-al-tkhayneh' },
+  { key: 'tabash', name: 'Mosab I. Tabash', college: 'College of Business', title: 'Professor', papers: 99, h: 41, cites: 7667, corr: 61, auid: '57190064430', tag: 'Faculty', slug: 'mosab-tabash' },
+  { key: 'salameh', name: 'Haythem Bany Salameh', college: 'College of Engineering', title: 'Professor', papers: 53, h: 32, cites: 3704, corr: 28, auid: '24476294300', tag: 'Faculty', slug: 'haythem-bany-salameh' },
+  { key: 'meslamani', name: 'Ahmad Z. Al Meslamani', college: 'College of Pharmacy', title: 'Assistant Professor', papers: 38, h: 22, cites: 1413, corr: 19, auid: '57216498733', tag: 'Faculty', slug: 'ahmad-al-meslamani' },
+  { key: 'refae', name: 'Ghaleb A. El Refae', college: 'College of Business', title: 'Professor', papers: 50, h: 25, cites: 2477, corr: 14, auid: '6504074521', tag: 'Faculty', slug: 'ghaleb-el-refae' },
+  { key: 'ayasrah', name: 'Firas Tayseer Ayasrah', college: 'College of Education', title: 'Associate Professor', papers: 49, h: 16, cites: 696, corr: 22, auid: '57221542118', tag: 'Faculty', slug: 'firas-ayasrah' },
+  { key: 'jarab', name: 'Anan S. Jarab', college: 'College of Pharmacy', title: 'Professor', papers: 30, h: 25, cites: 2802, corr: 17, auid: '36053117400', tag: 'Faculty', slug: 'anan-jarab' },
+  { key: 'tahat', name: 'Dina Tahat', college: 'Humanities and Social Sciences', title: 'Associate Professor', papers: 29, h: 5, cites: 130, corr: 9, auid: '57219874102', tag: 'Faculty', slug: 'dina-tahat' },
+];
+
+const PAPERS = {
+  tkhayneh: [
+    ['Teacher self-efficacy and classroom technology adoption in the UAE', 'International Journal of Educational Research', 2026, 3, 'Indexed'],
+    ['Attitudes toward inclusive education among trainee teachers', 'Frontiers in Education', 2026, 1, 'Indexed'],
+    ['Social media use and academic procrastination', 'Heliyon', 2026, 0, 'Swept'],
+    ['Parental involvement and reading achievement in bilingual schools', 'Journal of Education and Learning', 2025, 12, 'Indexed'],
+    ['Burnout among university faculty after the shift to hybrid teaching', 'Cogent Education', 2025, 9, 'Indexed'],
+    ['A scale for measuring digital citizenship in secondary students', 'Education and Information Technologies', 2025, 21, 'Indexed'],
+  ],
+  tabash: [
+    ['Financial inclusion and bank stability in emerging markets', 'Research in International Business and Finance', 2026, 8, 'Indexed'],
+    ['Oil price shocks and GCC equity returns', 'Resources Policy', 2026, 5, 'Indexed'],
+    ['ESG disclosure and cost of capital', 'Journal of Cleaner Production', 2026, 2, 'Indexed'],
+    ['Islamic banking efficiency: a two-stage analysis', 'Pacific-Basin Finance Journal', 2025, 34, 'Indexed'],
+    ['Remittances and economic growth revisited', 'Economic Analysis and Policy', 2025, 27, 'Indexed'],
+    ['Corporate governance and firm value in the UAE', 'Corporate Governance', 2025, 19, 'Indexed'],
+  ],
+  salameh: [
+    ['Spectrum-aware routing for UAV relay networks', 'IEEE Transactions on Vehicular Technology', 2026, 6, 'Indexed'],
+    ['Energy-efficient scheduling in cognitive radio IoT', 'IEEE Internet of Things Journal', 2026, 4, 'Indexed'],
+    ['Deep learning for channel assignment', 'Computer Networks', 2025, 22, 'Indexed'],
+    ['Latency-bounded multi-hop transmission', 'Ad Hoc Networks', 2025, 15, 'Indexed'],
+    ['A survey of dynamic spectrum access', 'IEEE Access', 2025, 41, 'Indexed'],
+    ['Cooperative jamming for physical layer security', 'Wireless Networks', 2025, 11, 'Swept'],
+  ],
+};
+
+class Component extends DCLogic {
+  state = { screen: 'welcome', running: true, sched: true, day: 1, college: null, review: false, author: 'tkhayneh' };
+
+  go(s) { return () => this.setState({ screen: s, college: null, review: false }); }
+
+  renderVals() {
+    const S = this.state.screen;
+    const accent = this.props.accent ?? '#0A7A3A';
+    const running = this.state.running;
+
+    const TABS = [
+      ['dash', 'Dashboard', null],
+      ['roster', 'Roster', '8'],
+      ['author', 'Authors', null],
+      ['export', 'Exports', null],
+      ['sched', 'Schedule', null],
+      ['flow', 'Workflow', null],
+    ];
+    const tabs = TABS.map(([id, label, badge]) => ({
+      label, badge,
+      go: this.go(id),
+      bg: S === id ? 'rgba(255,255,255,.16)' : 'transparent',
+      line: S === id ? '#ffffff' : 'transparent',
+      fg: S === id ? '#ffffff' : '#D5E8DC',
+      weight: S === id ? 700 : 500,
+    }));
+
+    const tiles = [
+      { v: '1,336', l: 'papers in the census', sub: 'publication years 2025 and 2026', color: accent },
+      { v: '6', l: 'added by the sweep', sub: 'found on an author, not on the university tag', color: accent },
+      { v: '511', l: 'authors', sub: '161 of them on the faculty roster', color: accent },
+    ];
+
+    const stageDefs = [
+      ['Read the faculty roster', 'Who the university says belongs to it', 100, 'Done'],
+      ['Find each person in Scopus', 'Matching names to author records', 100, 'Done'],
+      ['Collect the papers', 'Everything filed under the university', 100, 'Done'],
+      ['Check the extra papers found', 'Each one must print an AAU address', 64, 'Working'],
+      ['Sort faculty from students', 'And place each person in a college', 0, 'Waiting'],
+      ['Build the census and compare', 'Then write the files you can download', 0, 'Waiting'],
+    ];
+    const stages = stageDefs.map((d, i) => {
+      const pct = running ? d[2] : 100;
+      const done = pct >= 100;
+      const active = running && d[2] > 0 && d[2] < 100;
+      return {
+        label: d[0], plain: d[1], pct, active,
+        mark: done ? '✓' : String(i + 1),
+        status: running ? d[3] : 'Done',
+        statusColor: active ? accent : '#6B7B71',
+        statusWeight: active ? 700 : 500,
+        delay: (0.06 * i).toFixed(2) + 's',
+        weight: active ? 700 : 600,
+        labelColor: pct > 0 ? '#1A1A1A' : '#6B7B71',
+        barColor: pct > 0 ? accent : '#EDF1EE',
+        dotBg: done ? accent : (active ? '#ffffff' : '#F4F6F5'),
+        dotBorder: pct > 0 ? accent : '#DDE5E0',
+        numColor: done ? '#ffffff' : (active ? accent : '#6B7B71'),
+      };
+    });
+
+    const findings = running ? [
+      { text: 'The roster loaded cleanly: 208 people across eight colleges.', color: accent },
+      { text: '152 of the 160 academics were found in Scopus on their own. Eight names match more than one author record and are waiting for you on the Roster screen.', color: '#E8A33D' },
+      { text: 'The publication window came back with 1,330 papers, the same figure the Scopus website shows.', color: accent },
+      { text: 'Checking the extra papers now. So far 67 have been thrown out because no author on them printed an Al Ain University address.', color: '#E0303F' },
+    ] : [
+      { text: 'The census holds 1,336 papers and 511 people, of whom 161 are on the faculty roster.', color: accent },
+      { text: 'Six papers were added that the university tag had missed, and 67 were rejected for not printing an AAU address.', color: accent },
+      { text: 'Every person landed in one of the eight colleges. Nothing was left unmapped.', color: accent },
+      { text: 'Compared against the previous run, nothing changed. The workbook, the charts and the deck are ready to download.', color: accent },
+    ];
+
+    const pieRaw = COLLEGE_DATA.map(c => [c.name.replace('College of ', ''), c.papers, c.color])
+      .concat([['Computer and Info. Sciences', 79, '#14563A'], ['No college stated', 48, '#9BB0A4']])
+      .sort((a, b) => b[1] - a[1]);
+    const pieTotal = pieRaw.reduce((s, r) => s + r[1], 0);
+    const C = 628.32;
+    let acc = 0;
+    const pie = pieRaw.map((r, i) => {
+      const share = r[1] / pieTotal;
+      const rot = -90 + acc * 360;
+      acc += share;
+      const arc = +(C * share).toFixed(1);
+      return {
+        color: r[2],
+        dash: arc + ' ' + C,
+        rot: 'rotate(' + rot.toFixed(2) + ' 120 120)',
+        arc: String(arc),
+        delay: (0.3 + 0.07 * i).toFixed(2) + 's',
+      };
+    });
+    const colleges = pieRaw.map(r => ({ name: r[0], papers: r[1].toLocaleString(), color: r[2] }));
+
+    const maxPeople = Math.max(...COLLEGE_DATA.map(c => c.people));
+    const rosterCols = COLLEGE_DATA.map((c, i) => ({
+      name: c.name, n: c.people, papers: c.papers.toLocaleString(),
+      review: c.review > 0 ? String(c.review) : null,
+      pct: (c.people / maxPeople * 100).toFixed(1),
+      delay: (0.04 * i).toFixed(2) + 's',
+      open: () => this.setState({ college: c.name, review: false }),
+    }));
+
+    const sel = this.state.college;
+    const selData = COLLEGE_DATA.find(c => c.name === sel);
+    const colAuthors = (sel ? AUTHORS.filter(a => a.college === sel) : []);
+    const filled = colAuthors.length ? colAuthors : AUTHORS.slice(0, 3);
+    const colAuthorRows = filled.map(a => ({
+      name: a.name, title: a.title, papers: a.papers, h: a.h,
+      tag: a.tag, tagFg: accent, tagBg: '#E7F2EB',
+      url: 'https://aau.ac.ae/en/staff/' + a.slug,
+      open: () => this.setState({ screen: 'author', author: a.key, college: null }),
+    }));
+
+    const authorFilters = [
+      { label: 'All 511', bg: accent, fg: '#ffffff', border: accent },
+      { label: 'Faculty', bg: '#ffffff', fg: '#3A4A41', border: '#D5DED8' },
+      { label: 'Students', bg: '#ffffff', fg: '#3A4A41', border: '#D5DED8' },
+    ];
+    const authorList = AUTHORS.map(a => {
+      const on = this.state.author === a.key;
+      return {
+        name: a.name, college: a.college.replace('College of ', ''), papers: a.papers,
+        bg: on ? '#F1F6F3' : 'transparent',
+        mark: on ? accent : 'transparent',
+        weight: on ? 700 : 500,
+        pick: () => this.setState({ author: a.key }),
+      };
+    });
+
+    const p = AUTHORS.find(a => a.key === this.state.author) || AUTHORS[0];
+    const pick = {
+      name: p.name,
+      initials: p.name.split(' ').filter(w => /^[A-Z]/.test(w)).slice(0, 2).map(w => w[0]).join(''),
+      role: p.title + ' · ' + p.college,
+      tag: p.tag, active: 'Publishing in 2026',
+      url: 'https://aau.ac.ae/en/staff/' + p.slug,
+      auid: p.auid, papers: p.papers, more: p.papers - 6,
+      stats: [
+        { v: String(p.papers), l: 'papers in window' },
+        { v: String(p.h), l: 'career h-index' },
+        { v: p.cites.toLocaleString(), l: 'career citations' },
+        { v: String(p.corr), l: 'as corresponding author' },
+      ],
+    };
+    const rows = PAPERS[p.key] || PAPERS.tkhayneh;
+    const papers = rows.map(r => ({
+      title: r[0], venue: r[1], year: r[2], cited: r[3], src: r[4],
+      srcFg: r[4] === 'Swept' ? '#8A6A1E' : accent,
+      srcBg: r[4] === 'Swept' ? '#FFF4DE' : '#E7F2EB',
+    }));
+
+    const candidates = [
+      { name: 'Ilyas, Muhammad', affil: 'Al Ain University, Al Ain, UAE', auid: '57204158812', papers: '7 in window', btnLabel: 'This one', btnBg: accent, btnFg: '#ffffff', btnBorder: accent },
+      { name: 'Ilyas, M.', affil: 'Al Ain University · Abu Dhabi campus', auid: '55891120400', papers: '2 in window', btnLabel: 'This one', btnBg: '#ffffff', btnFg: accent, btnBorder: '#C3D6CA' },
+      { name: 'Ilyas, Muhammad', affil: 'COMSATS University Islamabad', auid: '36246118900', papers: 'none', btnLabel: 'Not them', btnBg: '#ffffff', btnFg: '#6B7B71', btnBorder: '#D5DED8' },
+    ];
+    const queue = [
+      { name: 'Ahmad Ali', college: 'College of Engineering', cands: '4 candidates' },
+      { name: 'Mohammad Hassan', college: 'College of Business', cands: '6 candidates' },
+      { name: 'Sara Ahmed', college: 'College of Pharmacy', cands: '3 candidates' },
+      { name: 'Khalid Al Mansouri', college: 'College of Law', cands: '2 candidates' },
+      { name: 'Omar Saleh', college: 'College of Education', cands: '5 candidates' },
+      { name: 'Nour Al Hashimi', college: 'College of Engineering', cands: '3 candidates' },
+      { name: 'Yousef Darwish', college: 'College of Education', cands: '2 candidates' },
+    ];
+
+    const exports = [
+      {
+        kind: 'XLSX', title: 'Excel workbook', sub: 'Seven sheets plus a chart sheet',
+        delay: '0s', btn: 'Export workbook', btnBg: accent, btnFg: '#ffffff', btnBorder: accent,
+        path: 'data/exports/AAU_Research_Analysis.xlsx',
+        items: [
+          { label: 'Summary', meta: 'headline figures' },
+          { label: 'By college', meta: '10 rows' },
+          { label: 'Authors', meta: '511 rows' },
+          { label: 'Papers', meta: '1,336 rows' },
+          { label: 'No college stated', meta: '53 rows' },
+          { label: 'Rejected papers, with reasons', meta: '67 rows' },
+          { label: 'Charts', meta: '5 native charts' },
+        ],
+      },
+      {
+        kind: 'PPTX', title: 'Slide deck', sub: 'Fourteen slides, ready to present',
+        delay: '.05s', btn: 'Export deck', btnBg: accent, btnFg: '#ffffff', btnBorder: accent,
+        path: 'data/exports/AAU_Author_Output.pptx',
+        items: [
+          { label: 'Cover and fact sheet', meta: '2 slides' },
+          { label: 'What the data says', meta: '1 slide' },
+          { label: 'Papers by college', meta: 'bar chart' },
+          { label: 'People, papers, citations', meta: '3 rings' },
+          { label: 'h-index profile', meta: 'column chart' },
+          { label: 'College scorecard', meta: 'table' },
+          { label: 'Speaker notes on every slide', meta: 'included' },
+        ],
+      },
+      {
+        kind: 'PNG', title: 'Chart pack', sub: 'Every chart as its own image',
+        delay: '.1s', btn: 'Export charts', btnBg: '#ffffff', btnFg: accent, btnBorder: '#C3D6CA',
+        path: 'data/exports/charts/ (5 files)',
+        items: [
+          { label: 'Papers by college', meta: 'bar' },
+          { label: 'Share of credits', meta: 'donut' },
+          { label: 'h-index bands', meta: 'column' },
+          { label: 'Faculty and students', meta: 'donut' },
+          { label: 'Papers per year', meta: 'bar' },
+          { label: 'At 2× for print, 1× for slides', meta: 'both' },
+        ],
+      },
+    ];
+
+    const bars = (arr, col) => arr.map(h => ({ h: String(h), color: col }));
+    const chartKinds = [
+      { label: 'Papers by college', note: 'ten colleges, sorted', bars: bars([100, 96, 94, 86, 28, 20, 16, 15], accent) },
+      { label: 'Share of credits', note: 'as a ring', bars: bars([70, 70, 70, 70, 70], '#C3D6CA') },
+      { label: 'h-index bands', note: 'seven bands', bars: bars([100, 51, 33, 21, 9, 4, 2], accent) },
+      { label: 'Faculty and students', note: '161 against 350', bars: bars([32, 68, 32, 68, 32], '#C3D6CA') },
+      { label: 'Papers per year', note: '2025 against 2026', bars: bars([100, 57], accent) },
+    ];
+
+    const sched = this.state.sched;
+    const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const days = DAYS.map((d, i) => {
+      const on = sched && this.state.day === i;
+      return {
+        label: d,
+        pick: () => this.setState({ day: i }),
+        bg: on ? accent : '#ffffff',
+        fg: on ? '#ffffff' : (sched ? '#3A4A41' : '#6B7B71'),
+        border: on ? accent : '#D5DED8',
+        weight: on ? 700 : 500,
+      };
+    });
+    const nextRuns = sched ? [
+      { when: 'Tuesday 1 September, 06:00', note: 'scheduled', dot: accent },
+      { when: 'Tuesday 8 September, 06:00', note: 'scheduled', dot: accent },
+      { when: 'Tuesday 15 September, 06:00', note: 'scheduled', dot: '#C3CCC6' },
+      { when: 'Tuesday 22 September, 06:00', note: 'scheduled', dot: '#C3CCC6' },
+    ] : [
+      { when: 'No runs scheduled', note: 'run by hand only', dot: '#C3CCC6' },
+      { when: '—', note: '', dot: '#EDF1EE' },
+      { when: '—', note: '', dot: '#EDF1EE' },
+      { when: '—', note: '', dot: '#EDF1EE' },
+    ];
+    const health = [
+      { label: 'Keys readable by the scheduler', note: 'kept beside the app, not on the desktop', color: accent },
+      { label: 'Fresh data every week', note: 'searches are never served from last week', color: accent },
+      { label: 'College map complete', note: 'nothing unmapped across eight colleges', color: accent },
+      { label: 'Census tests passing', note: '40 of 40', color: accent },
+      { label: 'Deck export live', note: 'built from the run, not from a hand-made file', color: accent },
+    ];
+
+    const flowUnused = [
+      ['Read the roster', 'A curated list is the ground truth for who belongs to AAU. Names are cleaned first: most carried a degree suffix that Scopus never prints.', '208', 'people, 8 colleges'],
+      ['Find them in Scopus', 'Author records are matched in tiers, ending with near-miss spellings. A name matching several authors is never guessed at.', '152', 'of 160 resolved'],
+      ['Collect the papers', 'Everything Scopus files under the university for the two publication years. This is the defensible core of the count.', '1,330', 'papers indexed'],
+      ['Check the extras', 'Each matched author is swept for papers the university tag missed. Every candidate must print an AAU address on the paper itself.', '6', 'accepted, 67 rejected'],
+      ['Sort and place', 'Faculty or student is decided by presence on the roster. Printed departments are mapped onto the eight real colleges.', '161', 'faculty of 511 people'],
+      ['Build and compare', 'The census is written, compared against the previous run, and the workbook, charts and deck are produced.', '1,336', 'papers in the census'],
+    ];
+    const flow = flowUnused.map((f, i) => ({
+      num: i + 1, title: f[0], body: f[1], metric: f[2], metricLabel: f[3],
+      color: i === 3 ? '#E0303F' : accent,
+      arrow: i < 5,
+      dotDelay: (0.35 * i).toFixed(2) + 's',
+    }));
+
+    return {
+      accent, tabs, tiles, stages, findings, pie, colleges, rosterCols,
+      colAuthors: colAuthorRows, candidates, queue, authorFilters, authorList,
+      pick, papers, exports, chartKinds, days, nextRuns, health, flow,
+      onWelcome: S === 'welcome',
+      inApp: S !== 'welcome',
+      enter: () => this.setState({ screen: 'dash' }),
+      welcomeChips: [
+        { v: '1,336', l: 'papers in the census' },
+        { v: '511', l: 'authors, 161 on the roster' },
+        { v: '8', l: 'colleges covered' },
+      ],
+      onDash: S === 'dash',
+      rosterList: S === 'roster' && !sel && !this.state.review,
+      rosterDetail: S === 'roster' && !!sel,
+      onReview: S === 'roster' && this.state.review,
+      onAuthor: S === 'author', onExport: S === 'export',
+      onSchedule: S === 'sched', onFlow: S === 'flow',
+      colName: sel || '',
+      colMeta: selData ? selData.people + ' people · ' + selData.papers.toLocaleString() + ' papers in the window' : '',
+      goReview: () => this.setState({ screen: 'roster', review: true, college: null }),
+      backToColleges: () => this.setState({ college: null, review: false }),
+      findingsTitle: running ? 'What it has found so far' : 'What this run found',
+      running,
+      runTitle: running ? 'Run in progress' : 'Last run finished',
+      runMeta: running
+        ? 'Started 06:00 · roster 2026-08-27 · about three minutes left'
+        : '27 August at 01:06 · took 5 minutes 20 seconds',
+      runBtnLabel: running ? 'Stop the run' : 'Run now',
+      runBtnBg: running ? '#E0303F' : accent,
+      toggleRun: () => this.setState(s => ({ running: !s.running })),
+      toggleSched: () => this.setState(s => ({ sched: !s.sched })),
+      schedTrackBg: sched ? accent : '#C3CCC6',
+      schedKnobLeft: sched ? '25px' : '3px',
+      schedTitle: sched ? 'On, every Tuesday at 06:00' : 'Off',
+      schedSub: sched
+        ? 'The app wakes itself, runs, and writes the files'
+        : 'Runs happen only when you press Run now',
+    };
+  }
+}
+</script>
+</body>
+</html>
