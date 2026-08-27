@@ -187,10 +187,19 @@
             if (window.__AAU.canRun) { askProfile(component); return; }
             modal({
               eyebrow: 'Add a researcher',
-              title: 'This one has to run on your machine',
-              sub: 'Adding somebody changes the roster, and the published page '
-                + 'can only read. Open the app locally, add them there, and the '
-                + 'next run picks them up everywhere.',
+              title: 'Do it on the Roster screen',
+              sub: 'Adding somebody changes the roster, which the published '
+                + 'page can only read. On the Roster screen you can add one '
+                + 'person by hand or import a whole CSV — from the tracker '
+                + 'running on your own machine.',
+              choices: [
+                { label: 'Show me the Roster screen',
+                  hint: 'Import a CSV, or add one person, or clear the review queue.',
+                  go: function () { component.setState({ screen: 'roster' }); } },
+                { label: 'What does the CSV need?',
+                  hint: 'The columns, with an example and a template.',
+                  go: function () { csvHelp(); } },
+              ],
               cancelLabel: 'Close',
             });
           },
@@ -552,6 +561,177 @@
     })();
   }
 
+  /* Pressing Run now with no passphrase yet. Say what the schedule already
+   * does before asking anyone for anything -- most readers need nothing. */
+  /* ------------------------------------------------- the roster, two ways  */
+  var COLLEGES = [
+    'College of Engineering', 'College of Pharmacy', 'College of Law',
+    'College of Education, Humanities and Social Sciences',
+    'College of Business', 'College of Communication and Media',
+    'College of Dentistry', 'College of Nursing',
+  ];
+
+  /* Two columns are required and five are optional, and the importer is
+   * forgiving about the college wording -- "engineering" or "Eng." both land
+   * on College of Engineering. Say so before someone builds a file blind. */
+  function csvHelp() {
+    var row = function (n, req, what) {
+      return '<tr>'
+        + '<td style="padding:7px 12px 7px 0;font-weight:700;color:' + INK
+        + ';white-space:nowrap;vertical-align:top">' + esc(n) + '</td>'
+        + '<td style="padding:7px 12px 7px 0;color:' + (req ? G : META)
+        + ';white-space:nowrap;vertical-align:top;font-size:12.5px">'
+        + (req ? 'required' : 'optional') + '</td>'
+        + '<td style="padding:7px 0;color:' + META + ';line-height:1.45">'
+        + esc(what) + '</td></tr>';
+    };
+    modal({
+      width: 680,
+      eyebrow: 'Roster file',
+      title: 'What the CSV needs',
+      sub: 'One row per person, a header row on top. Extra columns are ignored, '
+        + 'so a directory export usually works as it comes.',
+      html:
+        '<table style="width:100%;border-collapse:collapse;font-size:13.5px">'
+        + row('name', true, 'As the university writes it. Degree suffixes like ", Ph.D" are stripped for you — Scopus never prints them.')
+        + row('college', true, 'Any recognisable spelling. "engineering", "Eng.", "College of Engineering" all land on the same college.')
+        + row('title', false, 'Professor, Assistant Professor, Dean…')
+        + row('staff_type', false, 'academic or administrative. Anything else is treated as academic.')
+        + row('profile_url', false, 'Their page on aau.ac.ae. Worth including — it is how someone with no name match is still found.')
+        + row('email', false, 'Role mailboxes like Engineering@aau.ac.ae are flagged and never used to identify a person.')
+        + row('department', false, 'Kept, not used for anything yet.')
+        + '</table>'
+        + '<div style="margin-top:16px;padding:13px 15px;background:#F4F6F5;'
+        + 'border-radius:6px;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;'
+        + 'color:' + INK + ';overflow-x:auto;white-space:pre">'
+        + esc('name,college,title,staff_type,profile_url\n'
+            + 'Mosab Tabash,College of Business,Professor,academic,https://aau.ac.ae/en/staff/mosab-tabash\n'
+            + 'Sara Khoury,Pharmacy,Assistant Professor,academic,')
+        + '</div>'
+        + '<div style="font-size:12.5px;color:' + META + ';margin-top:12px;line-height:1.5">'
+        + 'A person listed under two colleges is one person: the first listing '
+        + 'is their home college, the second is kept as a cross-listing.</div>',
+      choices: [{
+        label: 'Download a template',
+        hint: 'A CSV with the header row and one example, ready to fill in.',
+        go: function () {
+          var csv = 'name,college,title,staff_type,profile_url,email\n'
+            + 'Example Person,College of Engineering,Assistant Professor,academic,https://aau.ac.ae/en/staff/example,\n';
+          var a = document.createElement('a');
+          a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+          a.download = 'aau_roster_template.csv';
+          document.body.appendChild(a); a.click(); a.remove();
+        },
+      }],
+      cancelLabel: 'Close',
+    });
+  }
+  window.__AAU.csvHelp = csvHelp;
+
+  /* Adding one person by hand. A whole CSV is the wrong shape for "we hired
+   * someone in March". */
+  function addPerson(component) {
+    if (!window.__AAU.canRun) { needsLocal('Adding somebody'); return; }
+    var opts = COLLEGES.map(function (c) {
+      return '<option value="' + esc(c) + '">' + esc(c) + '</option>';
+    }).join('');
+    var m = modal({
+      width: 600,
+      eyebrow: 'Roster',
+      title: 'Add one person',
+      sub: 'Their Scopus record is looked up for you. A link to their page on '
+        + 'aau.ac.ae makes that much more reliable.',
+      html:
+        '<div style="display:flex;flex-direction:column;gap:12px">'
+        + fieldRow('apName', 'Name', 'text', 'As the university writes it', '')
+        + '<div><div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;'
+        + 'text-transform:uppercase;color:' + META + ';margin-bottom:6px">College</div>'
+        + '<select id="apCollege" style="width:100%;box-sizing:border-box;'
+        + 'border:1px solid #D5DED8;border-radius:6px;padding:11px 12px;'
+        + 'font-family:' + FONT + ';font-size:14.5px;color:' + INK + ';background:#fff">'
+        + opts + '</select></div>'
+        + fieldRow('apTitle', 'Title', 'text', 'Assistant Professor', '')
+        + fieldRow('apUrl', 'Page on aau.ac.ae', 'url', 'https://aau.ac.ae/en/staff/…', '')
+        + '</div>'
+        + '<div id="apNote" style="font-size:12.5px;color:' + META
+        + ';margin-top:12px;line-height:1.5;min-height:18px"></div>',
+      submit: {
+        label: 'Find and add',
+        go: function () {
+          var box = document.getElementById('__aau_modal');
+          var name = box.querySelector('#apName').value.trim();
+          var note = box.querySelector('#apNote');
+          if (!name) { note.style.color = RED; note.textContent = 'A name at least.'; return; }
+          note.style.color = META;
+          note.textContent = 'Looking them up in Scopus…';
+          api('/api/faculty/add', {
+            name: name,
+            college: box.querySelector('#apCollege').value,
+            title: box.querySelector('#apTitle').value.trim(),
+            url: box.querySelector('#apUrl').value.trim(),
+            confirm: true,
+          }).then(function (r) {
+            m.close();
+            refresh(component);
+            modal({
+              eyebrow: 'Roster', title: (r.added ? 'Added' : 'Updated') + ': ' + name,
+              sub: r.auid ? ('Scopus author ' + r.auid + '. Their papers appear on the next run.')
+                          : 'No Scopus record yet. They count as faculty from now on, and their papers appear once an id is known.',
+              cancelLabel: 'Close',
+            });
+          }).catch(function (e) {
+            note.style.color = RED;
+            note.textContent = String(e.message || e);
+          });
+        },
+      },
+    });
+  }
+  window.__AAU.addPerson = addPerson;
+
+  function fieldRow(id, label, type, ph, val) {
+    return '<div><div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;'
+      + 'text-transform:uppercase;color:' + META + ';margin-bottom:6px">'
+      + esc(label) + '</div>'
+      + '<input id="' + id + '" type="' + type + '" placeholder="' + esc(ph)
+      + '" value="' + esc(val) + '" style="width:100%;box-sizing:border-box;'
+      + 'border:1px solid #D5DED8;border-radius:6px;padding:11px 12px;'
+      + 'font-family:' + FONT + ';font-size:14.5px;color:' + INK + ';outline:none"></div>';
+  }
+
+  function needsLocal(what) {
+    modal({
+      eyebrow: 'Roster',
+      title: what + ' has to happen on your own machine',
+      sub: 'The published page can only read. Open the tracker locally, do it '
+        + 'on the Roster screen there, and the next run carries it everywhere.',
+      cancelLabel: 'Close',
+    });
+  }
+  window.__AAU.needsLocal = needsLocal;
+
+  function explainSchedule(component, options) {
+    var st = window.__AAU.state || {};
+    var when = st.generated ? st.generated.slice(0, 10) : 'recently';
+    modal({
+      width: 600,
+      eyebrow: 'Run',
+      title: 'This updates itself every Monday',
+      sub: 'The census is rebuilt at 07:00 Gulf time each Monday, and whenever '
+        + 'someone asks for it. The figures on screen are from the run on '
+        + when + '. Nothing is needed from you to read them.',
+      choices: [
+        {
+          label: 'Start a run now',
+          hint: 'Needs the passphrase you were given, once. No GitHub account '
+            + 'and nothing to install.',
+          go: function () { askPass(function () { dispatch(options, component); }); },
+        },
+      ],
+      cancelLabel: 'Close',
+    });
+  }
+
   function startRun(component, options) {
     if (!window.__AAU.canRun) {          // published page -> run it on GitHub
       if (!pass()) { explainSchedule(component, options); return; }
@@ -735,6 +915,7 @@
 
   /* ---------------------------------------------------------- import a CSV */
   function importCsv(component) {
+    if (!window.__AAU.canRun) { needsLocal('Importing a roster'); return; }
     var f = document.createElement('input');
     f.type = 'file';
     f.accept = '.csv,text/csv';

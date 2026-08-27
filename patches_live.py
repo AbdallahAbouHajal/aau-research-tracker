@@ -266,6 +266,11 @@ VALS = r"""
         + 'publish like faculty, but the roster does not list them. '
         + 'Until you add them they count as outside faculty.',
       openSuggestions: () => window.__AAU && window.__AAU.showSuggestions(this),
+      addPerson: () => window.__AAU && window.__AAU.addPerson(this),
+      csvHelp: () => window.__AAU && window.__AAU.csvHelp(),
+      reviewLabel: (S_ ? (S_.review === 1 ? '1 needs a decision'
+                          : S_.review + ' need a decision')
+                       : '8 need a decision'),
       pieTotal: pieTotal.toLocaleString(),
       windowChip: (S_ && S_.years && S_.years.length)
         ? ('Window ' + (S_.years.length > 1
@@ -691,4 +696,37 @@ ROUND2 = [
      '<a href="{{ pick.url }}" style="font-size:13px;font-weight:600;',
      '<a href="{{ pick.url }}" target="_blank" rel="noopener noreferrer" '
      'style="font-size:13px;font-weight:600;'),
+    # ---- the roster needed a second way in, and a way to ask ---------------
+    # A whole CSV is the wrong shape for "we hired someone in March", and
+    # nobody should have to guess the columns before building a file.
+    ("roster: add-a-person and a help affordance beside the import",
+     '<div style="display:flex;gap:10px">\n'
+     '        <button type="button" sc-camel-on-click="{{ importCsv }}" '
+     'style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;'
+     'border-radius:6px;padding:10px 17px;font-family:Archivo,sans-serif;'
+     'font-size:13.5px;font-weight:600;cursor:pointer">Import roster CSV'
+     '</button>',
+     '<div style="display:flex;gap:10px;align-items:center">\n'
+     '        <button type="button" sc-camel-on-click="{{ addPerson }}" '
+     'title="Add one person by hand" '
+     'style="background:{{ accent }};color:#ffffff;border:0;'
+     'border-radius:6px;padding:10px 17px;font-family:Archivo,sans-serif;'
+     'font-size:13.5px;font-weight:600;cursor:pointer">Add a person</button>\n'
+     '        <button type="button" sc-camel-on-click="{{ importCsv }}" '
+     'title="Import a whole roster from a CSV file" '
+     'style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;'
+     'border-radius:6px;padding:10px 17px;font-family:Archivo,sans-serif;'
+     'font-size:13.5px;font-weight:600;cursor:pointer">Import roster CSV'
+     '</button>\n'
+     '        <button type="button" sc-camel-on-click="{{ csvHelp }}" '
+     'title="Which columns the CSV needs" aria-label="What the CSV needs" '
+     'style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;'
+     'border-radius:50%;width:32px;height:32px;flex:0 0 auto;'
+     'font-family:Archivo,sans-serif;font-size:14px;font-weight:700;'
+     'cursor:pointer;line-height:1">?</button>'),
+
+    # the review-queue button counted with a literal
+    ("roster: the review button counts what is really waiting",
+     '>8 need a decision</button>',
+     '>{{ reviewLabel }}</button>'),
 ]
