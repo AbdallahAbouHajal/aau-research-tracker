@@ -212,8 +212,12 @@ def apply_patches(tpl, live=False):
                         "{ go: () => window.__AAU "
                         "&& window.__AAU.exportOne(this, e.kind) })),\n"
                       + "      candidates: candidates.map(c => Object.assign({}, c, "
-                        "{ go: () => window.__AAU "
-                        "&& window.__AAU.decide(this, c) })),")
+                        "{ go: () => window.__AAU && (/not\\s*them/i.test("
+                        "c.btnLabel || '') "
+                        "? window.__AAU.reject(this, c) "
+                        ": window.__AAU.decide(this, c)) })),")
+    # Every candidate button shared one handler, so "Not them" resolved the
+    # person TO the record it was refusing. The label decides now.
     applied.append("live: handlers for exports, review and search")
 
     m = POWERED_BY.search(tpl)

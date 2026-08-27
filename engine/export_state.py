@@ -23,6 +23,7 @@ import viewmodel as VM        # noqa: E402
 import runs as RUNS           # noqa: E402
 import census as X            # noqa: E402
 import exports as EX          # noqa: E402
+import faculty as FAC         # noqa: E402
 
 DEFAULT_OUT = os.path.join(ROOT, "..", "AAU_Tracker_Site", "docs", "data",
                            "state.json")
@@ -79,9 +80,33 @@ def build(run_id=None):
             found.append({"text": "%d people printed an AAU address but are "
                                   "not on the roster." % len(sug),
                           "kind": "warn"})
+    # The review screen shipped with the designer's placeholder people in it --
+    # a card for "Muhammad Ilyas" offering three invented Scopus records, and a
+    # queue of seven names that do not exist. Nothing real ever reached it,
+    # because the run published only a COUNT of how many needed a decision. The
+    # queue itself goes out now, so the screen shows the people who are
+    # genuinely ambiguous and the buttons act on them.
+    review = []
+    for r in (FAC.load() or {}).get("people") or []:
+        if not str(r.get("auid_tier") or "").startswith("review"):
+            continue
+        review.append({
+            "name": r.get("name") or "",
+            "college": r.get("college") or "",
+            "title": r.get("title") or "",
+            "slug": (r.get("profile_url") or "").rstrip("/")
+                    .rsplit("/", 1)[-1],
+            "candidates": [{"auid": str(c.get("auid") or ""),
+                            "papers": int(c.get("papers") or 0)}
+                           for c in (r.get("auid_candidates") or [])
+                           if c.get("auid")],
+        })
+    review.sort(key=lambda x: (-len(x["candidates"]), x["name"]))
+
     return {
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "run": rid,
+        "review": review,
         "colleges": vm["colleges"],
         "programs": vm.get("programs") or [],
         "authors": vm["authors"],

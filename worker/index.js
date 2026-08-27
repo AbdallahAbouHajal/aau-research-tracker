@@ -10,6 +10,7 @@
  *   POST /roster/add     { passphrase, name, college, title?, url? }
  *   POST /roster/import  { passphrase, csv }
  *   POST /roster/remove  { passphrase, name }
+ *   POST /roster/reject  { passphrase, name, auid }
  *   GET  /status                                    -> the live run, stage by stage
  *
  * The roster endpoints commit to the repository, so the passphrase can change
@@ -353,6 +354,23 @@ export default {
         blob.people = rows;
         blob.replaced_from_page = new Date().toISOString();
         message = 'Roster: import ' + rows.length + ' people';
+      } else if (path === '/roster/reject') {
+        // "Not them" on the review screen. It used to call the SAME handler as
+        // "This one", so rejecting a candidate bound the person to it -- the
+        // exact record the row existed to refuse. Now it records the refusal
+        // against the person, and resolve.py never offers that id again.
+        const name = norm(body.name).slice(0, 120);
+        const auid = norm(body.auid).replace(/[^0-9]/g, '').slice(0, 20);
+        if (!name || !auid) {
+          return cors(json({ error: 'which person, and which author record?' }, 400), origin);
+        }
+        const who = people.find((q) => key(q.name) === key(name));
+        if (!who) return cors(json({ error: 'that person is not on the roster' }, 404), origin);
+        const no = Array.isArray(who.auid_rejected) ? who.auid_rejected : [];
+        if (!no.includes(auid)) no.push(auid);
+        who.auid_rejected = no;
+        if (String(who.scopus_auid || '') === auid) who.scopus_auid = '';
+        message = 'Roster: ' + name + ' is not Scopus author ' + auid;
       } else if (path === '/roster/dismiss') {
         const name = norm(body.name).slice(0, 120);
         if (!name) return cors(json({ error: 'which person?' }, 400), origin);

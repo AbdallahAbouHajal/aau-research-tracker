@@ -170,6 +170,21 @@ def suggest_additions(slots, faculty, min_papers=3):
     rather than like a student who appears once on a supervisor's paper.
     """
     lk = build_lookup(faculty)
+    # "Not faculty" on the published page writes a name into this file. Nothing
+    # in the pipeline ever opened it, so the button was a permanent no-op that
+    # reported success -- the same person came back as a suggestion every week
+    # and the professor dismissed them again. Read here, where the suggestion
+    # is made.
+    dismissed = set()
+    try:
+        _p = os.path.join(_ROOT, "data", "not_faculty.json")
+        if os.path.exists(_p):
+            for n in (json.load(open(_p, encoding="utf-8")) or []):
+                k_ = X.name_key(n or "")
+                if k_:
+                    dismissed.add(k_)
+    except Exception:
+        pass
     agg = collections.defaultdict(
         lambda: {"papers": 0, "corresponding": 0, "first": 0,
                  "name": "", "colleges": collections.Counter(), "auids": set()})
@@ -179,7 +194,7 @@ def suggest_additions(slots, faculty, min_papers=3):
         if match_faculty(s.get("author_name"), s.get("scopus_auid"), lk)[0]:
             continue
         k = X.name_key(s.get("author_name") or "")
-        if not k:
+        if not k or k in dismissed:
             continue
         a = agg[k]
         a["papers"] += 1

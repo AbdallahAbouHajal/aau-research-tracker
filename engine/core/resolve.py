@@ -196,6 +196,23 @@ def resolve_all(people, idx=None):
             tiers["manual"] += 1
             continue
         auid, tier, cands = resolve_one(p["name"], idx)
+        # "Not them" on the review screen records the author id it was shown,
+        # and that judgement outranks the matcher: a human has looked at the
+        # affiliation and said it is a different person. Without this the same
+        # wrong candidate is offered again on every run, and the button that
+        # rejects it used to fire the same handler as the one that accepts it.
+        no = {str(x) for x in (p.get("auid_rejected") or []) if x}
+        if no:
+            cands = [c for c in cands if str(c) not in no]
+            if auid and str(auid) in no:
+                auid = None
+                # One rejection can settle the row: if exactly one candidate
+                # is left it is no longer ambiguous.
+                if len(cands) == 1:
+                    auid, tier = cands[0], "high:review-resolved"
+                else:
+                    tier = ("review:transliteration-ambiguous" if cands
+                            else "none:rejected-by-hand")
         p["scopus_auid"] = auid or ""
         p["auid_tier"] = tier
         p["auid_candidates"] = [

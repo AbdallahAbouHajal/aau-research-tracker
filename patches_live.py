@@ -30,6 +30,10 @@ window.__aauApply = function (d) {
     PROGRAMS.length = 0;
     d.programs.forEach(function (p) { PROGRAMS.push(p); });
   }
+  if (d && d.review) {
+    REVIEW.length = 0;
+    d.review.forEach(function (r) { REVIEW.push(r); });
+  }
 };
 
 """
@@ -919,7 +923,95 @@ ROUND2 = [
      "const PAPERS = {",
      "// Filled from data/programs.json by __aauApply, the same way the three\n"
      "// constants above are. Empty until then, and the programme row hides.\n"
-     "const PROGRAMS = [];\n\nconst PAPERS = {"),
+     "const PROGRAMS = [];\n\n"
+     "// The people whose Scopus match is genuinely ambiguous. Until this\n"
+     "// arrived the review screen showed the designer's placeholder people --\n"
+     "// an invented Muhammad Ilyas and seven names that do not exist -- and\n"
+     "// the buttons acted on them.\n"
+     "const REVIEW = [];\n\nconst PAPERS = {"),
+
+    # ---- the review screen shows real people ------------------------------
+    ("review: the candidate card is the real ambiguous person",
+     "    const candidates = [",
+     "    const _rv = REVIEW.length\n"
+     "      ? (REVIEW.find(x => x.name === this.state.reviewWho) || REVIEW[0])\n"
+     "      : null;\n"
+     "    const candidates = _rv ? _rv.candidates.map((c, i) => ({\n"
+     "      name: _rv.name,\n"
+     "      affil: c.papers + (c.papers === 1 ? ' AAU paper' : ' AAU papers')\n"
+     "        + ' on Scopus author ' + c.auid,\n"
+     "      auid: c.auid,\n"
+     "      papers: c.papers ? c.papers + ' in window' : 'none',\n"
+     "      rosterName: _rv.name,\n"
+     "      btnLabel: 'This one',\n"
+     "      btnBg: i === 0 ? accent : '#ffffff',\n"
+     "      btnFg: i === 0 ? '#ffffff' : accent,\n"
+     "      btnBorder: i === 0 ? accent : '#C3D6CA',\n"
+     "    })).concat([{\n"
+     "      name: 'None of these', affil: 'none of the records above is '\n"
+     "        + _rv.name, auid: '', papers: '', rosterName: _rv.name,\n"
+     "      btnLabel: 'Not them', btnBg: '#ffffff', btnFg: '#63736A',\n"
+     "      btnBorder: '#D5DED8',\n"
+     "    }]) : ["),
+
+    ("review: the queue is the real queue",
+     "    const queue = [",
+     "    const queue = REVIEW.length ? REVIEW.slice(1).map(r => ({\n"
+     "      name: r.name, college: r.college,\n"
+     "      cands: r.candidates.length + (r.candidates.length === 1\n"
+     "        ? ' candidate' : ' candidates'),\n"
+     "      pick: () => this.setState({ reviewWho: r.name }),\n"
+     "    })) : ["),
+
+    # ---- say what the rule actually is ------------------------------------
+    # "Nothing is counted unless the paper itself prints an AAU address" is
+    # what the app aspires to, but it describes 592 of 4,245 papers. Route A
+    # takes Scopus's own AF-ID(60105817) assignment on trust -- which is
+    # reasonable, and is 99.8% of the corpus -- while the printed-address test
+    # is what gates the per-author sweep, where it threw out 584 of 592. The
+    # claim as written invited exactly the distrust it was meant to answer.
+    ("welcome: describe the rule that is actually applied",
+     "Nothing is counted unless the paper itself prints an AAU address.",
+     "A paper counts when Scopus files it under Al Ain University; anything "
+     "found through an author on top of that has to print an AAU address "
+     "itself."),
+
+    # ---- make it survive a phone ------------------------------------------
+    # The layout has a hard 1180px floor and no media query, while the page
+    # declared width=device-width -- so a phone laid out 390px of a 1180px
+    # design and showed the left third of it. On the welcome screen that put
+    # "Press here to begin" off-screen entirely, with no way to reach it.
+    #
+    # Declaring the real layout width instead lets the browser fit the whole
+    # page and scale it, the way it treats any desktop site: small, but
+    # complete, pannable and pinch-zoomable, and every control reachable. That
+    # is the honest fix for a fixed-width design -- a true mobile layout would
+    # mean re-drawing seven screens, which is a different job.
+    ("head: declare the width this layout actually needs",
+     '<meta name="viewport" content="width=device-width, initial-scale=1">',
+     '<meta name="viewport" content="width=1180">'),
+
+    # Tablets get real breathing room: the two-column screens stack rather
+    # than crushing a 330px sidebar against a 1fr pane that has nothing left.
+    ("head: a few rules for narrow screens",
+     "</helmet>",
+     "<style>\n"
+     "@media (max-width: 1180px) {\n"
+     "  /* the author list beside its detail pane */\n"
+     "  [style*=\"grid-template-columns:330px 1fr\"] {\n"
+     "    grid-template-columns: 1fr !important; }\n"
+     "  /* schedule: the day picker and the time box */\n"
+     "  [style*=\"grid-template-columns:1.25fr 1fr\"],\n"
+     "  [style*=\"grid-template-columns:1.4fr 1fr\"] {\n"
+     "    grid-template-columns: 1fr !important; }\n"
+     "  /* seven day buttons in a 58px cell overran their card */\n"
+     "  [style*=\"display:flex;gap:4px\"] > button { min-width: 0 !important; }\n"
+     "}\n"
+     "@media (max-width: 860px) {\n"
+     "  [style*=\"grid-template-columns:1fr 1fr\"] {\n"
+     "    grid-template-columns: 1fr !important; }\n"
+     "}\n"
+     "</style>\n</helmet>"),
 
     ("roster: the college list narrows to the chosen programme",
      "    const colAuthors = (sel ? AUTHORS.filter(a => a.college === sel) : []);",

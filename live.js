@@ -18,7 +18,12 @@
 
   /* ------------------------------------------------------------- transport */
   function api(path, body) {
-    var opt = { headers: { 'Content-Type': 'application/json' } };
+    var opt = { headers: { 'Content-Type': 'application/json' },
+                // A run finishes, the page immediately re-reads
+                // data/state.json, and the edge or the disk cache serves the
+                // bytes from before the run -- so the numbers do not move and
+                // the badge still says "live data".
+                cache: 'no-store' };
     if (body !== undefined) { opt.method = 'POST'; opt.body = JSON.stringify(body); }
     return fetch(path, opt).then(function (r) {
       if (!r.ok) throw new Error(path + ' -> HTTP ' + r.status);
@@ -96,6 +101,14 @@
     if (spec.input) {
       var inp = document.createElement('input');
       inp.type = 'text';
+      // iOS capitalises the first letter of a text input by default and the
+      // worker compares byte for byte, so a correct passphrase typed on an
+      // iPad was rejected -- and the failure path then wiped what was typed,
+      // so the professor could loop on this forever.
+      inp.setAttribute('autocapitalize', 'none');
+      inp.setAttribute('autocorrect', 'off');
+      inp.setAttribute('autocomplete', 'off');
+      inp.setAttribute('spellcheck', 'false');
       inp.placeholder = spec.input.placeholder || '';
       inp.value = spec.input.value || '';
       inp.style.cssText = 'width:100%;box-sizing:border-box;border:1px solid #D5DED8;' +
@@ -517,8 +530,19 @@
     });
   }
 
+  // Every call used to start its own independent poll chain, so pressing Run
+  // twice left two of them alive, each free to navigate the reader away.
+  var watchToken = 0;
+  function watchOff() {
+    watchToken += 1;
+    window.__AAU.status = null;
+  }
+  window.__AAU.watchOff = watchOff;
+
   function watchRun(component, announce) {
     var started = Date.now();
+    watchToken += 1;
+    var mine = watchToken;
     if (announce) {
       modal({
         eyebrow: 'Run started',
@@ -531,7 +555,12 @@
     }
     if (component) component.setState({ running: true });
     (function poll() {
-      if (Date.now() - started > 50 * 60 * 1000) return;
+      if (mine !== watchToken) return;          // a newer watch replaced this one
+      if (Date.now() - started > 50 * 60 * 1000) {
+        badge('stopped watching this run after 50 minutes', RED);
+        if (component) component.setState({ running: false });
+        return;
+      }
       fetch(WORKER + '/status').then(function (r) { return r.json(); })
         .then(function (d) {
           var st = stagesFromSteps(d.steps);
@@ -1027,6 +1056,24 @@
   }
   window.__AAU.decide = decide;
 
+  /* "Not them" -- the opposite of decide(). It used to BE decide(), so
+     refusing a candidate bound the person to it. */
+  function reject(component, c) {
+    if (!c || !c.auid) return;
+    var who = c.rosterName || c.person || '';
+    if (!who) {
+      badge('cannot tell which person this row is for', RED);
+      return;
+    }
+    viaProxy('/roster/reject', { name: who, auid: String(c.auid) },
+      function () {
+        badge(who + ' is not author ' + c.auid, G);
+        refresh(component);
+      },
+      function (msg) { badge(String(msg).slice(0, 60), RED); });
+  }
+  window.__AAU.reject = reject;
+
   /* ---------------------------------------------------------- import a CSV */
   function importCsv(component) {
     var f = document.createElement('input');
@@ -1071,7 +1118,26 @@
   window.__AAU.importCsv = importCsv;
 
   function stop() {
-    if (window.__AAU.run) api('/api/run/stop', { run: window.__AAU.run }).catch(function () {});
+    // window.__AAU.run is set only by the LOCAL engine path, so on the
+    // published page this was always null and Stop silently did nothing but
+    // flip the button back to "Run now" -- while the GitHub run carried on and
+    // the poll kept going, free to yank the reader onto the Dashboard minutes
+    // later. Stopping a dispatched Actions run is not something this page can
+    // do, so it says so instead of pretending, and it does end the watching.
+    if (window.__AAU.run) {
+      api('/api/run/stop', { run: window.__AAU.run }).catch(function () {});
+      return;
+    }
+    watchOff();
+    modal({
+      eyebrow: 'The run',
+      title: 'It carries on without this page',
+      sub: 'The run is happening on GitHub, not in this tab, so closing or '
+        + 'leaving the page does not stop it and nor does this button. This '
+        + 'page has stopped watching it; reopen the Dashboard later and the '
+        + 'new figures will be there.',
+      cancelLabel: 'Close',
+    });
   }
   window.__AAU.stop = stop;
 
