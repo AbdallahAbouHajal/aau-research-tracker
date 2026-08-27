@@ -5,8 +5,8 @@
 - [x] two removals applied to the bundle payload (welcome chips, Powered-by badge)
 - [x] rendered and verified in Chrome at 1440x960: welcome, dashboard, roster, workflow
 - [x] zero app console errors (the 8 seen are a crypto-wallet Chrome extension)
-- [ ] hosting chosen + deployed
-- [ ] handoff docs written
+- [x] hosting chosen + deployed  -> GitHub Pages, docs/ folder, main branch
+- [x] handoff docs written (README.md, DEPLOY.md)
 
 ## The one non-obvious thing about editing this file
 `site/index.html` is a self-unpacking bundle. The real page is a JSON string on
@@ -33,3 +33,34 @@ Line 370 is the asset manifest (502 KB of base64 fonts and images) — leave it 
 ## Known cosmetic artifact (not changed — needs the user's call)
 The fake window chrome reads **"AAU Research Tracker — localhost:8765"**. It is
 part of the Claude Design mockup. On a real hosted URL it reads as a leftover.
+
+## Live
+    https://abdallahabouhajal.github.io/aau-research-tracker/
+    repo: https://github.com/AbdallahAbouHajal/aau-research-tracker  (public)
+
+Verified after deploy: HTTP 200, **byte-identical** to the local file
+(608,769 = 608,769, so no CDN minified it), **no Content-Security-Policy
+header**, welcome + dashboard render, navigation works.
+
+## Why byte-identity and CSP were checked, not assumed
+Hosting research tested this exact file on htmldrop.link, which injects
+`script-src 'unsafe-inline'` with no `blob:`. The page **broke**: the runtime
+never booted, the green ground vanished, text rendered white-on-white and raw
+`{{ w.v }}` placeholders showed through. Any host that injects a CSP or minifies
+HTML will do the same. GitHub Pages does neither -- confirmed above.
+
+Also learned: Netlify Drop is NOT account-free -- anonymous deploys come back
+password-gated and die in 60 minutes. Cloudflare Access is free for 50 users and
+is the route if this ever needs a real login.
+
+## Open cosmetic item -- needs the user's call
+The mock window chrome still reads **"AAU Research Tracker - localhost:8765"**.
+It was right for a local mockup; on a public URL it reads as a leftover. One
+string in the bundle; not changed, because the design was to ship exactly as
+Claude Design made it.
+
+## Claude artifact (secondary)
+https://claude.ai/code/artifact/56e3f2ca-48b7-4539-9a95-4dc6f995010c
+Published from `docs/artifact.html`. NOT the link to send the doctor -- viewing
+it needs a Claude account. Could not be render-verified here: this CLI session
+signed into a different claude.ai account than the browser.
