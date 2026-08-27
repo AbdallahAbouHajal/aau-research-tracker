@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.join(ROOT, "core"))
 import viewmodel as VM        # noqa: E402
 import runs as RUNS           # noqa: E402
 import census as X            # noqa: E402
+import exports as EX          # noqa: E402
 
 DEFAULT_OUT = os.path.join(ROOT, "..", "AAU_Tracker_Site", "docs", "data",
                            "state.json")
@@ -63,6 +64,8 @@ def main():
                     help="do a real Scopus run before exporting")
     ap.add_argument("--years", default="",
                     help="comma-separated, e.g. 2025,2026")
+    ap.add_argument("--no-files", action="store_true",
+                    help="skip the workbook, chart pack and deck")
     a = ap.parse_args()
 
     if a.run:
@@ -92,6 +95,43 @@ def main():
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(blob, fh, ensure_ascii=False, separators=(",", ":"))
+    # The three downloadables, written beside state.json under a stable name
+    # so the published page can link straight to them. Regenerated on every
+    # run, so a file can never disagree with the dashboard above it.
+    if not a.no_files:
+        d = os.path.join(os.path.dirname(out), "..", "downloads")
+        d = os.path.abspath(d)
+        os.makedirs(d, exist_ok=True)
+        vm = VM.build(run_id=blob.get("run"))
+        vm["stats"] = blob["stats"]
+        try:
+            xp = os.path.join(d, "AAU_Research_Tracker.xlsx")
+            r = RUNS.export(blob.get("run") or RUNS.latest_id(), kind="xlsx")
+            if isinstance(r, dict) and r.get("path"):
+                import shutil
+                shutil.copy(r["path"], xp)
+                print("  workbook   %s (%.0f KB)" % (os.path.basename(xp),
+                                                     os.path.getsize(xp) / 1024))
+        except Exception as exc:
+            print("  workbook failed: %s" % exc)
+        try:
+            zp, made = EX.chart_zip(vm, os.path.join(d, "AAU_Charts.zip"))
+            for img in made:                       # also loose, for previewing
+                import shutil
+                shutil.copy(img, os.path.join(d, os.path.basename(img)))
+            print("  chart pack %s (%d charts, %.0f KB)"
+                  % (os.path.basename(zp), len(made),
+                     os.path.getsize(zp) / 1024))
+        except Exception as exc:
+            print("  chart pack failed: %s" % exc)
+        try:
+            pp = EX.deck(vm, os.path.join(d, "AAU_Research_Tracker.pptx"),
+                         generated=blob["generated"][:10])
+            print("  slide deck %s (%.0f KB)" % (os.path.basename(pp),
+                                                 os.path.getsize(pp) / 1024))
+        except Exception as exc:
+            print("  slide deck failed: %s" % exc)
+
     s = blob["stats"]
     print("wrote %s (%.0f KB)" % (out, os.path.getsize(out) / 1024))
     print("  %s papers | %s authors, %s on the roster | %s suggested additions"

@@ -14,6 +14,7 @@
   var G = '#0A7A3A', RED = '#E0303F', INK = '#1A1A1A', META = '#63736A';
   var FONT = 'Archivo,sans-serif';
   window.__AAU = { live: false, state: null, run: null };
+  var lastBadge = 'live data';
 
   /* ------------------------------------------------------------- transport */
   function api(path, body) {
@@ -179,8 +180,20 @@
         },
         {
           label: 'Add a new researcher',
-          hint: 'Paste their page on aau.ac.ae and their Scopus record is found for you.',
-          go: function () { askProfile(component); },
+          hint: window.__AAU.canRun
+            ? 'Paste their page on aau.ac.ae and their Scopus record is found for you.'
+            : 'Needs the app running on your own machine, so it can write to the roster.',
+          go: function () {
+            if (window.__AAU.canRun) { askProfile(component); return; }
+            modal({
+              eyebrow: 'Add a researcher',
+              title: 'This one has to run on your machine',
+              sub: 'Adding somebody changes the roster, and the published page '
+                + 'can only read. Open the app locally, add them there, and the '
+                + 'next run picks them up everywhere.',
+              cancelLabel: 'Close',
+            });
+          },
         },
       ],
     });
@@ -319,7 +332,151 @@
   }
 
   /* ------------------------------------------------------------ run + poll */
+  /* ---------------------------------------------------------- run on GitHub
+   * The published page has no engine, but the engine runs on GitHub Actions --
+   * so "Run now" there starts a real run by dispatching that workflow. It
+   * needs a token, which lives only in this browser's localStorage: never in
+   * the repo, never sent anywhere but api.github.com.
+   */
+  var REPO = 'AbdallahAbouHajal/aau-research-tracker';
+  var WF = 'refresh.yml';
+  var TOKEN_KEY = 'aau_gh_token';
+
+  function token() {
+    try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
+  }
+  function setToken(v) {
+    try { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); }
+    catch (e) {}
+  }
+  window.__AAU.forgetToken = function () { setToken(''); badge('token cleared', META); };
+
+  function gh(path, opt) {
+    opt = opt || {};
+    opt.headers = Object.assign({
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Authorization': 'Bearer ' + token(),
+    }, opt.headers || {});
+    return fetch('https://api.github.com/repos/' + REPO + path, opt);
+  }
+
+  function askToken(then) {
+    var m = modal({
+      width: 620,
+      eyebrow: 'One-time setup',
+      title: 'A token, so this page can start a run',
+      sub: 'GitHub will not let a web page start a workflow without one. It is '
+        + 'stored only in this browser and never leaves it except to reach '
+        + 'github.com. You can clear it at any time.',
+      html: '<div style="font-size:13.5px;line-height:1.6;color:' + META + ';'
+        + 'margin-bottom:14px">1. Open <b style="color:' + INK + '">github.com'
+        + '/settings/personal-access-tokens/new</b><br>'
+        + '2. Repository access: <b style="color:' + INK + '">only</b> '
+        + '<b style="color:' + INK + '">aau-research-tracker</b><br>'
+        + '3. Permissions &rsaquo; Repository &rsaquo; <b style="color:' + INK
+        + '">Actions: Read and write</b><br>'
+        + '4. Generate, copy, paste below.</div>',
+      input: { placeholder: 'github_pat_…', note: 'Stored in this browser only.' },
+      submit: {
+        label: 'Save and continue',
+        go: function () {
+          var v = (m.__input.value || '').trim();
+          if (v.length < 20) {
+            m.__note.style.color = RED;
+            m.__note.textContent = 'That does not look like a token.';
+            return;
+          }
+          m.__ok.disabled = true; m.__ok.textContent = 'Checking…';
+          setToken(v);
+          gh('/actions/workflows/' + WF, {}).then(function (r) {
+            if (!r.ok) throw new Error('GitHub refused it (HTTP ' + r.status + ')');
+            m.close(); then();
+          }).catch(function (e) {
+            setToken('');
+            m.__ok.disabled = false; m.__ok.textContent = 'Save and continue';
+            m.__note.style.color = RED;
+            m.__note.textContent = String(e.message || e);
+          });
+        },
+      },
+    });
+    var box = document.getElementById('__aau_modal');
+    box.addEventListener('click', function (e) {
+      if (e.target.tagName === 'B' && /settings/.test(e.target.textContent)) {
+        window.open('https://github.com/settings/personal-access-tokens/new', '_blank');
+      }
+    });
+  }
+
+  function dispatch(options) {
+    var years = (options.years || []).join(',');
+    badge('asking GitHub to run…', G);
+    gh('/actions/workflows/' + WF + '/dispatches', {
+      method: 'POST',
+      body: JSON.stringify({ ref: 'main',
+        inputs: { years: years, scope: options.scope || 'compare' } }),
+    }).then(function (r) {
+      if (r.status === 204) { watchGithub(options); return; }
+      return r.json().then(function (j) {
+        throw new Error(j.message || ('HTTP ' + r.status));
+      });
+    }).catch(function (e) {
+      badge('could not start the run', RED);
+      modal({
+        eyebrow: 'Run', title: 'GitHub would not start it',
+        sub: String(e.message || e) + '  If the token was revoked, clear it and '
+          + 'paste a new one.',
+        choices: [{ label: 'Forget the saved token', hint: 'Then press Run now again.',
+                    go: function () { window.__AAU.forgetToken(); } }],
+        cancelLabel: 'Close',
+      });
+    });
+  }
+
+  function watchGithub(options) {
+    var started = Date.now();
+    modal({
+      eyebrow: 'Run started on GitHub',
+      title: 'It is running now',
+      sub: 'The engine is fetching Scopus on GitHub’s machines. A full run '
+        + 'takes a few minutes; this page updates itself when it lands. You can '
+        + 'close this and keep working.',
+      choices: [{ label: 'Watch it on GitHub',
+                  hint: 'The live log, stage by stage.',
+                  go: function () {
+                    window.open('https://github.com/' + REPO + '/actions/workflows/' + WF, '_blank');
+                  } }],
+      cancelLabel: 'Close',
+    });
+    (function poll() {
+      if (Date.now() - started > 40 * 60 * 1000) return;
+      gh('/actions/workflows/' + WF + '/runs?per_page=1', {})
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var run = (j.workflow_runs || [])[0];
+          if (!run) return setTimeout(poll, 15000);
+          if (run.status !== 'completed') {
+            badge('running on GitHub · ' + run.status.replace('_', ' '), G);
+            return setTimeout(poll, 15000);
+          }
+          if (run.conclusion === 'success') {
+            badge('run finished · reloading', G);
+            setTimeout(function () { location.reload(); }, 2500);
+          } else {
+            badge('run ' + run.conclusion, RED);
+          }
+        })
+        .catch(function () { setTimeout(poll, 20000); });
+    })();
+  }
+
   function startRun(component, options) {
+    if (!window.__AAU.canRun) {          // published page -> run it on GitHub
+      if (!token()) { askToken(function () { dispatch(options); }); return; }
+      dispatch(options);
+      return;
+    }
     api('/api/run/start', options)
       .then(function (r) {
         window.__AAU.run = r.run;
@@ -367,9 +524,10 @@
       if (window.__aauApply) window.__aauApply(d);
       component.forceUpdate();
       var when = d.generated ? d.generated.slice(0, 10) : '';
-      badge((window.__AAU.snapshot ? 'live data · ' + when
-                                   : 'connected · ' + when)
-            + (d.stats ? ' · ' + d.stats.papers.toLocaleString() + ' papers' : ''), G);
+      lastBadge = (window.__AAU.snapshot ? 'live data · ' + when
+                                          : 'connected · ' + when)
+            + (d.stats ? ' · ' + d.stats.papers.toLocaleString() + ' papers' : '');
+      badge(lastBadge, G);
       return d;
     });
   }
@@ -435,21 +593,51 @@
   window.__AAU.showSuggestions = showSuggestions;
 
   /* ------------------------------------------------------------- exports   */
-  function exportOne(component, kind) {
-    badge('building ' + kind + '…', G);
-    return api('/api/export', { kind: String(kind).toLowerCase() })
-      .then(function (r) {
-        badge('saved ' + (r.path || '').split('/').pop(), G);
-        modal({
-          eyebrow: 'Export', title: 'Saved',
-          sub: 'Written to ' + (r.path || ''),
-          cancelLabel: 'Close',
-        });
-      })
-      .catch(function (e) { badge('export failed', RED); console.error(e); });
+  /* Every run writes the three files next to the data, under a stable name,
+   * so the published page can hand them over with an ordinary download. When
+   * the engine is running locally it rebuilds them first. */
+  var FILES = {
+    xlsx:   ['downloads/AAU_Research_Tracker.xlsx', 'the workbook'],
+    pptx:   ['downloads/AAU_Research_Tracker.pptx', 'the slide deck'],
+    charts: ['downloads/AAU_Charts.zip', 'the chart pack'],
+  };
+
+  function grab(url, name) {
+    var a = document.createElement('a');
+    a.href = url; a.download = name || '';
+    document.body.appendChild(a); a.click(); a.remove();
   }
+
+  function exportOne(component, kind) {
+    var k = String(kind || '').toLowerCase();
+    if (k === 'chart' || k === 'chartpack' || k === 'png') k = 'charts';
+    if (!FILES[k]) k = 'xlsx';
+    var url = FILES[k][0], label = FILES[k][1];
+
+    if (!window.__AAU.canRun) {                 // published page: just download
+      badge('downloading ' + label + '…', G);
+      grab(url, url.split('/').pop());
+      setTimeout(function () { badge(lastBadge, G); }, 1800);
+      return Promise.resolve();
+    }
+    badge('building ' + label + '…', G);        // local engine: rebuild first
+    return api('/api/export', { kind: k })
+      .then(function (r) {
+        badge('saved ' + label, G);
+        grab((r.url || url) + '?t=' + Date.now(), url.split('/').pop());
+      })
+      .catch(function (e) {
+        console.error(e);
+        badge('served the last build', G);
+        grab(url, url.split('/').pop());
+      });
+  }
+
   function exportAll(component) {
     return exportOne(component, 'xlsx')
+      .then(function () { return new Promise(function (r) { setTimeout(r, 900); }); })
+      .then(function () { return exportOne(component, 'charts'); })
+      .then(function () { return new Promise(function (r) { setTimeout(r, 900); }); })
       .then(function () { return exportOne(component, 'pptx'); });
   }
   window.__AAU.exportOne = exportOne;
@@ -524,6 +712,6 @@
       cancelLabel: 'Close',
     });
   }
-  window.__AAU.demoNote = demoNote;
+  window.__AAU.demoNote = function (component) { askRun(component); };
 })();
 </script>

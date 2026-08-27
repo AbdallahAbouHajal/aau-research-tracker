@@ -52,6 +52,13 @@ UI = os.environ.get("AAU_UI") or os.path.join(
     ROOT, "ui", "index.html")
 if not os.path.exists(UI):
     UI = os.path.join(ROOT, "..", "AAU_Tracker_Site", "docs", "index.html")
+
+# Where the generated workbook, chart pack and deck live. The interface copy in
+# ui/ is only the page; the files sit beside the published data.
+DOCS = os.environ.get("AAU_DOCS") or os.path.abspath(
+    os.path.join(ROOT, "..", "AAU_Tracker_Site", "docs"))
+if not os.path.isdir(DOCS):
+    DOCS = os.path.abspath(os.path.dirname(UI))
 DATA = os.path.join(ROOT, "data")
 DISMISSED = os.path.join(DATA, "not_faculty.json")
 
@@ -340,6 +347,30 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _static(self, path):
+        """Serve the generated workbook, chart pack and deck."""
+        base = DOCS
+        target = os.path.abspath(os.path.join(base, path.lstrip("/")))
+        # never let a crafted path climb out of the published folder
+        if not target.startswith(base) or not os.path.isfile(target):
+            return self.send_error(404)
+        ext = os.path.splitext(target)[1].lower()
+        mime = {".xlsx": "application/vnd.openxmlformats-officedocument."
+                         "spreadsheetml.sheet",
+                ".pptx": "application/vnd.openxmlformats-officedocument."
+                         "presentationml.presentation",
+                ".zip": "application/zip", ".png": "image/png",
+                ".json": "application/json"}.get(ext, "application/octet-stream")
+        body = open(target, "rb").read()
+        self.send_response(200)
+        self.send_header("Content-Type", mime)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Content-Disposition",
+                         'attachment; filename="%s"' % os.path.basename(target))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self):
         parts = urllib.parse.urlparse(self.path)
         path = parts.path
@@ -347,6 +378,8 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if path in ("/", "/index.html"):
                 return self._ui()
+            if path.startswith("/downloads/") or path.startswith("/data/"):
+                return self._static(path)
             if path == "/api/state":
                 vm = view()
                 return _json(self, {
@@ -412,9 +445,20 @@ class Handler(BaseHTTPRequestHandler):
                 return _json(self, {"count": len(rows["people"]),
                                     "problems": rows.get("problems", [])})
             if path == "/api/export":
-                p = RUNS.export(b.get("run") or RUNS.latest_id(),
-                                kind=(b.get("kind") or "xlsx"))
-                return _json(self, {"path": p})
+                # Rebuild all three from the current run so a downloaded file
+                # can never disagree with the dashboard it was taken from.
+                import subprocess
+                sub = subprocess.run(
+                    [sys.executable, os.path.join(ROOT, "export_state.py")],
+                    capture_output=True, text=True, timeout=600)
+                kind = (b.get("kind") or "xlsx").lower()
+                name = {"xlsx": "AAU_Research_Tracker.xlsx",
+                        "pptx": "AAU_Research_Tracker.pptx",
+                        "charts": "AAU_Charts.zip"}.get(kind,
+                                                        "AAU_Research_Tracker.xlsx")
+                return _json(self, {"url": "/downloads/" + name,
+                                    "ok": sub.returncode == 0,
+                                    "log": (sub.stdout or "")[-400:]})
             if path == "/api/schedule":
                 RUNS.set_schedule(bool(b.get("enabled")),
                                   int(b.get("weekday", 1)),

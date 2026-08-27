@@ -91,12 +91,17 @@ jobs:
             --years "$YEARS" \
             --out "$WORKSPACE/docs/data/state.json"
 
+      - name: Check the files were written
+        run: |
+          ls -la docs/downloads/ || true
+          test -s docs/data/state.json || { echo "::error::state.json is empty"; exit 1; }
+
       - name: Commit the new state
         run: |
           rm -f engine/config/scopus_keys.json
           git config user.name  "aau-tracker[bot]"
           git config user.email "aau-tracker@users.noreply.github.com"
-          git add docs/data/state.json
+          git add docs/data/state.json docs/downloads
           if git diff --cached --quiet; then
             echo "nothing changed"
           else

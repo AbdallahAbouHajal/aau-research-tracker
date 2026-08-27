@@ -179,6 +179,17 @@ def load(version=None):
     path = os.path.join(DIR, "%s.json" % version) if version \
         else os.path.join(DIR, "latest.json")
     if not os.path.exists(path):
+        # No local roster: a CI runner, or a fresh checkout. The repo ships the
+        # settled roster, so fall back to it rather than running with nobody --
+        # which silently classified all 511 authors as outside faculty.
+        shipped = os.path.join(
+            os.environ.get("AAU_DATA")
+            or os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "..", "data"),
+            "roster.json")
+        if os.path.exists(shipped):
+            with open(shipped, encoding="utf-8") as fh:
+                return json.load(fh)
         return None
     with open(path) as fh:
         return json.load(fh)

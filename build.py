@@ -178,7 +178,7 @@ def apply_patches(tpl, live=False):
         tpl = tpl.replace(old, new)
         applied.append("%s  (x%d)" % (name, n))
 
-    for name, old, new in PL.PATCHES + [PL.BANNER_PATCH]:
+    for name, old, new in PL.PATCHES + PL.ROUND2 + [PL.BANNER_PATCH]:
         n = tpl.count(old)
         if n != 1:
             raise SystemExit("live patch %r matched %d times, expected 1"

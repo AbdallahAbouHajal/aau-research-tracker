@@ -55,8 +55,8 @@ PATCHES = [
      "&& window.__AAU.stop(); this.setState({ running: false }); return; }\n"
      "        if (window.__AAU && window.__AAU.live) "
      "{ window.__AAU.askRun(this); return; }\n"
-     "        window.__AAU && window.__AAU.demoNote "
-     "&& window.__AAU.demoNote();\n"
+     "        window.__AAU && window.__AAU.askRun "
+     "&& window.__AAU.askRun(this);\n"
      "      },"),
 
     # ---- searchable + filterable author list -------------------------------
@@ -264,4 +264,151 @@ VALS = r"""
         + 'publish like faculty, but the roster does not list them. '
         + 'Until you add them they count as outside faculty.',
       openSuggestions: () => window.__AAU && window.__AAU.showSuggestions(this),
+      rosterHead: (S_ ? S_.roster_people.toLocaleString() + ' people across '
+        + COLLEGE_DATA.length + ' colleges' : '208 people across eight colleges'),
+      rosterSub: (S_ ? S_.resolved + ' of the ' + S_.academics
+        + ' on the roster resolved to a Scopus author. Open a college to see '
+        + 'its authors.'
+        : 'Open a college to see its authors.'),
 """
+
+# ---------------------------------------------------------------------------
+# Round 2. Everything below came from looking at the deployed page.
+# ---------------------------------------------------------------------------
+
+ROUND2 = [
+
+    # Workflow first: it explains what a run is before showing the result of
+    # one. And the Roster badge said 8 while the dashboard tile said 6 -- two
+    # different counts of the same thing, so the badge goes entirely.
+    ("tabs: workflow first, and drop the review badge",
+     "    const TABS = [\n"
+     "      ['dash', 'Dashboard', null],\n"
+     "      ['roster', 'Roster', '8'],\n"
+     "      ['author', 'Authors', null],\n"
+     "      ['export', 'Exports', null],\n"
+     "      ['sched', 'Schedule', null],\n"
+     "      ['flow', 'Workflow', null],\n"
+     "    ];",
+     "    const TABS = [\n"
+     "      ['flow', 'Workflow', null],\n"
+     "      ['dash', 'Dashboard', null],\n"
+     "      ['roster', 'Roster', null],\n"
+     "      ['author', 'Authors', null],\n"
+     "      ['export', 'Exports', null],\n"
+     "      ['sched', 'Schedule', null],\n"
+     "    ];"),
+
+    # The third tile counted names needing a decision -- a figure that
+    # disagreed with the Roster badge. Back to what the sweep actually did,
+    # which is live and cannot contradict anything.
+    ("dashboard: third tile is the sweep, not a disputed count",
+     "      { v: String(S_.review), l: 'need a decision',\n"
+     "        sub: 'names matching more than one Scopus author', color: accent },",
+     "      { v: String(S_.swept_in == null ? 0 : S_.swept_in),\n"
+     "        l: 'added by the sweep',\n"
+     "        sub: 'found on an author, not on the university tag', color: accent },"),
+
+    # ---- the workflow diagram carries no figures ---------------------------
+    # It is an explanation of how a run works, not a report of one. Numbers on
+    # it go stale the moment a run finishes and then quietly contradict the
+    # dashboard. The words stay; every metric goes.
+    ("workflow: no figure on the roster source",
+     '<div style="font-size:12.5px;color:#63736A;margin-top:3px">208 people · '
+     '8 colleges · who belongs to AAU</div>',
+     '<div style="font-size:12.5px;color:#63736A;margin-top:3px">Who the '
+     'university says belongs to it</div>'),
+
+    ("workflow: no figure on node 01",
+     '<div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">\n'
+     '          <span style="font-size:20px;font-weight:800;'
+     'letter-spacing:-.02em;color:{{ accent }}">152</span>\n'
+     '          <span style="font-size:12.5px;color:#63736A">of 160 resolved'
+     '</span>\n        </div>',
+     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
+     'line-height:1.4">A name matching several authors is never guessed at.'
+     '</div>'),
+
+    ("workflow: no figure on node 02",
+     '<div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">\n'
+     '          <span style="font-size:20px;font-weight:800;'
+     'letter-spacing:-.02em;color:{{ accent }}">1,330</span>\n'
+     '          <span style="font-size:12.5px;color:#63736A">papers, '
+     '2025–2026</span>\n        </div>',
+     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
+     'line-height:1.4">The defensible core of the count.</div>'),
+
+    ("workflow: no figure on node 03",
+     '<div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">\n'
+     '          <span style="font-size:20px;font-weight:800;'
+     'letter-spacing:-.02em;color:{{ accent }}">73</span>\n'
+     '          <span style="font-size:12.5px;color:#63736A">candidates '
+     'returned</span>\n        </div>',
+     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
+     'line-height:1.4">Every candidate still has to pass the gate.</div>'),
+
+    ("workflow: no figure on node 04",
+     '<div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">\n'
+     '          <span style="font-size:22px;font-weight:800;'
+     'letter-spacing:-.02em;color:{{ accent }}">1,336</span>\n'
+     '          <span style="font-size:12.5px;color:#63736A">papers · 511 '
+     'people</span>\n        </div>',
+     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
+     'line-height:1.4">Written, then compared against the previous run.</div>'),
+
+    # The rejected box sat at x 838-1088 while the "no" branch drops at x=922,
+    # and it overlapped "Files to download" (which starts at 1072) by 16px.
+    # Centred on the connector at 922 it spans 797-1047: aligned, 25px clear.
+    ("workflow: centre the rejected box under the gate, clear of Files",
+     'style="animation-delay:.56s;position:absolute;left:838px;top:350px;'
+     'width:250px;height:84px;background:#FCF4F5',
+     'style="animation-delay:.56s;position:absolute;left:797px;top:350px;'
+     'width:250px;height:84px;background:#FCF4F5'),
+
+    ("workflow: the rejected box states the rule, not a count",
+     '<div style="display:flex;align-items:baseline;gap:9px">\n'
+     '          <span style="font-size:24px;font-weight:800;color:#E0303F;'
+     'line-height:1">67</span>\n'
+     '          <span style="font-size:13.5px;font-weight:700;color:#8B2A32">'
+     'rejected</span>\n        </div>',
+     '<div style="font-size:13.5px;font-weight:700;color:#8B2A32">Rejected'
+     '</div>'),
+
+    # ---- the two explainer cards quoted specific people and counts ---------
+    ("workflow: explain the gate without quoting a count",
+     "A sweep by author returns everything that person published anywhere. "
+     "Asking for one professor's papers returns 53, and only 30 print an "
+     "AAU address. Without the gate the census re-inflates by hundreds of "
+     "papers belonging to other universities.",
+     "A sweep by author returns everything that person published anywhere, "
+     "including work they did at other universities. Without the gate the "
+     "census re-inflates with papers that were never AAU's."),
+
+    ("workflow: explain near-misses without quoting a count",
+     'The roster writes Al-Takhayneh, Scopus prints Al-Tkhayneh. One vowel '
+     'apart. Exact matching misses it and a professor with 39 papers '
+     'disappears, so near-misses are checked separately before anyone is '
+     'called new.',
+     'The roster writes Al-Takhayneh, Scopus prints Al-Tkhayneh. One vowel '
+     'apart. Exact matching misses it and a whole career disappears, so '
+     'near-misses are checked separately before anyone is called new.'),
+
+    # Begin lands on Workflow: read how a run works, then look at one.
+    ("welcome: begin lands on the workflow, not the dashboard",
+     "enter: () => this.setState({ screen: 'dash' }),",
+     "enter: () => this.setState({ screen: 'flow' }),"),
+
+    # ---- the roster header repeated stale figures --------------------------
+    ("roster: header figures come from the run",
+     '<div style="font-size:25px;font-weight:700;letter-spacing:-.02em;'
+     'margin-top:6px">208 people across eight colleges</div>',
+     '<div style="font-size:25px;font-weight:700;letter-spacing:-.02em;'
+     'margin-top:6px">{{ rosterHead }}</div>'),
+
+    ("roster: subtitle too",
+     '<div style="font-size:13.5px;color:#63736A;margin-top:5px">152 of the '
+     '160 academics resolved to a Scopus author. Open a college to see its '
+     'authors.</div>',
+     '<div style="font-size:13.5px;color:#63736A;margin-top:5px">'
+     '{{ rosterSub }}</div>'),
+]

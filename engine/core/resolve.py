@@ -269,6 +269,26 @@ NO_RECORD_NOTE = ("new, visiting or adjunct faculty -- no Scopus record: "
                   "profile, and not a co-author on any AAU paper in the window")
 
 
+def _profile_pass(people, say):
+    """Ask each unresolved person's own AAU page for their Scopus id."""
+    import profile_ids as PI
+    n = 0
+    for p in [q for q in people
+              if not q.get("scopus_auid") and q.get("profile_url")]:
+        try:
+            g = PI.resolve(p)
+        except Exception:
+            continue
+        if g["auid"]:
+            p["scopus_auid"] = g["auid"]
+            p["auid_tier"] = g["tier"]
+            p["auid_evidence"] = g["ev"].get("verify") or {}
+            p["auid_candidates"] = []
+            n += 1
+            say("  profile route: %s -> %s" % (p["name"], g["auid"]))
+    return n
+
+
 def resolve_chain(people, idx=None, use_profiles=True, log=None):
     """Full resolution ladder, best evidence first.
 
@@ -281,27 +301,44 @@ def resolve_chain(people, idx=None, use_profiles=True, log=None):
     and "Amira Shaaban Ahmed" publishes as "Said, Amira S. A.". No name
     matcher reaches those. Their own profile page links the right ID.
     """
-    idx = idx or build_index()
     say = log or (lambda *_: None)
+    # The Scopus export is what build_index() reads, and it is deliberately not
+    # shipped (a bulk export carries licensing terms). When the roster already
+    # carries settled AU-IDs -- which it does, because they were resolved and
+    # audited once -- there is nothing to re-derive, so skip the index entirely
+    # rather than crash looking for a file that should not be there.
+    if idx is None:
+        settled = sum(1 for p in people if p.get("scopus_auid"))
+        try:
+            have_export = os.path.exists(X.census_file("scopus_export.csv"))
+        except Exception:
+            have_export = False
+        if not have_export:
+            if settled:
+                say("  %d AU-IDs already settled; no export to re-resolve from"
+                    % settled)
+                tiers = collections.Counter(
+                    p.get("auid_tier", "none") .split(":")[0] for p in people)
+                n_prof = 0
+                if use_profiles:
+                    n_prof = _profile_pass(people, say)
+                for p in people:
+                    if not p.get("scopus_auid"):
+                        p["auid_tier"] = "none:no-scopus-record"
+                        p["no_scopus_reason"] = NO_RECORD_NOTE
+                out = dict(tiers)
+                out["manual"] = settled
+                out["profile"] = n_prof
+                out["no_record"] = sum(1 for p in people
+                                       if not p.get("scopus_auid"))
+                return out
+            raise SystemExit(
+                "no Scopus export and no settled AU-IDs -- nothing to resolve "
+                "from. Ship data/roster.json with resolved ids.")
+        idx = build_index()
     tiers = resolve_all(people, idx)
     n_man = apply_manual(people)
-    n_prof = 0
-    if use_profiles:
-        import profile_ids as PI
-        todo = [p for p in people
-                if not p.get("scopus_auid") and p.get("profile_url")]
-        for p in todo:
-            try:
-                g = PI.resolve(p)
-            except Exception:
-                continue
-            if g["auid"]:
-                p["scopus_auid"] = g["auid"]
-                p["auid_tier"] = g["tier"]
-                p["auid_evidence"] = g["ev"].get("verify") or {}
-                p["auid_candidates"] = []
-                n_prof += 1
-                say("  profile route: %s -> %s" % (p["name"], g["auid"]))
+    n_prof = _profile_pass(people, say) if use_profiles else 0
     # Everyone still without an ID was checked three ways: no name in the
     # Scopus export, no Scopus link on their AAU page, and no appearance in
     # the full author list of any of the 1,330 AAU papers in the window.
