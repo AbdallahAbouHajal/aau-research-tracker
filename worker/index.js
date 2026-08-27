@@ -267,12 +267,17 @@ export default {
 
       if (path === '/roster/add') {
         const name = norm(body.name).slice(0, 120);
-        const college = norm(body.college).slice(0, 120);
-        if (!name || !college) {
-          return cors(json({ error: 'a name and a college are needed' }, 400), origin);
+        const college = COLLEGES.includes(norm(body.college))
+          ? norm(body.college) : snapCollege(body.college);
+        if (!name) {
+          return cors(json({ error: 'a name is needed' }, 400), origin);
         }
-        if (!COLLEGES.includes(college)) {
-          return cors(json({ error: 'that is not one of the eight colleges' }, 400), origin);
+        if (!college) {
+          return cors(json({
+            error: norm(body.college)
+              ? ('"' + norm(body.college) + '" is not one of AAU\'s eight colleges')
+              : 'a college is needed',
+          }, 400), origin);
         }
         if (people.some((p) => key(p.name) === key(name))) {
           return cors(json({ added: false, error: name + ' is already on the roster.' }, 409), origin);
@@ -307,6 +312,37 @@ export default {
         blob.people = rows;
         blob.replaced_from_page = new Date().toISOString();
         message = 'Roster: import ' + rows.length + ' people';
+      } else if (path === '/roster/dismiss') {
+        const name = norm(body.name).slice(0, 120);
+        if (!name) return cors(json({ error: 'which person?' }, 400), origin);
+        const F2 = 'engine/data/not_faculty.json';
+        const g2 = await fetch(`${GH}/repos/${env.REPO}/contents/${F2}?ref=main`,
+          { headers: ghHeaders(env) });
+        let list = [], sha2 = undefined;
+        if (g2.ok) {
+          const m2 = await g2.json();
+          sha2 = m2.sha;
+          try {
+            list = JSON.parse(decodeURIComponent(escape(atob(m2.content.replace(/\n/g, '')))));
+          } catch (e) { list = []; }
+        }
+        if (!Array.isArray(list)) list = [];
+        if (!list.some((n) => key(n) === key(name))) list.push(name);
+        const put2 = await fetch(`${GH}/repos/${env.REPO}/contents/${F2}`, {
+          method: 'PUT',
+          headers: { ...ghHeaders(env), 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: 'Roster: ' + name + ' is not faculty\n\nMade from the published page.',
+            content: btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 1)))),
+            sha: sha2,
+            branch: 'main',
+          }),
+        });
+        if (!put2.ok) {
+          const t2 = await put2.text();
+          return cors(json({ error: 'the change was refused', detail: t2.slice(0, 240) }, 502), origin);
+        }
+        return cors(json({ ok: true, dismissed: name, total: list.length }), origin);
       } else if (path === '/roster/remove') {
         const name = norm(body.name).slice(0, 120);
         if (!name) return cors(json({ error: 'which person?' }, 400), origin);

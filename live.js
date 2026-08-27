@@ -916,20 +916,55 @@
       var i = Number(add == null ? no : add);
       var who = list[i];
       var row = e.target.closest('div[data-i]');
+      var btn = e.target;
+
+      /* Asking for the passphrase opens a modal, which would replace this
+       * list. So ask first, then put the list back where it was. */
+      if (!window.__AAU.canRun && !pass()) {
+        m.close();
+        askPass(function () { showSuggestions(component); });
+        return;
+      }
+
+      var settled = function (label) {
+        btn.textContent = label;
+        row.style.opacity = .45;
+        var other = row.querySelector(add != null ? '[data-no]' : '[data-add]');
+        if (other) other.disabled = true;
+        refresh(component);
+      };
+      var failed = function (msg) {
+        btn.disabled = false;
+        btn.textContent = add != null ? 'Add' : 'Not faculty';
+        badge(String(msg).slice(0, 60), RED);
+      };
+
+      btn.disabled = true;
+      btn.textContent = add != null ? 'Adding…' : 'Saving…';
+
       if (add != null) {
-        e.target.disabled = true;
-        e.target.textContent = 'Adding…';
-        api('/api/faculty/add', { name: who.name, auid: who.auid,
-                                  college: who.college, confirm: true })
-          .then(function () { row.style.opacity = .45; e.target.textContent = 'Added'; })
-          .catch(function () { e.target.textContent = 'Failed'; });
+        var payload = { name: who.name, college: who.college, auid: who.auid };
+        if (window.__AAU.canRun) {
+          api('/api/faculty/add', Object.assign({ confirm: true }, payload))
+            .then(function () { settled('Added'); })
+            .catch(function (e2) { failed(e2.message || e2); });
+        } else {
+          viaProxy('/roster/add', payload,
+                   function () { settled('Added'); }, failed);
+        }
       } else {
-        api('/api/faculty/dismiss', { name: who.name }).catch(function () {});
-        row.style.opacity = .35;
-        row.querySelector('[data-add]').disabled = true;
+        if (window.__AAU.canRun) {
+          api('/api/faculty/dismiss', { name: who.name })
+            .then(function () { settled('Not faculty'); })
+            .catch(function (e2) { failed(e2.message || e2); });
+        } else {
+          viaProxy('/roster/dismiss', { name: who.name },
+                   function () { settled('Not faculty'); }, failed);
+        }
       }
     });
   }
+
   window.__AAU.showSuggestions = showSuggestions;
 
   /* ------------------------------------------------------------- exports   */
