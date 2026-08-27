@@ -309,6 +309,12 @@ def build(roster_people=None, run_id=None):
             "academics": academics,
             "review": review_n,
             "suggested": sum(1 for a in authors if a.get("suggest")),
+            # The colleges the ROSTER covers -- eight. Counting colleges that
+            # have an author with a Scopus record instead gave seven, because
+            # Dentistry's staff have no papers in the window. They are still a
+            # college, and the university still has eight of them.
+            "colleges": len({r.get("college") for r in roster
+                             if r.get("college")}),
         },
         "short": _SHORT,
     }

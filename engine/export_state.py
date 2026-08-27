@@ -49,7 +49,10 @@ def build(run_id=None):
     found = blob.get("findings") or []
     if not found:
         st = vm["stats"]
-        n_col = sum(1 for c in vm["colleges"] if c.get("people"))
+        # Every college the roster covers, whether or not anyone in it has a
+        # paper in this window -- Dentistry has staff and no papers, and is
+        # still a college.
+        n_col = st.get("colleges") or len(vm["colleges"])
         found = [{"text": "The roster holds %s people across %d colleges."
                           % (f"{st.get('roster_people', 0):,}", n_col),
                   "kind": "ok"},
