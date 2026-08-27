@@ -68,7 +68,12 @@ function parseCsv(text) {
     const name = at(r, 'name').replace(/\s*,?\s*\b(Ph\.?\s?D|M\.?\s?Sc|MBA|MD|DDS)\.?\s*$/i, '').trim();
     const college = snapCollege(at(r, 'college'));
     if (!name || !college) continue;
-    const k = name.toLowerCase().replace(/[^a-z ]/g, '');
+    // Stripping to [a-z ] erases an Arabic or CJK name entirely, so every
+    // such person collapses to the same empty key and all but one are
+    // dropped as duplicates. At a university that publishes staff lists in
+    // Arabic that is silent data loss, and the same key drives removal, so
+    // deleting one Arabic-named person deleted them all.
+    const k = nameKey(name);
     if (seen.has(k)) continue;
     seen.add(k);
     rows.push({
@@ -76,7 +81,13 @@ function parseCsv(text) {
       title: at(r, 'title').slice(0, 120),
       email: at(r, 'email').slice(0, 160),
       department: at(r, 'department').slice(0, 120),
-      profile_url: at(r, 'profile_url').slice(0, 300),
+      // /roster/add rejects any link that is not on aau.ac.ae; import did
+      // not, and the engine later fetches this URL with urlopen after only
+      // checking that it contains "/staff/" -- which a file:// or attacker
+      // URL satisfies. Same rule on both doors.
+      profile_url: (function (u) {
+        return /^https:\/\/(www\.)?aau\.ac\.ae\//i.test(u) ? u.slice(0, 300) : '';
+      })(at(r, 'profile_url')),
       staff_type: /admin/i.test(at(r, 'staff_type')) ? 'administrative' : 'academic',
       is_academic: !/admin/i.test(at(r, 'staff_type')),
       colleges: [college],
@@ -84,6 +95,22 @@ function parseCsv(text) {
     });
   }
   return rows;
+}
+
+/** A name's identity, safe for any script.
+ *
+ * Keeps letters and marks in ANY alphabet (\p{L}\p{M}) rather than [a-z],
+ * folds case and accents, and collapses whitespace. Two spellings of the same
+ * Latin name still meet; two different Arabic names no longer do.
+ */
+function nameKey(v) {
+  const s = String(v || '').normalize('NFKD').toLowerCase();
+  let out = '';
+  for (const ch of s) {
+    if (/[\p{L}\p{N}]/u.test(ch)) out += ch;
+    else if (/\s/.test(ch)) out += ' ';
+  }
+  return out.replace(/\s+/g, ' ').trim();
 }
 
 /** "engineering", "Eng.", "College of Engineering" -> the same college. */
@@ -262,7 +289,7 @@ export default {
       }
       const people = blob.people || [];
       const norm = (v) => String(v || '').replace(/\s+/g, ' ').trim();
-      const key = (v) => norm(v).toLowerCase().replace(/[^a-z ]/g, '');
+      const key = (v) => nameKey(norm(v));
       let message = '';
 
       if (path === '/roster/add') {
@@ -308,6 +335,20 @@ export default {
         }
         if (rows.length > 2000) {
           return cors(json({ error: 'that is more people than AAU has' }, 400), origin);
+        }
+        // Removal refuses to empty the roster; import replaces it wholesale and
+        // had only a ceiling, so a two-line CSV wiped every person and answered
+        // ok. An import that drops most of the roster is a broken file far more
+        // often than an intended purge, so it has to be asked for explicitly.
+        const had = (blob.people || []).length;
+        if (had && rows.length < Math.max(10, Math.floor(had / 2))
+            && !body.replace_all) {
+          return cors(json({
+            error: 'that file has ' + rows.length + ' people but the roster has '
+              + had + '. If you really mean to replace it, tick "replace the '
+              + 'whole roster".',
+            needs_confirm: true, rows: rows.length, current: had,
+          }, 409), origin);
         }
         blob.people = rows;
         blob.replaced_from_page = new Date().toISOString();

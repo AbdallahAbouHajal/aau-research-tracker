@@ -92,6 +92,26 @@ def _cache_path(url, tag=""):
     return os.path.join(sub, h + ".json")
 
 
+def _safe_remote(url):
+    """Refuse anything that is not an ordinary http(s) fetch.
+
+    The engine reaches out to staff pages whose URLs can come from an imported
+    CSV, and the only gate downstream was `"/staff/" in url` -- which
+    `file:///.../scopus_keys.json#/staff/x` satisfies, as does an
+    attacker-controlled `https://evil.example/staff/x` whose HTML then decides
+    which Scopus author a named person is bound to. The worker now rejects
+    non-aau.ac.ae links at both doors; this is the second lock, on the side
+    that actually opens the socket.
+    """
+    import urllib.parse as _up
+    p = _up.urlsplit(url or "")
+    if p.scheme not in ("http", "https"):
+        raise ValueError("refusing a non-http URL: %.60s" % (url or ""))
+    if not p.hostname:
+        raise ValueError("refusing a URL with no host: %.60s" % (url or ""))
+    return url
+
+
 def http(url, headers=None, tries=4, timeout=60, tag="", use_cache=True,
          sleep=0.0, accept_404=False):
     """Cache-first GET. Returns bytes. Cached responses cost nothing on re-run."""
@@ -103,6 +123,7 @@ def http(url, headers=None, tries=4, timeout=60, tag="", use_cache=True,
             raise RuntimeError(blob["err"])
         return blob["body"].encode("utf-8", "replace")
 
+    _safe_remote(url)
     hdr = {"User-Agent": UA}
     if headers:
         hdr.update(headers)

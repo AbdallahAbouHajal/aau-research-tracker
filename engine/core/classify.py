@@ -27,6 +27,32 @@ _MAP_PATH = os.path.join(_ROOT, "config", "college_map.json")
 _MAP = None
 UNMAPPED = set()
 
+# The map lived only in engine/config/, which is .gitignored -- so on CI the
+# file never existed, college_map() returned {} and map_college() was the
+# identity function. The names below then flowed straight through to a chart
+# that renders AAU's eight colleges by string equality, and 120 author rows
+# vanished from it with no error: 'College of Education' 77, 'College of
+# Computer and Information Sciences' 23, and so on. Fixing the taxonomy is the
+# reason this project exists, so the map ships in code and the file, if there
+# is one, only adds to it.
+#
+# Each target is checked against AAU's own programme listing rather than
+# guessed: Computer Science, Computer Engineering, Software Engineering and
+# Networks are all published under Engineering, and Nutrition and Dietetics
+# under Pharmacy.
+_DEFAULT_MAP = {
+    "College of Education": "College of Education, Humanities and Social Sciences",
+    "College of Humanities and Social Sciences":
+        "College of Education, Humanities and Social Sciences",
+    "Faculty of Education": "College of Education, Humanities and Social Sciences",
+    "College of Computer and Information Sciences": "College of Engineering",
+    "College of Computer Science": "College of Engineering",
+    "College of Information Technology": "College of Engineering",
+    "College of Health Sciences": "College of Pharmacy",
+    "College of Medicine and Health Sciences": "College of Pharmacy",
+    "College of Pharmacy and Health Sciences": "College of Pharmacy",
+}
+
 
 def college_map():
     """Snap an inferred college onto one of AAU's real eight.
@@ -38,11 +64,12 @@ def college_map():
     """
     global _MAP
     if _MAP is None:
+        _MAP = dict(_DEFAULT_MAP)
         try:
             with open(_MAP_PATH) as fh:
-                _MAP = json.load(fh).get("map", {})
+                _MAP.update(json.load(fh).get("map", {}))
         except Exception:
-            _MAP = {}
+            pass
     return _MAP
 
 

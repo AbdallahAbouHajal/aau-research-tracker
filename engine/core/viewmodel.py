@@ -20,6 +20,7 @@ import census as X                                    # noqa: E402
 import runs as RUNS                                   # noqa: E402
 import translit as TL                                 # noqa: E402
 import programs as PROG                               # noqa: E402
+import classify as CLS                                # noqa: E402
 
 csv.field_size_limit(10 ** 9)
 
@@ -91,6 +92,13 @@ def _people():
     return blob if isinstance(blob, list) else list(blob.values())
 
 
+def _pk(r):
+    """A paper's identity is its EID. The title is not an identity: it
+    was empty on every published row, so counting distinct titles gave 1
+    for anyone with any paper at all."""
+    return (r[5] if len(r) > 5 and r[5] else r[0])
+
+
 def _papers_from_run(run_id):
     """AU-ID -> papers, taken from a run this engine just did.
 
@@ -105,10 +113,15 @@ def _papers_from_run(run_id):
         aid = str(s.get("scopus_auid") or s.get("auid") or "")
         if not aid:
             continue
+        # Element 5 is the EID. The interface reads 0..4 and ignores it; it
+        # is here because counting papers deduplicated on the TITLE, and the
+        # title was empty on every row -- so every programme in the published
+        # data reported exactly 1 paper, and 47 of them said the same thing.
         out[aid].append([(s.get("title") or "").strip(),
                          (s.get("journal") or "").strip(),
                          int(s.get("year") or 0),
-                         int(s.get("cited_by") or 0), "Indexed"])
+                         int(s.get("cited_by") or 0), "Indexed",
+                         str(s.get("eid") or "")])
     for aid in out:
         out[aid].sort(key=lambda r: (-r[2], -r[3]))
     return out
@@ -131,7 +144,8 @@ def _papers_by_author():
                    (row.get("Source title") or "").strip(),
                    year,
                    int(re.sub(r"\D", "", row.get("Cited by") or "0") or 0),
-                   "Indexed"]
+                   "Indexed",
+                   (row.get("EID") or "").strip()]
             for aid in named.findall(row.get("Author full names") or ""):
                 out[aid].append(rec)
     for aid in out:
@@ -204,21 +218,46 @@ def build(roster_people=None, run_id=None):
         return None
 
     # ---- authors -----------------------------------------------------------
+    # One row per PERSON, not per spelling. The census carries a record for
+    # every way a name was printed, and several of them resolve to the same
+    # roster person and the same Scopus AU-ID -- so Muhammad Ilyas shipped as
+    # four separate members of Engineering, all four serving a byte-identical
+    # publication list, and Engineering counted him four times. A Scopus
+    # author id IS the identity; two rows carrying the same one are one person.
     taken, authors, papers_map = set(), [], {}
+    seen_auid = {}
     for rec in sorted(people, key=lambda r: -(r.get("aau_papers") or 0)):
         name = rec.get("name") or ""
         if not name:
             continue
         hit = _roster_hit(name)
         auid = (hit or {}).get("scopus_auid", "")
+        if auid and auid in seen_auid:
+            first = seen_auid[auid]
+            # Keep the fullest name and the best metrics; the papers come from
+            # the run and are the same for both rows by construction.
+            if len(name) > len(first["name"] or ""):
+                first["name"] = name
+            for fld, src in (("h", "h_index"), ("cites", "career_citations"),
+                             ("corr", "n_corresponding")):
+                first[fld] = max(first[fld] or 0, rec.get(src) or 0)
+            if not first["slug"]:
+                first["slug"] = _slug(rec.get("directory_url"), name)
+            continue
         k = _key(name, taken)
-        college = (hit or {}).get("college") or rec.get("college") or ""
+        college = CLS.map_college((hit or {}).get("college")
+                                  or rec.get("college") or "")
         authors.append({
             "key": k,
             "name": name,
             "college": college,
             "title": (hit or {}).get("title") or rec.get("directory_rank") or "",
-            "papers": rec.get("aau_papers") or 0,
+            # From THIS run, deduplicated by EID. Reading the census file's
+            # own `aau_papers` is what pinned every author's output to the
+            # original census: the 536 rows summed to 2,020 under a headline
+            # of 4,245 and no window could ever move them.
+            "papers": (len({_pk(r) for r in (by_auid.get(auid) or [])})
+                       if auid else (rec.get("aau_papers") or 0)),
             "h": rec.get("h_index") or 0,
             "cites": rec.get("career_citations") or 0,
             "corr": rec.get("n_corresponding") or 0,
@@ -232,6 +271,8 @@ def build(roster_people=None, run_id=None):
             "suggest": bool(not hit and (rec.get("aau_papers") or 0) >= 5
                             and rec.get("ever_corresponding")),
         })
+        if auid:
+            seen_auid[auid] = authors[-1]
         rows = by_auid.get(auid) or []
         if rows:
             papers_map[k] = rows[:12]
@@ -291,7 +332,7 @@ def build(roster_people=None, run_id=None):
                 for n, col in COLLEGE_ORDER]
 
     # ---- headline figures --------------------------------------------------
-    total_papers = len({r[0] for rows in by_auid.values() for r in rows})
+    total_papers = len({_pk(r) for rows in by_auid.values() for r in rows})
     resolved = sum(1 for r in roster if r.get("scopus_auid"))
     academics = len(roster)
     review_n = sum(1 for r in roster
@@ -320,7 +361,7 @@ def build(roster_people=None, run_id=None):
         eids = set()
         for a in people_here:
             for row in (by_auid.get(a.get("auid") or "") or []):
-                eids.add(row[0])
+                eids.add(_pk(row))
         programs.append({
             "name": rec["name"], "college": rec["college"],
             "people": len(people_here),

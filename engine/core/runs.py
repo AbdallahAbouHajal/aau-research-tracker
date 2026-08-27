@@ -116,6 +116,11 @@ def build_slots(papers, log=print):
                     p.get("doc_afids"))
                 slots.append({
                     "eid": eid, "doi": p.get("doi"), "year": p.get("year"),
+                    # The paper carries a title and the slot dropped it, so
+                    # every row the Authors screen renders had an empty first
+                    # cell -- 1,584 of 1,584 published blank -- and anything
+                    # that deduplicated on it collapsed to a single entry.
+                    "title": p.get("title"),
                     "journal": p.get("journal"), "doctype": p.get("doctype"),
                     "cited_by": p.get("cited_by"),
                     "author_name": nm, "scopus_auid": ids[i] if i < len(ids) else "",
@@ -151,6 +156,7 @@ def build_slots(papers, log=print):
                 continue
             slots.append({
                 "eid": eid, "doi": p.get("doi"), "year": p.get("year"),
+                "title": p.get("title"),
                 "journal": p.get("journal"), "doctype": p.get("doctype"),
                 "cited_by": p.get("cited_by"),
                 "author_name": "", "scopus_auid": aid,
