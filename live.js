@@ -409,6 +409,33 @@
     });
   }
 
+  /* Only whoever looks after the repository can start a run: GitHub will not
+   * let a web page do it without a credential, and a credential on a public
+   * page is a credential everyone has. Anyone else does not need one -- the
+   * census refreshes itself weekly and they are reading the result. So say
+   * that first, and offer the token only to the person it is actually for. */
+  function explainSchedule(component, options) {
+    var st = window.__AAU.state || {};
+    var when = st.generated ? st.generated.slice(0, 10) : 'recently';
+    modal({
+      width: 600,
+      eyebrow: 'Run',
+      title: 'This updates itself every Monday',
+      sub: 'The census is rebuilt on GitHub at 07:00 Gulf time each Monday, and '
+        + 'again whenever it is asked to. The figures on screen are from the run '
+        + 'on ' + when + '. Nothing is needed from you to read them.',
+      choices: [
+        {
+          label: 'I look after this project — let me start a run now',
+          hint: 'Needs a GitHub token once, kept in this browser only. If you '
+            + 'are not the person who set this up, this is not for you.',
+          go: function () { askToken(function () { dispatch(options, component); }); },
+        },
+      ],
+      cancelLabel: 'Close',
+    });
+  }
+
   function dispatch(options, comp) {
     var years = (options.years || []).join(',');
     badge('asking GitHub to run…', G);
@@ -503,8 +530,14 @@
               window.__AAU.status.running = false;
               if (component) component.setState({ running: false });
               if (run.conclusion === 'success') {
-                badge('run finished · reloading', G);
-                setTimeout(function () { location.reload(); }, 2500);
+                /* Reloading dropped the reader back on the welcome screen,
+                 * which reads as "it did not work". Pull the new data in
+                 * place and stay on the dashboard where the result is. */
+                badge('run finished · loading the new figures', G);
+                refresh(component).then(function () {
+                  window.__AAU.status = null;
+                  if (component) component.setState({ screen: 'dash', running: false });
+                }).catch(function () { location.reload(); });
               } else {
                 badge('run ' + (run.conclusion || 'failed'), RED);
               }
@@ -516,7 +549,7 @@
 
   function startRun(component, options) {
     if (!window.__AAU.canRun) {          // published page -> run it on GitHub
-      if (!token()) { askToken(function () { dispatch(options, component); }); return; }
+      if (!token()) { explainSchedule(component, options); return; }
       dispatch(options, component);
       return;
     }

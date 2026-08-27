@@ -42,6 +42,40 @@ def build(run_id=None):
         rs.get("years") or []
 
     sug = [a for a in vm["authors"] if a.get("suggest")]
+
+    # A run recorded its own findings as it went. An older run did not, so
+    # they are derived from the same figures the dashboard shows -- never
+    # invented, and never the mockup sentences, which contradicted the tiles.
+    found = blob.get("findings") or []
+    if not found:
+        st = vm["stats"]
+        n_col = sum(1 for c in vm["colleges"] if c.get("people"))
+        found = [{"text": "The roster holds %s people across %d colleges."
+                          % (f"{st.get('roster_people', 0):,}", n_col),
+                  "kind": "ok"},
+                 {"text": "%s of them resolved to a Scopus author record."
+                          % f"{st.get('resolved', 0):,}", "kind": "ok"}]
+        if st.get("review"):
+            found.append({"text": "%d names match more than one author record "
+                                  "and are waiting on the Roster screen."
+                                  % st["review"], "kind": "warn"})
+        found.append({"text": "The window holds %s papers across %s people, "
+                              "%s of them on the roster."
+                              % (f"{st.get('papers', 0):,}",
+                                 f"{st.get('authors', 0):,}",
+                                 f"{st.get('faculty', 0):,}"), "kind": "ok"})
+        if st.get("swept_in"):
+            found.append({"text": "%d papers were added that the university "
+                                  "tag had missed." % st["swept_in"],
+                          "kind": "ok"})
+        if st.get("rejected"):
+            found.append({"text": "%d were thrown out because no author on "
+                                  "them printed an Al Ain University address."
+                                  % st["rejected"], "kind": "bad"})
+        if sug:
+            found.append({"text": "%d people printed an AAU address but are "
+                                  "not on the roster." % len(sug),
+                          "kind": "warn"})
     return {
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "run": rid,
@@ -51,7 +85,7 @@ def build(run_id=None):
         "stats": dict(vm["stats"], suggested=len(sug)),
         "suggestions": sug,
         "delta": blob.get("delta") or {},
-        "findings": blob.get("findings") or [],
+        "findings": found,
         "source": "github-actions" if os.environ.get("GITHUB_ACTIONS")
                   else "local",
     }

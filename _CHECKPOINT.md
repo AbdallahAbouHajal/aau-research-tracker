@@ -2,146 +2,165 @@
 
 Two folders, one product:
 
-    ~/Downloads/AAU_Tracker_Site/       the interface (design + build + deploy)
-    ~/Downloads/AAU_Research_Tracker/   the engine (Scopus, roster, census)
+    ~/Downloads/AAU_Tracker_Site/       the interface (design + build + deploy + engine copy)
+    ~/Downloads/AAU_Research_Tracker/   the engine (Scopus, roster, census) — the master copy
 
-## Run it for real
+    live      https://abdallahabouhajal.github.io/aau-research-tracker/
+    repo      https://github.com/AbdallahAbouHajal/aau-research-tracker
+
+## Run it locally
 
     cd ~/Downloads/AAU_Research_Tracker
-    open "Launch AAU Tracker.command"          # or: /usr/bin/python3 app.py
+    open "Launch AAU Tracker.command"        # or /usr/bin/python3 app.py
 
-Opens `127.0.0.1:8770`. Press **Run now** and it asks what kind of run this is,
-then does it. A real 2025+2026 run took **1m56s** and reported:
+## Run it on GitHub
 
-    1,330 papers from the university tag
-    +8 found by sweeping each author that the tag had missed
-    -51 thrown out: no author on them printed an Al Ain University address
-    = 1,338 papers | 511 people | 1,257 faculty author-rows
-    64 people published with an AAU address but are not on the roster
-    2 new papers since the previous run
+Actions → **Refresh the census** → Run workflow. Or the page's own **Run now**,
+which dispatches the same workflow (needs a token — see below).
+Schedule: `0 3 * * 1` = **Mondays 03:00 UTC = 07:00 Gulf**. Workflow state is
+`active`; the first scheduled firing is Mon 31 Aug 2026 (every run so far was
+manual). GitHub disables cron on repos with no pushes for 60 days.
+
+Timing, measured on the runner: was 13.7 min, of which "Find each person in
+Scopus" was 638 s. Those 38 profile lookups are now marked `profile_checked` in
+`engine/data/roster.json` and skipped, so **a run is ~3 min**. Pass
+`force_profiles` to recheck them.
+
+---
+
+# OPEN — the bug being chased when this checkpoint was written
+
+**Everything the published page derives from a run's `slots` is empty when the
+run happens on GitHub.** On the deployed `docs/data/state.json`
+(`source: github-actions`, generated 08:07Z):
+
+    papers map keys : 0        -> the Authors screen's paper table renders nothing
+    every college   : papers 0 -> the donut is one flat ring
+    people counts   : correct  -> those come from the roster, not slots
+    stats.papers    : 1338     -> correct, comes from the run's stats blob
+
+Locally the same code gives 12 papers for Tabash and 325/303/274/… per college,
+and a node harness on the built page returns 12 paper rows. So the code path is
+right and something about the CI run's saved blob is not.
+
+**Chain to check, in order:**
+1. `run_stage.py` stage 5 sets `b["slots"]` (~30k rows) and writes
+   `AAU_STAGE_FILE` (`engine/.stage.json`). Check it was written whole.
+2. Stage 6 reads it back, calls `RUNS.roster(b["slots"])`, then
+   `RUNS.save(rid, {... "slots": …, "roster": …})`.
+3. `runs.results()` builds the college rollup from `b["roster"]` — **not** from
+   slots. An empty roster gives 0 papers everywhere.
+4. `viewmodel._papers_from_run(run_id)` reads `blob["slots"]` keyed on
+   `scopus_auid` (it read `auid` once; that bug is fixed).
+
+Fastest next step: print `len(b["slots"])` in stage 5 and `len(roster)` in
+stage 6, run the workflow, read the log. If slots survive stage 5 but the
+roster is empty, the fault is in `RUNS.roster` under CI conditions.
+
+# OPEN — the rest of the current request
+
+- **The dashboard mixes live tiles with mockup text.** "No run yet" sits above
+  "27 August at 01:06 · took 5 minutes 20 seconds", six green "Done" bars, and
+  findings quoting 1,336 / 511 / 161 / 67 while the tiles say 1,338 / 536 / 169.
+  Fix `runTitle`, `runMeta`, the idle stage state, `findings` (read
+  `window.__AAU.state.findings` — already populated) and "SINCE THE LAST RUN"
+  (read `window.__AAU.state.delta`).
+- **Donut centre still reads 1,351**; the real sum is 1,294. Make it live.
+- **Header chips** "Window 2025–2026" / "Roster 2026-08-27" are hardcoded.
+- **`__` placeholders during a run** (requested): blank every figure whose
+  producing stage has not finished, fill as stages complete. Stage → figure:
+  1 roster_people · 2 resolved/review · 3 window papers · 4 swept_in/rejected/
+  papers · 5 authors/faculty/colleges · 6 delta/suggestions.
+  NOTE: GitHub exposes step *status*, not intermediate numbers, so on the
+  published page the figures land together at the end. The local app can fill
+  progressively because `/api/run/status` carries partial stats.
+- **Staff profile link** must open a new tab (`source` line 385, an `<a>`).
+- **"Show all"** on the papers table has no handler.
+- Workflow `wf_bb46d4f6-1ec` was finding exact patch anchors for these; journal
+  at `subagents/workflows/wf_bb46d4f6-1ec/journal.jsonl`.
+
+# OPEN — the professor cannot run it, and has no GitHub account
+
+A public static page cannot hold a credential: anything embedded is public, so
+only someone with a GitHub token can press Run now. The reader is now shown
+"this updates itself every Monday" instead of a token form.
+
+**If he must be able to trigger it: a tiny free proxy.** A Cloudflare Worker
+(or Vercel function) holding the GitHub token as a secret plus a shared
+passphrase. The page asks for the passphrase, the Worker checks it and calls
+GitHub. He needs no GitHub account and installs nothing. One free Cloudflare
+account and ~30 lines. Not built yet — awaiting the go-ahead.
+
+---
 
 ## How the interface stays exactly as designed
 
 `build.py` applies **named patches** to an untouched copy of the Claude Design
-bundle. Nothing is edited in place, so the design cannot drift — delete a patch
-and that change is gone. `python3 build.py --check` verifies without writing.
+bundle; `patches_live.py` holds the ones that make it functional. Nothing is
+edited in place, so the design cannot drift. `python3 build.py --check` verifies
+without writing.
 
-**Editing the bundle by hand will break it.** The real page is a JSON string on
-line 382 and must be re-encoded exactly:
+**Three traps, each hit at least once:**
 
-    json.dumps(text, ensure_ascii=False).replace("</", "<\\u002F")
+1. **Re-encoding.** The real page is a JSON string on line 382 and must be
+   written back exactly:
+   `json.dumps(t, ensure_ascii=False).replace("</", "<\\u002F")`.
+   `ensure_ascii=False` (em-dashes ship raw) and the `</` escape (an inner
+   `</script>` closes the host tag early). `encode()` asserts itself
+   byte-identical against the pristine original before any patch runs.
+2. **Where the bridge goes.** `live.js` must be injected *before*
+   `<script type="text/x-dc">`, never beside `class Component` — that class
+   lives inside that script tag, and a nested `<script>` kills the page.
+3. **`min-height` on the shell.** Setting it leaves every `data-rise` child
+   stuck at the `uiRise` animation's `opacity: 0` start frame: the app lays out
+   with real heights and is completely invisible. Also, this runtime renders
+   each `sc-if` as its own root, so the shell only ever contains the header —
+   width caps belong on the **outer wrapper**.
 
-`ensure_ascii=False` (em-dashes ship raw) and the `</` escape (an inner
-`</script>` would close the host tag early). `encode()` asserts itself
-byte-identical against the pristine original before any patch is applied.
+**Verify every build by screenshot**, not by assertions. `node --check` and DOM
+assertions both passed on a page that rendered nothing:
 
-**A second trap, hit and fixed:** the bridge must NOT be injected next to
-`class Component` — that class lives inside `<script type="text/x-dc">`, so a
-nested `<script>` there kills the page. It goes immediately *before* that block.
-`node --check` on both extracted scripts is the gate.
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless \
+      --disable-gpu --no-sandbox --window-size=1680,1000 --virtual-time-budget=10000 \
+      --screenshot=/tmp/x.png "http://127.0.0.1:8899/index.html"
 
-## What the adversarial review found (3 isolated panels, 15 objections)
-
-Fixed:
-- fake mac window chrome reading **localhost:8765** on a github.io page — gone,
-  the app fills the viewport
-- app booted `running: true`: a spinner stuck at "Stage 4 of 6" forever, a CSS
-  animation dressed as live computation — now starts idle
-- the one remaining welcome chip was `text-align:left` inside a centred row
-- the 1308px flowchart canvas clipped its right edge below ~1360px with no
-  scrollbar — now scrolls
-- caption grey `#6B7B71` measured **4.47:1** on white, under the 4.5:1 WCAG AA
-  floor, and carries nearly every caption → `#63736A` at 5.01:1
-- **six controls styled exactly like working ones had no onClick at all**:
-  search, the three filter chips, both export buttons, the review-queue
-  decision buttons, import-roster. All wired.
-
-## Your idea, built: "we found another one — add them?"
-
-Every run now ends by asking who printed an AAU address but is **not** on the
-roster. They appear as a banner on the Roster screen; each row offers **Add** or
-**Not faculty**, and a dismissal sticks (`data/not_faculty.json`).
-
-This came out of a real error: **Ghaleb El Refae, AAU's chancellor, ~50 papers,
-was filed as "student or external"** purely because the directory scrape missed
-him. The rule does not bend — off the roster means outside faculty — but the
-omission is now put in front of you instead of quietly standing.
-
-## Data plumbing
-
-`core/viewmodel.py` turns the census into the three constants the interface
-already reads (COLLEGE_DATA / AUTHORS / PAPERS). The bridge mutates those arrays
-**in place** — the binding is const, the contents are not — then re-renders. No
-style is touched.
-
-Two things it must keep doing:
-- match the census to the roster with `translit.compatible()`, not exact names.
-  Keyed on the exact name, "Ghaleb A. El Refae" never meets roster "Ghaleb Awad
-  El Refae" and 80 people match instead of 169.
-- use the roster's **real** eight colleges, not the mockup's. AAU runs
-  Education-and-Humanities as ONE college and Dentistry is real; the mockup split
-  the first and omitted the second.
-
-## Live
-
-    interface preview  https://abdallahabouhajal.github.io/aau-research-tracker/
-    repo               https://github.com/AbdallahAbouHajal/aau-research-tracker
-
-The published page shows **real data** -- 1,338 papers, 536 authors, 14
-suggested additions -- read from `docs/data/state.json`, which the engine wrote.
-The badge names the date it was generated, so nobody mistakes last Monday's
-figures for this minute's.
+~25 KB = blank, ~100 KB+ = rendered.
 
 ## The engine on GitHub
 
-Pages serves files, not processes, so the engine cannot listen on the published
-site. It does not need to: it RUNS on GitHub Actions, on GitHub's machines.
+`engine/` holds the whole engine, including `vendor/common.py` — the census
+module that owns the AAU affiliation rule, **vendored not reimplemented**, so
+the rule stays in one file. Paths and keys come from env (`AAU_DATA`,
+`AAU_CACHE`, `SCOPUS_KEYS_FILE`). Verified: with `AAU_CENSUS_DIR=/nonexistent`
+it still builds 536 authors and 170 settled AU-IDs from repo data alone.
 
-    .github/workflows/refresh.yml   Monday 03:00 UTC + "Run workflow" on demand
-    engine/                         the whole engine, vendored
-    docs/data/state.json            what it wrote last time -- the page reads this
+**Not committed: the raw Scopus export.** A bulk export carries Elsevier
+licensing terms and held emails. The Action refetches from the API. Only
+derived metrics ship (`engine/data/people_metrics.json`, 133 KB, no emails).
 
-**One thing is needed before the Action can run:** add a repository secret
-`SCOPUS_KEYS` (Settings > Secrets and variables > Actions) holding the keys as a
-JSON array, e.g. `["<32 hex>", "<32 hex>", ...]`. Keys are never committed; the
-workflow writes them to a temp file and deletes it before pushing.
+**The commit step must never rebase.** These files are generated, not authored;
+a rebase hits the guaranteed conflict on `state.json`, leaves markers and
+reports success — a whole run silently discarded. It parks its output,
+hard-resets onto main, restores, pushes. A final step reads `state.json` back
+off main and fails loudly if the published page is not serving this run.
 
-`engine/vendor/common.py` is the census module that owns the AAU affiliation
-rule -- **vendored, not reimplemented**, so the rule that decides who counts as
-AAU still lives in exactly one file. Paths and keys come from env
-(`AAU_DATA`, `AAU_CACHE`, `SCOPUS_KEYS_FILE`), so the same code runs on a
-laptop and on a runner. Verified: with `AAU_CENSUS_DIR=/nonexistent` the engine
-still builds 536 authors and 170 settled AU-IDs from repo data alone.
+## Data rules that must not regress
 
-**Deliberately not committed: the raw Scopus export.** A bulk export carries
-Elsevier licensing terms and contained emails. The Action refetches from the
-API, which is what the keys license. Only derived metrics ship
-(`engine/data/people_metrics.json`, 133 KB, no emails).
+- Match the census to the roster with `translit.compatible()`, never exact
+  names. Keyed exactly, "Ghaleb A. El Refae" never meets "Ghaleb Awad El Refae"
+  and 80 people match instead of 169.
+- Use the roster's **real** eight colleges. AAU runs Education-and-Humanities as
+  ONE college and Dentistry is real; the mockup split the first and omitted the
+  second.
+- Off the roster means outside faculty — the rule does not bend. But people
+  publishing like staff who are missing from the roster are surfaced as
+  suggestions rather than buried. That is how El Refae, the chancellor with ~50
+  papers, was found filed as a student.
 
-## The blank-screen bug, and how it was found
+## Security
 
-Every tab except Welcome rendered blank. Three things made it hard: the markup
-was balanced, `renderVals()` returned cleanly for all seven screens under a node
-harness, and the content was present in the DOM with real element heights.
-
-It was invisible, not missing. `min-height:100vh` on the shell div leaves every
-`data-rise` child stuck on the `uiRise` animation's `opacity: 0` start frame --
-the dc-runtime does its own min-height bookkeeping on that element. Found by
-bisecting the ten UI patches one at a time with headless Chrome screenshots
-(`--screenshot`, file size as the signal: ~25 KB blank vs ~99 KB rendered).
-
-Two rules came out of it:
-- **Never set min-height on the shell div.** Full height goes on the outer
-  wrapper.
-- **Screenshot every build.** `node --check` and DOM assertions both passed on a
-  page that was completely invisible.
-
-## Still open
-
-- The `SCOPUS_KEYS` secret is not set yet, so the Action cannot run until it is.
-- Chrome extension is unpaired (this CLI signed into a different claude.ai
-  account); builds are verified with headless Chrome screenshots instead, which
-  is what caught the blank-screen bug.
-- `College of Dentistry` shows 0 people: its three staff have no Scopus record
-  in the window, which is correct but looks empty.
-- Docker image is written but unbuilt — no docker on this machine to test it.
+- The download route uses `os.path.commonpath`, not `startswith` — the latter is
+  a prefix test and served `/downloads/../../docsX/secret`. Verified with a
+  canary file in exactly such a sibling directory.
+- The workflow passes `github.event.inputs` through `env:`, never interpolated
+  into a shell command.
