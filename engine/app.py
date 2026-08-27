@@ -349,10 +349,18 @@ class Handler(BaseHTTPRequestHandler):
 
     def _static(self, path):
         """Serve the generated workbook, chart pack and deck."""
-        base = DOCS
+        base = os.path.abspath(DOCS)
         target = os.path.abspath(os.path.join(base, path.lstrip("/")))
-        # never let a crafted path climb out of the published folder
-        if not target.startswith(base) or not os.path.isfile(target):
+        # Never let a crafted path climb out of the published folder.
+        # startswith() is a PREFIX test, not a directory boundary: with base
+        # ".../docs", a request for /downloads/../../docsX/secret resolves to
+        # ".../docsX/secret", which starts with base and would have been served.
+        # commonpath compares real path components instead.
+        try:
+            inside = os.path.commonpath([target, base]) == base
+        except ValueError:            # different drives on Windows
+            inside = False
+        if not inside or not os.path.isfile(target):
             return self.send_error(404)
         ext = os.path.splitext(target)[1].lower()
         mime = {".xlsx": "application/vnd.openxmlformats-officedocument."
