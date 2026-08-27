@@ -63,7 +63,7 @@ PATCHES = [
     ("authors: the search box actually searches",
      '<input type="text" placeholder="Search 511 people…" style="border:0;',
      '<input type="text" placeholder="{{ searchHint }}" '
-     'value="{{ q }}" onInput="{{ onSearch }}" style="border:0;'),
+     'value="{{ q }}" sc-camel-on-input="{{ onSearch }}" style="border:0;'),
 
     ("authors: filter chips carry live counts and a handler",
      "    const authorFilters = [\n"
@@ -89,7 +89,7 @@ PATCHES = [
     ("authors: the filter chip is a button that does something",
      '<button type="button" style="background:{{ f.bg }};color:{{ f.fg }};'
      'border:1px solid {{ f.border }};border-radius:14px;',
-     '<button type="button" onClick="{{ f.pick }}" '
+     '<button type="button" sc-camel-on-click="{{ f.pick }}" '
      'style="background:{{ f.bg }};color:{{ f.fg }};'
      'border:1px solid {{ f.border }};border-radius:14px;'),
 
@@ -109,7 +109,7 @@ PATCHES = [
     # ---- exports write real files -----------------------------------------
     ("exports: each card's button exports that file",
      '<button type="button" style="margin-top:16px;background:{{ e.btnBg }};',
-     '<button type="button" onClick="{{ e.go }}" '
+     '<button type="button" sc-camel-on-click="{{ e.go }}" '
      'style="margin-top:16px;background:{{ e.btnBg }};'),
 
     ("exports: 'Export all three' does all three",
@@ -117,7 +117,7 @@ PATCHES = [
      'border:0;border-radius:6px;padding:12px 24px;font-family:Archivo,'
      'sans-serif;font-size:14px;font-weight:700;cursor:pointer;'
      'white-space:nowrap">Export all three',
-     '<button type="button" onClick="{{ exportAll }}" '
+     '<button type="button" sc-camel-on-click="{{ exportAll }}" '
      'style="background:{{ accent }};color:#ffffff;'
      'border:0;border-radius:6px;padding:12px 24px;font-family:Archivo,'
      'sans-serif;font-size:14px;font-weight:700;cursor:pointer;'
@@ -127,7 +127,7 @@ PATCHES = [
     ("review: the decision buttons decide",
      '<button type="button" style="background:{{ c.btnBg }};color:{{ c.btnFg }};'
      'border:1px solid {{ c.btnBorder }};border-radius:5px;',
-     '<button type="button" onClick="{{ c.go }}" '
+     '<button type="button" sc-camel-on-click="{{ c.go }}" '
      'style="background:{{ c.btnBg }};color:{{ c.btnFg }};'
      'border:1px solid {{ c.btnBorder }};border-radius:5px;'),
 
@@ -187,15 +187,17 @@ PATCHES = [
     ("dashboard: the run caption reflects the real run",
      "      runTitle: running ? 'Run in progress' : 'Last run finished',",
      "      runTitle: running ? 'Run in progress'\n"
-     "        : ((window.__AAU && window.__AAU.status) ? 'Last run finished'\n"
-     "           : (window.__AAU && window.__AAU.live ? 'No run yet' "
-     ": 'Last run finished')),"),
+     "        : ((window.__AAU && (window.__AAU.status\n"
+     "            || (window.__AAU.state && window.__AAU.state.generated)))\n"
+     "           ? 'Last run finished'\n"
+     "           : (window.__AAU && window.__AAU.live ? 'No run yet'\n"
+     "              : 'Last run finished')),"),
 
     # ---- import roster CSV -------------------------------------------------
     ("roster: 'Import roster CSV' opens a file picker",
      '<button type="button" style="background:#ffffff;color:{{ accent }};'
      'border:1px solid #C3D6CA;border-radius:6px;padding:10px 17px;',
-     '<button type="button" onClick="{{ importCsv }}" '
+     '<button type="button" sc-camel-on-click="{{ importCsv }}" '
      'style="background:#ffffff;color:{{ accent }};'
      'border:1px solid #C3D6CA;border-radius:6px;padding:10px 17px;'),
 ]
@@ -215,7 +217,7 @@ PATCHES = [
 SUGGEST_BANNER = (
     '\n    <sc-if value="{{ hasSuggestions }}" '
     'hint-placeholder-val="{{ true }}">\n'
-    '    <button type="button" onClick="{{ openSuggestions }}" data-rise '
+    '    <button type="button" sc-camel-on-click="{{ openSuggestions }}" data-rise '
     'style="display:flex;width:100%;text-align:left;align-items:center;'
     'gap:14px;background:#ffffff;border:1px solid #C3D6CA;'
     'border-left:4px solid {{ accent }};border-radius:8px;'
@@ -264,6 +266,44 @@ VALS = r"""
         + 'publish like faculty, but the roster does not list them. '
         + 'Until you add them they count as outside faculty.',
       openSuggestions: () => window.__AAU && window.__AAU.showSuggestions(this),
+      pieTotal: pieTotal.toLocaleString(),
+      windowChip: (S_ && S_.years && S_.years.length)
+        ? ('Window ' + (S_.years.length > 1
+            ? S_.years[0] + '\u2013' + S_.years[S_.years.length - 1]
+            : String(S_.years[0])))
+        : 'Window 2025\u20132026',
+      asOfChip: (() => {
+        const g = (window.__AAU && window.__AAU.state || {}).generated;
+        return g ? ('As of ' + String(g).slice(0, 10)) : 'Roster 2026-08-27';
+      })(),
+      deltaLine: (() => {
+        const A = window.__AAU;
+        if (!A || !A.live) return 'Nothing changed. No new papers, no new people.';
+        const d = (A.state || {}).delta || null;
+        if (!d) return 'No previous run to compare against yet.';
+        if (d.first_run) return 'This was the first run, so there is nothing to compare it with.';
+        const bits = [];
+        const n = (v) => Number(v || 0);
+        if (n(d.new_papers)) bits.push(n(d.new_papers).toLocaleString()
+          + (n(d.new_papers) === 1 ? ' new paper' : ' new papers'));
+        if (n(d.new_people)) bits.push(n(d.new_people).toLocaleString()
+          + (n(d.new_people) === 1 ? ' author never seen before' : ' authors never seen before'));
+        if (n(d.returning)) bits.push(n(d.returning).toLocaleString() + ' publishing again');
+        if (n(d.updated)) bits.push(n(d.updated).toLocaleString() + ' updated');
+        if (!bits.length) return 'Nothing changed. No new papers, no new people.';
+        return bits.join(', ') + (d.since ? ' since the run on ' + String(d.since).slice(0, 8) : '') + '.';
+      })(),
+      moreLabel: (() => {
+        const shown = (PAPERS[(AUTHORS.find(a => a.key === this.state.author)
+          || AUTHORS[0] || {}).key] || []).length;
+        const tot = ((AUTHORS.find(a => a.key === this.state.author)
+          || AUTHORS[0] || {}).papers) || 0;
+        if (!shown) return tot
+          ? 'The paper list was not in the last run\\u2019s output.'
+          : 'No papers in this window.';
+        const more = Math.max(0, tot - shown);
+        return more ? more.toLocaleString() + ' more papers' : 'That is all of them.';
+      })(),
       rosterHead: (S_ ? S_.roster_people.toLocaleString() + ' people across '
         + COLLEGE_DATA.length + ' colleges' : '208 people across eight colleges'),
       rosterSub: (S_ ? S_.resolved + ' of the ' + S_.academics
@@ -520,6 +560,72 @@ ROUND2 = [
      ">Six stages, roster first, Scopus second</div>",
      ">How this works</div>"),
 
+    # ---- the papers table showed nothing, and could show the WRONG person --
+    # Two faults, one line apart. "more" was p.papers - 6, arithmetic on the
+    # design-time placeholder count, so it said "93 more papers" whether six
+    # rows rendered or none. And the || PAPERS.tkhayneh fallback printed one
+    # professor's publications under another person's name whenever the map
+    # had no entry for them -- worse than an empty table, because it is wrong
+    # rather than absent.
+    ("authors: count the rows actually shown, and never borrow another person's",
+     "S.find(a => a.key === this.state.author) || AUTHORS[0];\n"
+     "    const pick = {",
+     "S.find(a => a.key === this.state.author) || AUTHORS[0];\n"
+     "    const myRows = (PAPERS[p.key] || []);\n"
+     "    const pick = {"),
+
+    ("authors: 'more' is what is not on screen",
+     "auid: p.auid, papers: p.papers, more: p.papers - 6,",
+     "auid: p.auid, papers: p.papers,\n"
+     "      more: Math.max(0, (p.papers || 0) - myRows.length),\n"
+     "      hasRows: myRows.length > 0,"),
+
+    ("authors: rows come from this author only",
+     "    const rows = PAPERS[p.key] || PAPERS.tkhayneh || [];",
+     "    const rows = myRows;"),
+
+    ("authors: say nothing rather than '0 more papers'",
+     ">{{ pick.more }} more papers</div>",
+     ">{{ pick.moreLabel }}</div>"),
+
+    # ---- the donut divided by zero -----------------------------------------
+    # With every college at 0, pieTotal is 0 and share is 0/0 = NaN, so each
+    # arc got stroke-dasharray="NaN 628.32" -- invalid, and the ring rendered
+    # as one flat band. That is what the flat grey donut in the screenshot was.
+    ("donut: a total of zero must not become NaN",
+     "      const share = r[1] / pieTotal;",
+     "      const share = pieTotal > 0 ? (r[1] / pieTotal) : 0;"),
+
+    # The design never interpolates a text node inside SVG -- only attributes,
+    # and the runtime does not support it: {{ pieTotal }} in a <text> rendered
+    # empty and the donut lost its centre entirely. Both centre labels move to
+    # an HTML overlay, where every other live figure on this page already is.
+    ("donut: blank the two static SVG centre labels",
+     '<text x="120" y="114" text-anchor="middle" font-family="Archivo, '
+     'sans-serif" font-size="40" font-weight="800" fill="#1A1A1A">1,351</text>\n'
+     '              <text x="120" y="140" text-anchor="middle" '
+     'font-family="Archivo, sans-serif" font-size="18" font-weight="600" '
+     'fill="#63736A">CREDITS</text>',
+     ''),
+
+    ("donut: open an overlay wrapper around the ring",
+     '<svg width="176" height="176" sc-camel-view-box="0 0 240 240" '
+     'style="display:block;flex:0 0 auto">',
+     '<div style="position:relative;flex:0 0 auto;width:176px;height:176px">'
+     '<div style="position:absolute;inset:0;display:flex;'
+     'flex-direction:column;align-items:center;justify-content:center;'
+     'pointer-events:none;text-align:center">'
+     '<div style="font-size:28px;font-weight:800;letter-spacing:-.02em;'
+     'line-height:1;color:#1A1A1A">{{ pieTotal }}</div>'
+     '<div style="font-size:11.5px;font-weight:600;letter-spacing:.06em;'
+     'margin-top:4px;color:#63736A">CREDITS</div></div>'
+     '<svg width="176" height="176" sc-camel-view-box="0 0 240 240" '
+     'style="display:block">'),
+
+    ("donut: close that wrapper after the ring",
+     '</svg>\n            <div style="flex:1;min-width:0">',
+     '</svg></div>\n            <div style="flex:1;min-width:0">'),
+
     # ---- the roster header repeated stale figures --------------------------
     ("roster: header figures come from the run",
      '<div style="font-size:25px;font-weight:700;letter-spacing:-.02em;'
@@ -533,4 +639,56 @@ ROUND2 = [
      'authors.</div>',
      '<div style="font-size:13.5px;color:#63736A;margin-top:5px">'
      '{{ rosterSub }}</div>'),
+    # ---- the run caption claimed a run that never happened -----------------
+    ("dashboard: the run caption names a real moment or says nothing",
+     "      runMeta: running\n"
+     "        ? 'Started 06:00 \u00b7 roster 2026-08-27 \u00b7 about three "
+     "minutes left'\n"
+     "        : '27 August at 01:06 \u00b7 took 5 minutes 20 seconds',",
+     "      runMeta: (function () {\n"
+     "        var A = window.__AAU;\n"
+     "        if (!A || !A.live) return running\n"
+     "          ? 'Started 06:00 \u00b7 roster 2026-08-27 \u00b7 about three "
+     "minutes left'\n"
+     "          : '27 August at 01:06 \u00b7 took 5 minutes 20 seconds';\n"
+     "        if (running) return A.canRun ? 'Running on this machine'\n"
+     "                                     : 'Running on GitHub';\n"
+     "        var g = (A.state || {}).generated;\n"
+     "        if (!g) return 'not run from this page yet';\n"
+     "        var d = new Date(g);\n"
+     "        if (isNaN(d.getTime())) return 'last run ' + String(g).slice(0, 10);\n"
+     "        return d.toLocaleDateString(undefined,\n"
+     "                 { day: 'numeric', month: 'long' })\n"
+     "          + ' at ' + d.toLocaleTimeString(undefined,\n"
+     "                 { hour: '2-digit', minute: '2-digit' });\n"
+     "      })(),"),
+
+    ("dashboard: findings come from the run, finished or in flight",
+     "    const liveF_ = (window.__AAU && window.__AAU.status\n"
+     "      && window.__AAU.status.findings) || null;",
+     "    const liveF_ = (window.__AAU && ((window.__AAU.status\n"
+     "      && window.__AAU.status.findings\n"
+     "      && window.__AAU.status.findings.length\n"
+     "      && window.__AAU.status.findings)\n"
+     "      || (window.__AAU.state && window.__AAU.state.findings))) || null;"),
+
+    ("dashboard: the delta is read, not asserted",
+     '<div style="font-size:14.5px;color:#3A4A41;line-height:1.45">Nothing '
+     'changed. No new papers, no new people.</div>',
+     '<div style="font-size:14.5px;color:#3A4A41;line-height:1.45">'
+     '{{ deltaLine }}</div>'),
+
+    ("header: the window chip is the window the run covered",
+     "<span>Window 2025\u20132026</span>",
+     "<span>{{ windowChip }}</span>"),
+
+    ("header: the second chip names when the figures are from",
+     "<span>Roster 2026-08-27</span>",
+     "<span>{{ asOfChip }}</span>"),
+    # The staff profile navigated the whole app away in the same tab: the
+    # reader lost the screen they were reading to look at one link.
+    ("authors: the staff profile opens in a new tab",
+     '<a href="{{ pick.url }}" style="font-size:13px;font-weight:600;',
+     '<a href="{{ pick.url }}" target="_blank" rel="noopener noreferrer" '
+     'style="font-size:13px;font-weight:600;'),
 ]
