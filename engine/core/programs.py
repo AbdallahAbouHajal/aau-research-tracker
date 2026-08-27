@@ -141,7 +141,42 @@ def harvest(log=print, pause=0.4):
                 out["by_slug"].setdefault(s, []).append(name)
             log("      %-58s %d" % (name[:58], len(slugs)))
             time.sleep(pause)
+    _fill_single_programme_colleges(out, log)
     return out
+
+
+def _fill_single_programme_colleges(out, log=print):
+    """A college with ONE programme that tags nobody teaches it anyway.
+
+    Dentistry and Nursing each run exactly one programme and tag no staff to
+    it -- the filter returns nobody on either campus, so the whole college
+    reads as having no programme at all. With one programme there is nothing
+    to choose between: everyone the college lists as academic staff teaches
+    it. That is inference, not AAU's data, so it is recorded as `assumed` and
+    the interface says so rather than passing it off as published.
+
+    Written as a rule, not a list of names, so it keeps working when those
+    colleges hire someone -- and stops applying the moment AAU starts tagging.
+    """
+    for college, info in out["colleges"].items():
+        progs = [p for p in out["programs"] if p["college"] == college]
+        if len(progs) != 1:
+            continue
+        rec = progs[0]
+        if rec["staff"]:
+            continue                      # AAU tagged them; leave it alone
+        listed = info.get("staff") or []
+        if not listed:
+            continue
+        rec["staff"] = list(listed)
+        rec["assumed"] = True
+        rec["assumed_why"] = ("the college runs one programme and tags nobody "
+                              "to it, so everyone it lists as academic staff "
+                              "is taken to teach it")
+        for sl in listed:
+            out["by_slug"].setdefault(sl, []).append(rec["name"])
+        log("      %-58s %d (assumed: one programme, none tagged)"
+            % (rec["name"][:58], len(listed)))
 
 
 def load():

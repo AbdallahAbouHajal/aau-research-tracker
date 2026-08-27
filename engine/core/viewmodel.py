@@ -326,6 +326,12 @@ def build(roster_people=None, run_id=None):
             "people": len(people_here),
             "papers": len(eids),
             "tagged": len(rec.get("staff") or []),
+            # True when the tagging is MINE, not AAU's -- Dentistry and
+            # Nursing run one programme each and tag nobody to it, so their
+            # staff are assigned by inference. The card says so, because a
+            # number the reader cannot tell apart from published data is
+            # worse than no number.
+            "assumed": bool(rec.get("assumed")),
         })
 
     return {
@@ -346,13 +352,16 @@ def build(roster_people=None, run_id=None):
             # roster carries 48 lab supervisors, secretaries and admin
             # assistants, who have no programme by definition. Measured
             # against everyone it reads 147/208 and looks like a gap in the
-            # data; against academics it is 147/160, and the real gap is
-            # Dentistry and Nursing, who tag nobody.
+            # data; against academics it is 152/160. Dentistry and Nursing
+            # tag nobody, so their staff are assigned to the single programme
+            # each college runs and the card is marked `assumed`.
             "programs_total": len(prog_blob.get("programs") or []),
             "programs_tagged": sum(
                 1 for r in roster
                 if str(r.get("staff_type") or "").lower().startswith("acad")
                 and _slug(r.get("profile_url"), "").lower() in by_slug),
+            "programs_assumed": sum(1 for r in (prog_blob.get("programs") or [])
+                                    if r.get("assumed")),
             "academics_listed": sum(
                 1 for r in roster
                 if str(r.get("staff_type") or "").lower().startswith("acad")),
