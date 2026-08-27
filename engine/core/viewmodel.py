@@ -99,7 +99,9 @@ def _papers_from_run(run_id):
     out = collections.defaultdict(list)
     blob = (RUNS.load(run_id) or {}) if run_id else {}
     for s in (blob.get("slots") or []):
-        aid = str(s.get("auid") or "")
+        # the field is scopus_auid; reading "auid" silently produced an empty
+        # map on CI and every college showed zero papers
+        aid = str(s.get("scopus_auid") or s.get("auid") or "")
         if not aid:
             continue
         out[aid].append([(s.get("title") or "").strip(),
@@ -138,6 +140,11 @@ def _papers_by_author():
 
 def build(roster_people=None, run_id=None):
     """-> the whole view-model the interface consumes."""
+    if run_id is None:
+        try:
+            run_id = RUNS.latest_id()
+        except Exception:
+            run_id = None
     people = _people()
     by_auid = _papers_by_author() or _papers_from_run(run_id)
 
@@ -241,27 +248,42 @@ def build(roster_people=None, run_id=None):
             rev[c] += 1
     # papers are credited to every college represented on them
     # runs.results() returns colleges as a LIST of rollup dicts, not a map.
+    # Papers per college, best source first. A paper written across two
+    # colleges counts for both (whole counting, as the census does), so these
+    # sum to more than the paper count -- the interface says so on the chart.
+    #
+    #   1. the run's own rollup, when it has real figures
+    #   2. the run's author rows, counting distinct EIDs per college
+    #   3. the Scopus export, for a build with no run behind it
     res = RUNS.results(run_id) if run_id else None
     cols = (res or {}).get("colleges")
     if isinstance(cols, dict):
         cols = [dict(v, name=k) if isinstance(v, dict) else {"name": k, "papers": v}
                 for k, v in cols.items()]
-    if cols:
-        for row in cols:
-            if not isinstance(row, dict):
-                continue
+    for row in (cols or []):
+        if isinstance(row, dict):
             nm = row.get("name") or row.get("college") or ""
             if nm:
                 pap[nm] = row.get("papers") or row.get("n_papers") or 0
-    else:
+
+    if not sum(pap.values()) and run_id:
+        blob = RUNS.load(run_id) or {}
+        seen = collections.defaultdict(set)
+        for sl in (blob.get("slots") or []):
+            if sl.get("is_aau") and sl.get("college") and sl.get("eid"):
+                seen[sl["college"]].add(sl["eid"])
+        for c, e in seen.items():
+            pap[c] = len(e)
+
+    if not sum(pap.values()):
         seen = collections.defaultdict(set)
         for a in authors:
             if not a["college"] or not a["auid"]:
                 continue
             for row in (by_auid.get(a["auid"]) or []):
                 seen[a["college"]].add(row[0])
-        for c, s in seen.items():
-            pap[c] = len(s)
+        for c, e in seen.items():
+            pap[c] = len(e)
 
     colleges = [{"name": n, "people": per.get(n, 0), "papers": pap.get(n, 0),
                  "review": rev.get(n, 0), "color": col}

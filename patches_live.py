@@ -514,6 +514,13 @@ ROUND2 = [
     ("dashboard: 'Stage 4 of 6' counts the real stage",
      ">Stage 4 of 6</span>", ">Stage {{ stageNow }} of 6</span>"),
 
+    # Once live data replaces PAPERS, the hardcoded fallback key is gone. With
+    # a selected author who has no papers in the window, rows was undefined and
+    # renderVals threw -- taking the whole screen with it.
+    ("authors: an author with no papers is not a crash",
+     "    const rows = PAPERS[p.key] || PAPERS.tkhayneh;",
+     "    const rows = PAPERS[p.key] || PAPERS.tkhayneh || [];"),
+
     # ---- the roster header repeated stale figures --------------------------
     ("roster: header figures come from the run",
      '<div style="font-size:25px;font-weight:700;letter-spacing:-.02em;'
