@@ -109,25 +109,44 @@ jobs:
         run: |
           rm -f engine/config/scopus_keys.json engine/.stage.json
           test -s docs/data/state.json || { echo "::error::state.json is empty"; exit 1; }
+          python -c "import json;json.load(open('docs/data/state.json'));print('state.json parses')"
           ls -la docs/downloads/ || true
+
           git config user.name  "aau-tracker[bot]"
           git config user.email "aau-tracker@users.noreply.github.com"
-          git add docs/data/state.json docs/downloads
-          if git diff --cached --quiet; then
-            echo "nothing changed"
-          else
-            git commit -m "Census refresh $(date -u +%Y-%m-%d) [skip ci]"
-            # A run takes minutes; anything pushed meanwhile would make this
-            # push fail and throw the whole run away. Rebase onto it instead.
-            for i in 1 2 3; do
-              git pull --rebase --autostash origin main && git push && break
-              echo "push attempt $i failed; retrying"
-              sleep 5
-            done
-          fi
 
+          # These files are GENERATED, not authored, so there is nothing to
+          # merge: this run's output is simply the newest truth. The previous
+          # attempt rebased instead, hit the guaranteed conflict on
+          # state.json (both sides rewrite it), left conflict markers, and
+          # reported success -- so a complete run was silently discarded.
+          # Park the output, reset onto whatever is on main, put it back.
+          OUT=$(mktemp -d)
+          cp -R docs/data docs/downloads "$OUT"/
+
+          for i in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            rm -rf docs/data docs/downloads
+            cp -R "$OUT"/data "$OUT"/downloads docs/
+            git add docs/data docs/downloads
+            if git diff --cached --quiet; then
+              echo "nothing changed"; exit 0
+            fi
+            git commit -m "Census refresh $(date -u +%Y-%m-%d) [skip ci]"
+            if git push; then
+              echo "pushed on attempt $i"; exit 0
+            fi
+            echo "someone pushed first; attempt $i of 3"
+            sleep 5
+          done
+          echo "::error::could not push the refresh after 3 attempts"
+          exit 1
+
+      # Reporting must never fail a run that worked.
       - name: Summary
         if: always()
+        continue-on-error: true
         working-directory: .
         run: |
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
@@ -135,7 +154,12 @@ jobs:
           p = "docs/data/state.json"
           if not os.path.exists(p):
               print("## Refresh failed\n\nNo state.json was written."); raise SystemExit
-          d = json.load(open(p)); s = d.get("stats", {})
+          try:
+              d = json.load(open(p))
+          except Exception as exc:
+              print("## Refresh finished, summary unavailable\n\n`%s`" % exc)
+              raise SystemExit
+          s = d.get("stats", {})
           print("## Census refreshed\n")
           print("| | |\n|---|---|")
           for k, v in (("Generated", d.get("generated")),

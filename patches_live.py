@@ -325,9 +325,7 @@ ROUND2 = [
      'letter-spacing:-.02em;color:{{ accent }}">152</span>\n'
      '          <span style="font-size:12.5px;color:#63736A">of 160 resolved'
      '</span>\n        </div>',
-     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
-     'line-height:1.4">A name matching several authors is never guessed at.'
-     '</div>'),
+     ''),
 
     ("workflow: no figure on node 02",
      '<div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">\n'
@@ -335,8 +333,7 @@ ROUND2 = [
      'letter-spacing:-.02em;color:{{ accent }}">1,330</span>\n'
      '          <span style="font-size:12.5px;color:#63736A">papers, '
      '2025–2026</span>\n        </div>',
-     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
-     'line-height:1.4">The defensible core of the count.</div>'),
+     ''),
 
     ("workflow: no figure on node 03",
      '<div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">\n'
@@ -344,8 +341,7 @@ ROUND2 = [
      'letter-spacing:-.02em;color:{{ accent }}">73</span>\n'
      '          <span style="font-size:12.5px;color:#63736A">candidates '
      'returned</span>\n        </div>',
-     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
-     'line-height:1.4">Every candidate still has to pass the gate.</div>'),
+     ''),
 
     ("workflow: no figure on node 04",
      '<div style="display:flex;align-items:baseline;gap:7px;margin-top:8px">\n'
@@ -353,8 +349,7 @@ ROUND2 = [
      'letter-spacing:-.02em;color:{{ accent }}">1,336</span>\n'
      '          <span style="font-size:12.5px;color:#63736A">papers · 511 '
      'people</span>\n        </div>',
-     '<div style="font-size:12.5px;color:#63736A;margin-top:8px;'
-     'line-height:1.4">Written, then compared against the previous run.</div>'),
+     ''),
 
     # The rejected box sat at x 838-1088 while the "no" branch drops at x=922,
     # and it overlapped "Files to download" (which starts at 1072) by 16px.
@@ -520,6 +515,10 @@ ROUND2 = [
     ("authors: an author with no papers is not a crash",
      "    const rows = PAPERS[p.key] || PAPERS.tkhayneh;",
      "    const rows = PAPERS[p.key] || PAPERS.tkhayneh || [];"),
+
+    ("workflow: a plainer heading",
+     ">Six stages, roster first, Scopus second</div>",
+     ">How this works</div>"),
 
     # ---- the roster header repeated stale figures --------------------------
     ("roster: header figures come from the run",
