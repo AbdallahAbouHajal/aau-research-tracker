@@ -269,12 +269,28 @@ NO_RECORD_NOTE = ("new, visiting or adjunct faculty -- no Scopus record: "
                   "profile, and not a co-author on any AAU paper in the window")
 
 
-def _profile_pass(people, say):
-    """Ask each unresolved person's own AAU page for their Scopus id."""
+def _profile_pass(people, say, force=False):
+    """Ask each unresolved person's own AAU page for their Scopus id.
+
+    This is the expensive step -- it fetches every unresolved person's page
+    from aau.ac.ae and then asks Scopus to verify what it finds. Measured on a
+    GitHub runner it was 638s, 77% of the whole run.
+
+    Almost all of that is re-asking a question already answered. Someone with
+    no Scopus record at all does not acquire one between Mondays, and when
+    they do, they arrive with a paper the sweep finds anyway. So a person
+    marked profile_checked is skipped until someone asks for a recheck.
+    """
     import profile_ids as PI
     n = 0
-    for p in [q for q in people
-              if not q.get("scopus_auid") and q.get("profile_url")]:
+    todo = [q for q in people if not q.get("scopus_auid") and q.get("profile_url")]
+    if not force:
+        skipped = [q for q in todo if q.get("profile_checked")]
+        todo = [q for q in todo if not q.get("profile_checked")]
+        if skipped:
+            say("  skipping %d profiles already checked (pass force_profiles "
+                "to recheck)" % len(skipped))
+    for p in todo:
         try:
             g = PI.resolve(p)
         except Exception:
@@ -286,10 +302,13 @@ def _profile_pass(people, say):
             p["auid_candidates"] = []
             n += 1
             say("  profile route: %s -> %s" % (p["name"], g["auid"]))
+        else:
+            p["profile_checked"] = True     # asked, and the page had nothing
     return n
 
 
-def resolve_chain(people, idx=None, use_profiles=True, log=None):
+def resolve_chain(people, idx=None, use_profiles=True, log=None,
+                  force_profiles=False):
     """Full resolution ladder, best evidence first.
 
       1. a human's decision in the check-file        (never overridden)
@@ -321,7 +340,7 @@ def resolve_chain(people, idx=None, use_profiles=True, log=None):
                     p.get("auid_tier", "none") .split(":")[0] for p in people)
                 n_prof = 0
                 if use_profiles:
-                    n_prof = _profile_pass(people, say)
+                    n_prof = _profile_pass(people, say, force_profiles)
                 for p in people:
                     if not p.get("scopus_auid"):
                         p["auid_tier"] = "none:no-scopus-record"
@@ -338,7 +357,7 @@ def resolve_chain(people, idx=None, use_profiles=True, log=None):
         idx = build_index()
     tiers = resolve_all(people, idx)
     n_man = apply_manual(people)
-    n_prof = _profile_pass(people, say) if use_profiles else 0
+    n_prof = _profile_pass(people, say, force_profiles) if use_profiles else 0
     # Everyone still without an ID was checked three ways: no name in the
     # Scopus export, no Scopus link on their AAU page, and no appearance in
     # the full author list of any of the 1,330 AAU papers in the window.
