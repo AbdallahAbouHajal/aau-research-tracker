@@ -87,9 +87,10 @@ Two things it must keep doing:
     interface preview  https://abdallahabouhajal.github.io/aau-research-tracker/
     repo               https://github.com/AbdallahAbouHajal/aau-research-tracker
 
-The published page has no engine behind it, so it shows the sample figures and
-says so in a badge. That is deliberate: named colleagues with silently stale
-numbers is the worse failure.
+The published page shows **real data** -- 1,338 papers, 536 authors, 14
+suggested additions -- read from `docs/data/state.json`, which the engine wrote.
+The badge names the date it was generated, so nobody mistakes last Monday's
+figures for this minute's.
 
 ## The engine on GitHub
 
@@ -137,9 +138,10 @@ Two rules came out of it:
 
 ## Still open
 
+- The `SCOPUS_KEYS` secret is not set yet, so the Action cannot run until it is.
 - Chrome extension is unpaired (this CLI signed into a different claude.ai
-  account), so the last builds were verified by `node --check` and by structural
-  assertions, not by eye. Worth one visual pass.
+  account); builds are verified with headless Chrome screenshots instead, which
+  is what caught the blank-screen bug.
 - `College of Dentistry` shows 0 people: its three staff have no Scopus record
   in the window, which is correct but looks empty.
 - Docker image is written but unbuilt — no docker on this machine to test it.
