@@ -106,7 +106,14 @@ jobs:
             echo "nothing changed"
           else
             git commit -m "Census refresh $(date -u +%Y-%m-%d) [skip ci]"
-            git push
+            # Someone may have pushed while the run was fetching Scopus, which
+            # takes minutes. Rebase onto whatever landed rather than failing on
+            # a non-fast-forward and throwing the whole run away.
+            for i in 1 2 3; do
+              git pull --rebase --autostash origin main && git push && break
+              echo "push attempt $i failed; retrying"
+              sleep 5
+            done
           fi
 
       - name: Summary

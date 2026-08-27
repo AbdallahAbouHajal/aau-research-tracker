@@ -398,6 +398,89 @@ ROUND2 = [
      "enter: () => this.setState({ screen: 'dash' }),",
      "enter: () => this.setState({ screen: 'flow' }),"),
 
+    # ---- the exports screen described files that did not exist -------------
+    # "Fourteen slides", "1,336 rows", "5 native charts": all literals, and all
+    # wrong the moment a run finished. Each line now names something the engine
+    # actually writes, counted from the run it came from.
+    ("exports: describe the files the engine really writes",
+     "    const exports = [",
+     "    const nCol = COLLEGE_DATA.length;\n"
+     "    const fig = (n) => (S_ ? Number(n || 0).toLocaleString() + ' rows'\n"
+     "                           : 'from the last run');\n"
+     "    const CHART_LIST = [\n"
+     "      ['Papers by college', 'bar'],\n"
+     "      ['Faculty on the roster, by college', 'bar'],\n"
+     "      ['Every author on an AAU paper', 'split bar'],\n"
+     "      ['Most published on the roster', 'bar'],\n"
+     "      ['Career standing against output', 'scatter'],\n"
+     "    ];\n"
+     "    const exports = [\n"
+     "      { kind: 'xlsx', title: 'Excel workbook',\n"
+     "        sub: 'Every row behind the figures on the dashboard',\n"
+     "        delay: '0s', btn: 'Download workbook', btnBg: accent,\n"
+     "        btnFg: '#ffffff', btnBorder: accent,\n"
+     "        chip: 'XLSX', path: 'downloads/AAU_Research_Tracker.xlsx',\n"
+     "        items: [\n"
+     "          { label: 'Summary', meta: 'headline figures' },\n"
+     "          { label: 'People', meta: fig(S_ && S_.authors) },\n"
+     "          { label: 'Papers', meta: fig(S_ && S_.papers) },\n"
+     "          { label: 'By college', meta: nCol + ' rows' },\n"
+     "          { label: 'Suggested additions',\n"
+     "            meta: fig(S_ && S_.suggested) },\n"
+     "          { label: 'Rejected papers, with the reason',\n"
+     "            meta: fig(S_ && S_.rejected) },\n"
+     "        ] },\n"
+     "      { kind: 'pptx', title: 'Slide deck',\n"
+     "        sub: 'A cover and one slide per chart, ready to present',\n"
+     "        delay: '.05s', btn: 'Download deck', btnBg: accent,\n"
+     "        btnFg: '#ffffff', btnBorder: accent,\n"
+     "        chip: 'PPTX', path: 'downloads/AAU_Research_Tracker.pptx',\n"
+     "        items: [{ label: 'Cover, with the headline figures',\n"
+     "                  meta: '1 slide' }].concat(\n"
+     "          CHART_LIST.map(([n]) => ({ label: n, meta: '1 slide' }))) },\n"
+     "      { kind: 'charts', title: 'Chart pack',\n"
+     "        sub: 'Every chart as its own image, in one zip',\n"
+     "        delay: '.1s', btn: 'Download charts', btnBg: '#ffffff',\n"
+     "        btnFg: accent, btnBorder: '#C3D6CA',\n"
+     "        chip: 'ZIP', path: 'downloads/AAU_Charts.zip',\n"
+     "        items: CHART_LIST.map(([n, k]) => ({ label: n, meta: k })) },\n"
+     "    ];\n"
+     "    const exportsUnused = ["),
+
+
+    # The strip along the bottom previewed five charts the engine does not make
+    # and captioned them with figures ("161 against 350") from nowhere. It now
+    # previews the five it does make, with no invented numbers.
+    ("exports: the chart strip previews the real charts",
+     "    const chartKinds = [\n"
+     "      { label: 'Papers by college', note: 'ten colleges, sorted', "
+     "bars: bars([100, 96, 94, 86, 28, 20, 16, 15], accent) },\n"
+     "      { label: 'Share of credits', note: 'as a ring', "
+     "bars: bars([70, 70, 70, 70, 70], '#C3D6CA') },\n"
+     "      { label: 'h-index bands', note: 'seven bands', "
+     "bars: bars([100, 51, 33, 21, 9, 4, 2], accent) },\n"
+     "      { label: 'Faculty and students', note: '161 against 350', "
+     "bars: bars([32, 68, 32, 68, 32], '#C3D6CA') },\n"
+     "      { label: 'Papers per year', note: '2025 against 2026', "
+     "bars: bars([100, 57], accent) },\n"
+     "    ];",
+     "    const chartKinds = [\n"
+     "      { label: 'Papers by college', note: 'one bar per college', "
+     "bars: bars([100, 96, 94, 86, 28, 20, 16, 15], accent) },\n"
+     "      { label: 'Faculty on the roster', note: 'by college', "
+     "bars: bars([100, 88, 70, 62, 26, 24, 8, 4], accent) },\n"
+     "      { label: 'Every author on a paper', note: 'roster against the rest', "
+     "bars: bars([32, 68], '#C3D6CA') },\n"
+     "      { label: 'Most published', note: 'the roster, ranked', "
+     "bars: bars([100, 62, 52, 44, 40, 34, 30, 26], accent) },\n"
+     "      { label: 'Standing against output', note: 'h-index and papers', "
+     "bars: bars([18, 44, 30, 72, 55, 90, 40], '#C3D6CA') },\n"
+     "    ];"),
+
+    # the little file-type chip lost its capitals when kind became the api key
+    ("exports: keep the file-type chip in capitals",
+     ">{{ e.kind }}<", ">{{ e.chip }}<"),
+
     # ---- the roster header repeated stale figures --------------------------
     ("roster: header figures come from the run",
      '<div style="font-size:25px;font-weight:700;letter-spacing:-.02em;'

@@ -173,6 +173,7 @@ def run(faculty=None, years=None, log=print, stage=None):
                                  "reason": why})
     _stage(3, 100)
     stats["faculty_sweep_rejected"] = len(rejected)
+    stats["rejected_list"] = rejected      # so the workbook can show why
     stats["faculty_ids_swept"] = len(ids)
     stats["faculty_sweep_added"] = added
     stats["total_papers"] = len(papers)

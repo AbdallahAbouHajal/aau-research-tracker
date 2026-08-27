@@ -280,7 +280,7 @@ def _xlsx(b, path):
     from openpyxl import Workbook
     from openpyxl.styles import Font, PatternFill, Alignment
     from openpyxl.utils import get_column_letter
-    hdr = PatternFill("solid", fgColor="003060")
+    hdr = PatternFill("solid", fgColor="0A7A3A")   # AAU green
     hf = Font(color="FFFFFF", bold=True, size=10)
 
     def sheet(wb, title, headers, rows, widths):
@@ -331,6 +331,33 @@ def _xlsx(b, path):
               [[s["name"], s.get("college"), s["papers"], s["corresponding"],
                 s["why"], s.get("scopus_auid")] for s in sug],
               [30, 34, 9, 13, 34, 16])
+    # The two sheets that make the workbook usable on its own: every paper
+    # counted, and every paper thrown out with the reason. Without these you
+    # can read the totals but cannot check them.
+    papers = b.get("papers") or {}
+    if papers:
+        rows = []
+        for eid, pp in papers.items():
+            rows.append([eid, pp.get("doi") or "", pp.get("year") or "",
+                         (pp.get("title") or "")[:300],
+                         pp.get("journal") or "",
+                         pp.get("cited_by") or 0,
+                         pp.get("found_via") or "af_id",
+                         pp.get("aau_evidence") or ""])
+        rows.sort(key=lambda r: (-(r[2] or 0), r[3]))
+        sheet(wb, "Papers",
+              ["EID", "DOI", "Year", "Title", "Source", "Cited by",
+               "Found via", "AAU evidence"],
+              rows, [22, 26, 7, 70, 34, 9, 14, 26])
+
+    rej = (b.get("stats") or {}).get("rejected_list") or b.get("rejected") or []
+    if rej:
+        sheet(wb, "Rejected papers",
+              ["EID", "DOI", "Title", "Source", "Why it was rejected"],
+              [[r.get("eid"), r.get("doi") or "", (r.get("title") or "")[:300],
+                r.get("journal") or "", r.get("reason") or ""] for r in rej],
+              [22, 26, 70, 34, 46])
+
     wb.save(path)
 
 
