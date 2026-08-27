@@ -304,8 +304,10 @@ def build(roster_people=None, run_id=None):
     # the paper count for the same reason.
     prog_blob = PROG.load() or {}
     by_slug = {k.lower(): v for k, v in (prog_blob.get("by_slug") or {}).items()}
+    campus = {k.lower(): v for k, v in (prog_blob.get("campus") or {}).items()}
     for a in authors:
         a["programs"] = by_slug.get((a.get("slug") or "").lower(), [])
+        a["campus"] = campus.get((a.get("slug") or "").lower(), [])
 
     programs = []
     a_by_slug = {}
@@ -340,6 +342,20 @@ def build(roster_people=None, run_id=None):
             "academics": academics,
             "review": review_n,
             "suggested": sum(1 for a in authors if a.get("suggest")),
+            # Coverage is against ACADEMIC staff, never the whole roster: the
+            # roster carries 48 lab supervisors, secretaries and admin
+            # assistants, who have no programme by definition. Measured
+            # against everyone it reads 147/208 and looks like a gap in the
+            # data; against academics it is 147/160, and the real gap is
+            # Dentistry and Nursing, who tag nobody.
+            "programs_total": len(prog_blob.get("programs") or []),
+            "programs_tagged": sum(
+                1 for r in roster
+                if str(r.get("staff_type") or "").lower().startswith("acad")
+                and _slug(r.get("profile_url"), "").lower() in by_slug),
+            "academics_listed": sum(
+                1 for r in roster
+                if str(r.get("staff_type") or "").lower().startswith("acad")),
             # The colleges the ROSTER covers -- eight. Counting colleges that
             # have an author with a Scopus record instead gave seven, because
             # Dentistry's staff have no papers in the window. They are still a

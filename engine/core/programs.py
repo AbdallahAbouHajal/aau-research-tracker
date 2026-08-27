@@ -108,8 +108,25 @@ def harvest(log=print, pause=0.4):
             continue
         log("  %-14s %d programmes, %d staff listed"
             % (host, len(progs), len(everyone)))
+        # AAU runs two campuses and each college page can be filtered by
+        # them. Two extra requests per college gives every person a campus,
+        # which is cheaper and more useful than asking per programme.
+        sep = "&" if "?" in url else "?"
+        campuses = {}
+        for cid, cname in (("0", "Al Ain"), ("1", "Abu Dhabi")):
+            for sl in _slugs(_get("%s%scampus_id=%s" % (url, sep, cid))):
+                campuses.setdefault(sl, []).append(cname)
+        out.setdefault("campus", {}).update(campuses)
         out["colleges"][college] = {"host": host, "url": url,
-                                    "staff": everyone, "programs": []}
+                                    "staff": everyone, "programs": [],
+                                    "al_ain": sum(1 for v in campuses.values()
+                                                  if "Al Ain" in v),
+                                    "abu_dhabi": sum(1 for v in campuses.values()
+                                                     if "Abu Dhabi" in v)}
+        log("      %-58s %s" % ("(campus split)",
+            "%d Al Ain / %d Abu Dhabi"
+            % (out["colleges"][college]["al_ain"],
+               out["colleges"][college]["abu_dhabi"])))
         for pid, name in progs:
             sep = "&" if "?" in url else "?"
             page = _get("%s%sstaff_program=%s" % (url, sep, pid))
