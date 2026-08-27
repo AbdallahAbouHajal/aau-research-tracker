@@ -68,6 +68,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      # The engine itself is stdlib-only, but the three downloadable files are
+      # not, and nothing installed their libraries here. Every run therefore
+      # printed "workbook failed: No module named 'openpyxl'", carried on, and
+      # published the previous machine's files -- so the Exports screen served
+      # a 1,338-paper census under a dashboard showing 4,245, and the run said
+      # success. Installed here, and the run now fails loudly if they break.
+      - name: Install the export libraries
+        run: python -m pip install --quiet openpyxl matplotlib python-pptx
+
       # Keys never live in the repo. Set SCOPUS_KEYS in
       # Settings > Secrets and variables > Actions as a JSON array of strings.
       - name: Prepare

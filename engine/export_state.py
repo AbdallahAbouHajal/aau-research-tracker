@@ -150,6 +150,13 @@ def main():
     if not a.no_files and d:
         vm = VM.build(run_id=blob.get("run"))
         vm["stats"] = blob["stats"]
+        # Each generator below is caught so a late failure cannot throw away a
+        # run that has already done all the work. That is right, but it was
+        # also silent: on CI all three raised ImportError every time, the run
+        # reported success, and the previous machine's files stayed published
+        # under a dashboard they no longer matched. Record what was actually
+        # rebuilt so the page can refuse to present a stale file as current.
+        failed = []
         try:
             xp = os.path.join(d, "AAU_Research_Tracker.xlsx")
             r = RUNS.export(blob.get("run") or RUNS.latest_id(), kind="xlsx")
@@ -160,6 +167,7 @@ def main():
                                                      os.path.getsize(xp) / 1024))
         except Exception as exc:
             print("  workbook failed: %s" % exc)
+            failed.append(("workbook", str(exc)[:120]))
         try:
             zp, made = EX.chart_zip(vm, os.path.join(d, "AAU_Charts.zip"))
             for img in made:                       # also loose, for previewing
@@ -170,6 +178,7 @@ def main():
                      os.path.getsize(zp) / 1024))
         except Exception as exc:
             print("  chart pack failed: %s" % exc)
+            failed.append(("chart pack", str(exc)[:120]))
         try:
             pp = EX.deck(vm, os.path.join(d, "AAU_Research_Tracker.pptx"),
                          generated=blob["generated"][:10])
@@ -177,6 +186,16 @@ def main():
                                                  os.path.getsize(pp) / 1024))
         except Exception as exc:
             print("  slide deck failed: %s" % exc)
+            failed.append(("slide deck", str(exc)[:120]))
+
+        blob["exports"] = {"rebuilt": not failed,
+                           "failed": [{"file": f, "why": w} for f, w in failed]}
+        if failed:
+            print("  WARNING: %d downloadable file(s) were NOT rebuilt and are "
+                  "now older than the figures above them: %s"
+                  % (len(failed), ", ".join(f for f, _ in failed)))
+        with open(out, "w", encoding="utf-8") as fh:
+            json.dump(blob, fh, ensure_ascii=False, separators=(",", ":"))
 
     s = blob["stats"]
     print("wrote %s (%.0f KB)" % (out, os.path.getsize(out) / 1024))
