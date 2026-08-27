@@ -1058,6 +1058,50 @@ ROUND2 = [
      'font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;'
      'cursor:pointer">Export this college</button>'),
 
+    # ---- the schedule screen must describe the real schedule --------------
+    # It said "Tuesday ... 06:00" and listed four typed dates. The workflow
+    # runs `0 3 * * 1` -- Monday 03:00 UTC, 07:00 in Al Ain. Four literals
+    # that drift out of date the moment September passes are worse than no
+    # list, so they are computed from the cron the repository actually has.
+    ("schedule: the next runs are computed from the real cron",
+     "    const nextRuns = sched ? [\n"
+     "      { when: 'Tuesday 1 September, 06:00', note: 'scheduled', dot: accent },\n"
+     "      { when: 'Tuesday 8 September, 06:00', note: 'scheduled', dot: accent },\n"
+     "      { when: 'Tuesday 15 September, 06:00', note: 'scheduled', dot: '#C3CCC6' },\n"
+     "      { when: 'Tuesday 22 September, 06:00', note: 'scheduled', dot: '#C3CCC6' },\n"
+     "    ] : [",
+     "    const nextRuns = sched ? (() => {\n"
+     "      // 0 3 * * 1 -- Monday 03:00 UTC, which is 07:00 in Al Ain. Four\n"
+     "      // typed dates went stale the moment September passed, and said\n"
+     "      // Tuesday for a job that runs on Monday.\n"
+     "      const out = [];\n"
+     "      const d = new Date();\n"
+     "      d.setUTCHours(3, 0, 0, 0);\n"
+     "      while (d.getUTCDay() !== 1 || d.getTime() <= Date.now()) {\n"
+     "        d.setUTCDate(d.getUTCDate() + 1);\n"
+     "        d.setUTCHours(3, 0, 0, 0);\n"
+     "      }\n"
+     "      for (let i = 0; i < 4; i++) {\n"
+     "        const gulf = new Date(d.getTime() + 4 * 3600 * 1000);\n"
+     "        out.push({\n"
+     "          when: gulf.toLocaleDateString('en-GB', { weekday: 'long',\n"
+     "            day: 'numeric', month: 'long', timeZone: 'UTC' }) + ', 07:00',\n"
+     "          note: 'scheduled',\n"
+     "          dot: i < 2 ? accent : '#C3CCC6',\n"
+     "        });\n"
+     "        d.setUTCDate(d.getUTCDate() + 7);\n"
+     "      }\n"
+     "      return out;\n"
+     "    })() : ["),
+
+    ("schedule: the time shown is the time it runs",
+     '<span style="font-size:15px;font-weight:600;font-variant-numeric:'
+     'tabular-nums">06:00</span>\n              <span style="font-size:12.5px;'
+     'color:#63736A">after the Scopus nightly update</span>',
+     '<span style="font-size:15px;font-weight:600;font-variant-numeric:'
+     'tabular-nums">07:00</span>\n              <span style="font-size:12.5px;'
+     'color:#63736A">Gulf time, Mondays \u00b7 03:00 UTC</span>'),
+
     ("roster: the college list narrows to the chosen programme",
      "    const colAuthors = (sel ? AUTHORS.filter(a => a.college === sel) : []);",
      "    const chosenProg = this.state.program || '';\n"

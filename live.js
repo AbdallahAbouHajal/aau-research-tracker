@@ -51,7 +51,15 @@
   /* ------------------------------------------------------------- the modal */
   /* Built as plain DOM rather than added to the template, so the approved
    * markup stays exactly as it was authored. Styles mirror the design tokens. */
+  // The close() of whichever modal is open, so opening another can retire
+  // it properly instead of orphaning its Escape handler on document.
+  var openModal = null;
+
   function modal(spec) {
+    // Removing the node left the previous modal's Escape handler bound to
+    // document forever, so walking a three-step wizard left three stale
+    // handlers, each ready to close whatever was open next.
+    if (openModal) { try { openModal(); } catch (e) { /* already gone */ } }
     var old = document.getElementById('__aau_modal');
     if (old) old.remove();
 
@@ -159,11 +167,15 @@
     document.body.appendChild(wrap);
     document.addEventListener('keydown', onEsc);
     function onEsc(e) { if (e.key === 'Escape') close(); }
-    function close() {
+      function close() {
+      // Resolving #__aau_modal at call time meant a slow lookup's close()
+      // deleted whichever modal happened to be open several clicks later, and
+      // replaced it with its own result. A modal closes the node it built.
       document.removeEventListener('keydown', onEsc);
-      var m = document.getElementById('__aau_modal');
-      if (m) m.remove();
+      if (openModal === close) openModal = null;
+      if (wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
     }
+    openModal = close;
     spec.close = close;
     return spec;
   }
@@ -579,8 +591,22 @@
         if (component) component.setState({ running: false });
         return;
       }
-      fetch(WORKER + '/status').then(function (r) { return r.json(); })
+      fetch(WORKER + '/status', { cache: 'no-store' }).then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok) throw new Error(j && j.error ? j.error : 'HTTP ' + r.status);
+          return j;
+        });
+      })
         .then(function (d) {
+          // GitHub creates a dispatched run asynchronously, and /status
+          // answers with the NEWEST run -- which for the first few seconds is
+          // the previous, completed, successful one. Taken at face value that
+          // announced "run finished", reloaded unchanged figures and dropped
+          // the reader on the Dashboard before the real run had even started.
+          if (announce && d.started && Date.parse(d.started) < started - 15000) {
+            badge('waiting for the run to appear', G);
+            return setTimeout(poll, 4000);
+          }
           var st = stagesFromSteps(d.steps);
           window.__AAU.status = {
             running: !!d.running, stages: st,
@@ -618,7 +644,11 @@
             badge('run ' + (d.conclusion || 'failed'), RED);
           }
         })
-        .catch(function () { setTimeout(poll, 12000); });
+        .catch(function (e) {
+          badge(String((e && e.message) || 'cannot reach the run service')
+                .slice(0, 70), RED);
+          setTimeout(poll, 12000);
+        });
     })();
   }
 
@@ -768,9 +798,21 @@
               cancelLabel: 'Close',
             });
           };
+          // `note` was captured before any await. If the passphrase prompt
+          // opens, THIS form is torn out of the document first, so the error
+          // was written into an orphaned node and the professor saw nothing at
+          // all: no message, no badge, no person added. Write to the live node
+          // if it is still there, and say it out loud if it is not.
           var failed = function (msg) {
-            note.style.color = RED;
-            note.textContent = msg;
+            var live = document.getElementById('apNote');
+            if (live) {
+              live.style.color = RED;
+              live.textContent = msg;
+            } else {
+              badge(String(msg).slice(0, 70), RED);
+              modal({ eyebrow: 'Roster', title: 'That person was not added',
+                      sub: msg, cancelLabel: 'Close' });
+            }
           };
 
           if (window.__AAU.canRun) {

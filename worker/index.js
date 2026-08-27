@@ -174,10 +174,25 @@ export default {
     // ---- what the run is doing. No secret: it starts nothing. -------------
     if (path === '/status' && request.method === 'GET') {
       try {
-        const runs = await fetch(
+        // An expired or rate-limited token answers with an error body, not a
+        // run list. Falling through to `workflow_runs || []` turned that into
+        // a cheerful HTTP 200 saying no run is going -- which the page then
+        // rendered as "run failed", i.e. a credential problem reported as a
+        // failed census.
+        const rr = await fetch(
           `${GH}/repos/${env.REPO}/actions/workflows/${env.WORKFLOW}/runs?per_page=1`,
           { headers: ghHeaders(env) },
-        ).then((r) => r.json());
+        );
+        if (!rr.ok) {
+          return cors(json({
+            error: rr.status === 401 || rr.status === 403
+              ? 'the run service cannot reach GitHub (its access has expired '
+                + 'or is rate limited)'
+              : 'GitHub answered ' + rr.status,
+            upstream: rr.status,
+          }, 502), origin);
+        }
+        const runs = await rr.json();
         const run = (runs.workflow_runs || [])[0];
         if (!run) return cors(json({ running: false, run: null }), origin);
 
