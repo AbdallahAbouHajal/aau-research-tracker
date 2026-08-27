@@ -112,6 +112,12 @@ def classify(slots, faculty, list_version=""):
             s["role_confidence"] = "high"
             s["college"] = (rec.get("colleges") or [rec.get("college")])[0] or ""
             s["college_source"] = "faculty list"
+            # Rows derived from AU-ID provenance have no printed name -- the
+            # export is what carries names, and it does not cover these
+            # papers. The roster match supplies it, which is the same source
+            # the college comes from.
+            if not s.get("author_name") and rec.get("name"):
+                s["author_name"] = rec["name"]
             s["faculty_match"] = how
             stats["faculty"] += 1
         else:

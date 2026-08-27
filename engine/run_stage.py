@@ -151,6 +151,22 @@ def main():
             "text": "%d author rows are faculty, %d are students or outside "
                     "faculty." % (cl.get("faculty", 0),
                                   cl.get("student_external", 0)), "kind": "ok"})
+        # Say it when the picture is partial. Full co-author lists exist only
+        # for the papers in the census export; beyond it the roster's own
+        # people are still counted, from Scopus author IDs, but students and
+        # outside co-authors on those papers are simply not knowable with
+        # these API keys. A total that looks complete over a breakdown that
+        # is not is the failure mode worth naming out loud.
+        full = len({s["eid"] for s in slots if not s.get("from_sweep")})
+        allp = len(b["papers"])
+        if full < allp:
+            b["findings"].append({
+                "text": "Full co-author lists cover %d of the %d papers. On "
+                        "the other %d, faculty are counted from their Scopus "
+                        "author IDs, but students and outside co-authors are "
+                        "not known \u2014 Elsevier does not serve co-author "
+                        "lists to these keys."
+                        % (full, allp, allp - full), "kind": "warn"})
         log("faculty %d | student or external %d"
             % (cl.get("faculty", 0), cl.get("student_external", 0)))
 

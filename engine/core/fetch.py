@@ -195,14 +195,27 @@ def run(faculty=None, years=None, log=print, stage=None,
             log("  sweep failed for AU-ID %s: %s" % (aid, str(exc)[:60]))
             continue
         for p in rows:
-            if not (p["eid"] and p["year"] in years) or p["eid"] in papers:
+            if not (p["eid"] and p["year"] in years):
                 continue
             if not _in_range(p):
+                continue
+            # AU-ID(x) returning a paper IS Scopus saying x wrote it. That is
+            # the only authorship evidence we have for papers outside the
+            # census export -- the Search API drops `author` silently and the
+            # views that carry co-author lists all 401 with these keys. So
+            # record it even when the AF-ID route already had the paper,
+            # because otherwise a window wider than the export produces a real
+            # paper count with a per-college breakdown covering only part of it.
+            known = papers.get(p["eid"])
+            if known is not None:
+                if aid not in known.setdefault("sweep_auids", []):
+                    known["sweep_auids"].append(aid)
                 continue
             ok, why = _printed_aau(p)
             if ok:
                 p["found_via"] = "faculty_sweep"
                 p["aau_evidence"] = why
+                p["sweep_auids"] = [aid]
                 papers[p["eid"]] = p
                 added += 1
             else:

@@ -128,6 +128,44 @@ def build_slots(papers, log=print):
                     "college": X.college_of([aff]) if is_aau else "",
                 })
     log("  built %d author rows from the Scopus export" % len(slots))
+
+    # The export covers the 1,330 papers of the original census and nothing
+    # else, because co-author lists cannot be refetched: the Search API
+    # accepts `field=author` and silently returns nothing, and every view that
+    # carries them 401s with these keys. So a run over a wider window used to
+    # collect 4,245 papers and then break them down by college using author
+    # rows for barely a quarter of them -- a real total over a partial
+    # breakdown, which reads as one consistent picture and is not.
+    #
+    # For the rest we have exactly one piece of authorship evidence, and it is
+    # Scopus's own: AU-ID(x) returned this paper, so x is an author of it. That
+    # yields faculty rows only -- students and outside co-authors stay unknown
+    # on those papers, and `authors` is reported against the export as before.
+    covered = {s["eid"] for s in slots}
+    extra = 0
+    for eid, p in papers.items():
+        if eid in covered:
+            continue
+        for aid in (p.get("sweep_auids") or []):
+            if not aid:
+                continue
+            slots.append({
+                "eid": eid, "doi": p.get("doi"), "year": p.get("year"),
+                "journal": p.get("journal"), "doctype": p.get("doctype"),
+                "cited_by": p.get("cited_by"),
+                "author_name": "", "scopus_auid": aid,
+                "position": 0, "n_authors": 0,
+                "is_first": False, "is_corresponding": False,
+                "is_aau": True, "sig_ror": "", "sig_string": "",
+                "raw_affiliation": "",
+                "college": "",          # classify() fills it from the roster
+                "from_sweep": True,
+            })
+            extra += 1
+    if extra:
+        log("  plus %d faculty rows from AU-ID provenance on %d papers the "
+            "export does not cover"
+            % (extra, len({s['eid'] for s in slots if s.get('from_sweep')})))
     return slots
 
 
@@ -165,6 +203,10 @@ def roster(slots):
         if s.get("year"):
             r["years"].add(s["year"])
         r["eids"].append(s["eid"])
+        # A sweep row carries an AU-ID but no printed name, so whichever
+        # row lands first must not fix the person as nameless.
+        if s.get("author_name") and not r.get("name"):
+            r["name"] = s["author_name"]
         if s.get("role") and not r.get("role"):
             r["role"] = s["role"]
         if s.get("college") and not r.get("college"):
