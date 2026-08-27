@@ -5249,6 +5249,23 @@
    "scopus_auid": "56121354400",
    "auid_tier": "manual:medium:transliteration",
    "auid_candidates": []
+  },
+  {
+   "name": "Anan S. Jarab",
+   "college": "College of Pharmacy",
+   "title": "Professor",
+   "profile_url": "",
+   "email": "",
+   "department": "",
+   "staff_type": "academic",
+   "is_academic": true,
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "",
+   "auid_candidates": [],
+   "added_from_page": true
   }
  ]
 }
