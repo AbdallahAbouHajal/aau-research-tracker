@@ -107,6 +107,12 @@ def build(run_id=None):
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "run": rid,
         "review": review,
+        # Every EID in this run. The paper lists on the page are capped per
+        # author, so diffing THOSE compares samples and not corpora: raising
+        # the cap from 12 to 50 made the first real delta announce 1,117 new
+        # papers on a window that had not changed at all. ~90 KB, and it is
+        # the only way the comparison can be exact.
+        "eids": sorted(_run_eids(rid)),
         "colleges": vm["colleges"],
         "programs": vm.get("programs") or [],
         "authors": vm["authors"],
@@ -118,6 +124,19 @@ def build(run_id=None):
         "source": "github-actions" if os.environ.get("GITHUB_ACTIONS")
                   else "local",
     }
+
+
+def _run_eids(rid):
+    """Every paper EID in a run, for an exact run-to-run comparison."""
+    try:
+        blob = RUNS.load(rid) or {}
+    except Exception:
+        return set()
+    out = set(blob.get("papers") or {})
+    for sl in (blob.get("slots") or []):
+        if sl.get("eid"):
+            out.add(sl["eid"])
+    return out
 
 
 def main():
@@ -175,6 +194,10 @@ def main():
             prev = None
         if prev and prev.get("run") and prev.get("run") != blob.get("run"):
             def _eids(b):
+                if b.get("eids"):
+                    return set(b["eids"])
+                # A census published before eids existed: fall back to the
+                # sampled lists and say so, rather than inventing a diff.
                 out_ = set()
                 for rows in (b.get("papers") or {}).values():
                     for r in (rows or []):
@@ -192,6 +215,7 @@ def main():
                 return t
 
             now_e, was_e = _eids(blob), _eids(prev)
+            exact = bool(blob.get("eids") and prev.get("eids"))
             now_t = _titles(blob)
             now_p = {a_["auid"]: a_ for a_ in (blob.get("authors") or [])
                      if a_.get("auid")}
@@ -211,10 +235,17 @@ def main():
                 "gone_papers": len(was_e - now_e),
                 "returning": [], "updated": [],
                 "compared_against": "the previously published census",
+                # Without both sides carrying a full EID list the numbers are
+                # a comparison of samples; the screen must not present that as
+                # a count of new work.
+                "exact": exact,
             }
             print("  delta against %s: +%d papers, +%d people, %d no longer "
-                  "present" % (str(prev.get("generated"))[:10], len(fresh),
-                               len(newp), len(was_e - now_e)))
+                  "present%s"
+                  % (str(prev.get("generated"))[:10], len(fresh), len(newp),
+                     len(was_e - now_e),
+                     "" if exact else "  (approximate: the previous census "
+                                      "did not publish a full paper list)"))
 
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(blob, fh, ensure_ascii=False, separators=(",", ":"))
