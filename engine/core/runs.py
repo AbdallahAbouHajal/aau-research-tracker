@@ -24,6 +24,47 @@ def new_id():
 
 
 # ------------------------------------------------------------ author rows
+def _author_rows(log=print):
+    """Rows carrying each author's name, AU-ID and PRINTED affiliation.
+
+    Two sources, and the fallback is the whole reason a run works on a machine
+    that has no census. Scopus will not give a co-author list to these keys --
+    search view=COMPLETE and abstract view=FULL are both 401, and META carries
+    only the first author -- so the author rows cannot be refetched from the
+    API. Without a source here, build_slots returns nothing and every figure
+    downstream (roster, colleges, per-author papers) comes out zero.
+
+    1. the census export, when this machine has one
+    2. engine/data/author_rows.json.gz -- a DERIVED file: names, AU-IDs, the
+       printed affiliation and the correspondence line, with emails removed.
+       No titles, abstracts, DOIs, ISSNs, funding or references.
+    """
+    import csv
+    import gzip
+    import json as _json
+    csv.field_size_limit(10 ** 9)
+    path = X.census_file("scopus_export.csv")
+    if os.path.exists(path):
+        with open(path, newline="", encoding="utf-8-sig") as fh:
+            return list(csv.DictReader(fh))
+
+    data = os.environ.get("AAU_DATA") or os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+    gz = os.path.join(data, "author_rows.json.gz")
+    if not os.path.exists(gz):
+        log("  no author rows available -- cannot build the census")
+        return None
+    with gzip.open(gz, "rt", encoding="utf-8") as fh:
+        blob = _json.load(fh)
+    log("  author rows from the shipped file: %d papers" % len(blob))
+    return [{"EID": eid,
+             "Author full names": "; ".join(
+                 "%s (%s)" % (n, i) for n, i in zip(r["n"], r["i"])),
+             "Authors with affiliations": r.get("a") or "",
+             "Correspondence Address": r.get("c") or ""}
+            for eid, r in blob.items()]
+
+
 def build_slots(papers, log=print):
     """One row per author per paper, from the Scopus CSV export.
 
@@ -34,15 +75,14 @@ def build_slots(papers, log=print):
     import csv
     import re
     csv.field_size_limit(10 ** 9)
-    path = X.census_file("scopus_export.csv")
-    if not os.path.exists(path):
-        log("  no scopus_export.csv -- cannot build author rows")
+    src = _author_rows(log)
+    if src is None:
         return []
 
     named = re.compile(r"^(.*?)\s*\((\d{6,})\)\s*$")
     slots = []
-    with open(path, newline="", encoding="utf-8-sig") as fh:
-        for row in csv.DictReader(fh):
+    if True:
+        for row in src:
             eid = (row.get("EID") or "").strip()
             if eid not in papers:
                 continue
