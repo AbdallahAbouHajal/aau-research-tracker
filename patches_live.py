@@ -481,6 +481,39 @@ ROUND2 = [
     ("exports: keep the file-type chip in capitals",
      ">{{ e.kind }}<", ">{{ e.chip }}<"),
 
+    # ---- the six stages show what is really happening ----------------------
+    # Locally that is the engine's own progress; on the published page it is
+    # GitHub's, because the six stages are six real workflow steps. Either way
+    # the bar moves because work finished, never because time passed.
+    ("dashboard: the six stages read live progress",
+     "    const stages = stageDefs.map((d, i) => {\n"
+     "      const pct = running ? d[2] : 100;\n"
+     "      const done = pct >= 100;\n"
+     "      const active = running && d[2] > 0 && d[2] < 100;",
+     "    const LIVE_ = (window.__AAU && window.__AAU.status\n"
+     "      && window.__AAU.status.stages) || null;\n"
+     "    const stages = stageDefs.map((d, i) => {\n"
+     "      const L_ = LIVE_ ? (LIVE_[i] || {}) : null;\n"
+     "      const pct = L_ ? (L_.pct || 0) : (running ? d[2] : 100);\n"
+     "      const done = pct >= 100;\n"
+     "      const active = L_ ? !!L_.active\n"
+     "        : (running && d[2] > 0 && d[2] < 100);"),
+
+    ("dashboard: the stage caption is the live one",
+     "        status: running ? d[3] : 'Done',",
+     "        status: L_ ? (L_.label || (done ? 'Done' : 'Waiting'))\n"
+     "          : (running ? d[3] : 'Done'),"),
+
+    # "Stage 4 of 6" has to count the stage that is really running
+    ("dashboard: the stage counter follows the live run",
+     "      runTitle: running ? 'Run in progress'",
+     "      stageNow: (LIVE_ ? (LIVE_.filter(x => x.pct >= 100).length + 1)\n"
+     "        : stages.filter(s => s.pct >= 100).length + 1),\n"
+     "      runTitle: running ? 'Run in progress'"),
+
+    ("dashboard: 'Stage 4 of 6' counts the real stage",
+     ">Stage 4 of 6</span>", ">Stage {{ stageNow }} of 6</span>"),
+
     # ---- the roster header repeated stale figures --------------------------
     ("roster: header figures come from the run",
      '<div style="font-size:25px;font-weight:700;letter-spacing:-.02em;'

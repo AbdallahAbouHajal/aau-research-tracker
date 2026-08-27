@@ -409,7 +409,7 @@
     });
   }
 
-  function dispatch(options) {
+  function dispatch(options, comp) {
     var years = (options.years || []).join(',');
     badge('asking GitHub to run…', G);
     gh('/actions/workflows/' + WF + '/dispatches', {
@@ -417,7 +417,7 @@
       body: JSON.stringify({ ref: 'main',
         inputs: { years: years, scope: options.scope || 'compare' } }),
     }).then(function (r) {
-      if (r.status === 204) { watchGithub(options); return; }
+      if (r.status === 204) { watchGithub(options, comp); return; }
       return r.json().then(function (j) {
         throw new Error(j.message || ('HTTP ' + r.status));
       });
@@ -434,7 +434,33 @@
     });
   }
 
-  function watchGithub(options) {
+  /* The six workflow steps are named exactly as the six stages, so mapping
+   * them is a lookup rather than a guess. queued/in_progress/completed on a
+   * step is what moves the bar -- nothing here is on a timer. */
+  var STAGE_NAMES = ['Read the faculty roster', 'Find each person in Scopus',
+    'Collect the papers', 'Check the extra papers found',
+    'Sort faculty from students', 'Build the census and compare'];
+
+  function stagesFromSteps(steps) {
+    return STAGE_NAMES.map(function (name) {
+      var st = null;
+      for (var i = 0; i < (steps || []).length; i++) {
+        if (steps[i].name === name) { st = steps[i]; break; }
+      }
+      if (!st) return { pct: 0, active: false, label: 'Waiting' };
+      if (st.status === 'completed') {
+        return st.conclusion === 'success'
+          ? { pct: 100, active: false, label: 'Done' }
+          : { pct: 100, active: false, label: st.conclusion || 'failed' };
+      }
+      if (st.status === 'in_progress') {
+        return { pct: 55, active: true, label: 'Working' };
+      }
+      return { pct: 0, active: false, label: 'Waiting' };
+    });
+  }
+
+  function watchGithub(options, component) {
     var started = Date.now();
     modal({
       eyebrow: 'Run started on GitHub',
@@ -449,32 +475,49 @@
                   } }],
       cancelLabel: 'Close',
     });
+    if (component) component.setState({ running: true });
     (function poll() {
-      if (Date.now() - started > 40 * 60 * 1000) return;
+      if (Date.now() - started > 50 * 60 * 1000) return;
       gh('/actions/workflows/' + WF + '/runs?per_page=1', {})
         .then(function (r) { return r.json(); })
         .then(function (j) {
           var run = (j.workflow_runs || [])[0];
-          if (!run) return setTimeout(poll, 15000);
-          if (run.status !== 'completed') {
-            badge('running on GitHub · ' + run.status.replace('_', ' '), G);
-            return setTimeout(poll, 15000);
-          }
-          if (run.conclusion === 'success') {
-            badge('run finished · reloading', G);
-            setTimeout(function () { location.reload(); }, 2500);
-          } else {
-            badge('run ' + run.conclusion, RED);
-          }
+          if (!run) return setTimeout(poll, 8000);
+          return gh('/actions/runs/' + run.id + '/jobs', {})
+            .then(function (r) { return r.json(); })
+            .then(function (jj) {
+              var job = (jj.jobs || [])[0] || {};
+              var st = stagesFromSteps(job.steps);
+              window.__AAU.status = {
+                running: run.status !== 'completed',
+                stages: st,
+                findings: (window.__AAU.state || {}).findings || [],
+              };
+              if (component) component.forceUpdate();
+              var doneN = st.filter(function (x) { return x.pct >= 100; }).length;
+              if (run.status !== 'completed') {
+                badge('running on GitHub · stage ' + Math.min(6, doneN + 1)
+                      + ' of 6', G);
+                return setTimeout(poll, 6000);
+              }
+              window.__AAU.status.running = false;
+              if (component) component.setState({ running: false });
+              if (run.conclusion === 'success') {
+                badge('run finished · reloading', G);
+                setTimeout(function () { location.reload(); }, 2500);
+              } else {
+                badge('run ' + (run.conclusion || 'failed'), RED);
+              }
+            });
         })
-        .catch(function () { setTimeout(poll, 20000); });
+        .catch(function () { setTimeout(poll, 12000); });
     })();
   }
 
   function startRun(component, options) {
     if (!window.__AAU.canRun) {          // published page -> run it on GitHub
-      if (!token()) { askToken(function () { dispatch(options); }); return; }
-      dispatch(options);
+      if (!token()) { askToken(function () { dispatch(options, component); }); return; }
+      dispatch(options, component);
       return;
     }
     api('/api/run/start', options)

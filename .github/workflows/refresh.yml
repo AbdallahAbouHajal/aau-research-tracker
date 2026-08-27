@@ -2,9 +2,13 @@ name: Refresh the census
 
 # The engine runs HERE, on GitHub's machines. GitHub Pages serves files rather
 # than processes, so the engine cannot listen for requests on the published
-# site -- instead it runs on a schedule (and whenever you press Run workflow),
-# fetches Scopus for real, and commits its answer as docs/data/state.json.
-# The page reads that file, so what you see published is real data.
+# site -- instead it runs on a schedule, when you press Run workflow, and when
+# you press Run now on the page itself. It fetches Scopus for real and commits
+# its answer as docs/data/state.json plus the three downloadable files.
+#
+# The six stages the interface draws are the six real steps below. That is what
+# lets the published page show genuine progress: it asks GitHub which step is
+# running and lights the matching stage. Nothing on that screen is simulated.
 
 on:
   schedule:
@@ -29,45 +33,51 @@ concurrency:
   group: refresh
   cancel-in-progress: false
 
+env:
+  AAU_DATA: ${{ github.workspace }}/engine/data
+  AAU_CACHE: ${{ github.workspace }}/engine/.cache
+  AAU_STAGE_FILE: ${{ github.workspace }}/engine/.stage.json
+  SCOPUS_KEYS_FILE: ${{ github.workspace }}/engine/config/scopus_keys.json
+  # Through env, never interpolated into a command line: a workflow_dispatch
+  # input is user-supplied text, and pasting it into a shell is how workflow
+  # injection happens.
+  YEARS: ${{ github.event.inputs.years }}
+  SCOPE: ${{ github.event.inputs.scope }}
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: engine
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      # The engine is standard library only, so there is nothing to install.
-      - name: Check the engine imports
-        working-directory: engine
-        run: |
-          python -c "import sys; sys.path.insert(0,'core'); import viewmodel, fetch, resolve, classify, runs; print('engine ok')"
-
       # Keys never live in the repo. Set SCOPUS_KEYS in
       # Settings > Secrets and variables > Actions as a JSON array of strings.
-      - name: Provide the Scopus keys
+      - name: Prepare
         env:
           SCOPUS_KEYS: ${{ secrets.SCOPUS_KEYS }}
         run: |
           if [ -z "$SCOPUS_KEYS" ]; then
-            echo "::error::SCOPUS_KEYS secret is not set. Add it in Settings > Secrets and variables > Actions."
+            echo "::error::SCOPUS_KEYS secret is not set."
             exit 1
           fi
-          mkdir -p engine/config
-          printf '%s' "$SCOPUS_KEYS" > engine/config/scopus_keys.json
-          python - <<'PY'
+          mkdir -p config
+          printf '%s' "$SCOPUS_KEYS" > config/scopus_keys.json
+          python -c "
           import json
-          k = json.load(open("engine/config/scopus_keys.json"))
-          assert isinstance(k, list) and k, "SCOPUS_KEYS must be a non-empty JSON array"
-          print("%d Scopus keys loaded" % len(k))
-          PY
+          k = json.load(open('config/scopus_keys.json'))
+          assert isinstance(k, list) and k, 'SCOPUS_KEYS must be a JSON array'
+          print('%d Scopus keys loaded' % len(k))"
 
-      # Keeps the Scopus/OpenAlex cache between runs so a weekly refresh is
-      # cheap and only genuinely new queries hit the network.
+      # Keeps the Scopus/OpenAlex cache between runs, so a weekly refresh only
+      # pays for what is genuinely new.
       - name: Restore the fetch cache
         uses: actions/cache@v4
         with:
@@ -75,30 +85,31 @@ jobs:
           key: aau-cache-${{ github.run_id }}
           restore-keys: aau-cache-
 
-      - name: Run the census
-        working-directory: engine
-        env:
-          AAU_DATA: ${{ github.workspace }}/engine/data
-          AAU_CACHE: ${{ github.workspace }}/engine/.cache
-          SCOPUS_KEYS_FILE: ${{ github.workspace }}/engine/config/scopus_keys.json
-          # Through env, never interpolated into the command line: a
-          # workflow_dispatch input is user-supplied text and pasting it into a
-          # shell is how workflow injection happens.
-          YEARS: ${{ github.event.inputs.years }}
-          WORKSPACE: ${{ github.workspace }}
-        run: |
-          python export_state.py --run \
-            --years "$YEARS" \
-            --out "$WORKSPACE/docs/data/state.json"
+      # --- the six stages, named exactly as the interface draws them --------
+      - name: Read the faculty roster
+        run: python run_stage.py 1 --years "$YEARS" --scope "${SCOPE:-compare}"
 
-      - name: Check the files were written
-        run: |
-          ls -la docs/downloads/ || true
-          test -s docs/data/state.json || { echo "::error::state.json is empty"; exit 1; }
+      - name: Find each person in Scopus
+        run: python run_stage.py 2
+
+      - name: Collect the papers
+        run: python run_stage.py 3
+
+      - name: Check the extra papers found
+        run: python run_stage.py 4
+
+      - name: Sort faculty from students
+        run: python run_stage.py 5
+
+      - name: Build the census and compare
+        run: python run_stage.py 6 --out "$GITHUB_WORKSPACE/docs/data/state.json"
 
       - name: Commit the new state
+        working-directory: .
         run: |
-          rm -f engine/config/scopus_keys.json
+          rm -f engine/config/scopus_keys.json engine/.stage.json
+          test -s docs/data/state.json || { echo "::error::state.json is empty"; exit 1; }
+          ls -la docs/downloads/ || true
           git config user.name  "aau-tracker[bot]"
           git config user.email "aau-tracker@users.noreply.github.com"
           git add docs/data/state.json docs/downloads
@@ -106,9 +117,8 @@ jobs:
             echo "nothing changed"
           else
             git commit -m "Census refresh $(date -u +%Y-%m-%d) [skip ci]"
-            # Someone may have pushed while the run was fetching Scopus, which
-            # takes minutes. Rebase onto whatever landed rather than failing on
-            # a non-fast-forward and throwing the whole run away.
+            # A run takes minutes; anything pushed meanwhile would make this
+            # push fail and throw the whole run away. Rebase onto it instead.
             for i in 1 2 3; do
               git pull --rebase --autostash origin main && git push && break
               echo "push attempt $i failed; retrying"
@@ -118,6 +128,7 @@ jobs:
 
       - name: Summary
         if: always()
+        working-directory: .
         run: |
           python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
           import json, os

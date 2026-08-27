@@ -97,7 +97,8 @@ def _printed_aau(paper):
     return False, "no author printed an Al Ain University address"
 
 
-def run(faculty=None, years=None, log=print, stage=None):
+def run(faculty=None, years=None, log=print, stage=None,
+        routes="ab", papers=None, stats=None):
     """Returns {'papers': {eid: paper}, 'stats': {...}}.
 
     `stage(n, pct)` is called as the two routes progress so a UI can show
@@ -111,12 +112,20 @@ def run(faculty=None, years=None, log=print, stage=None):
                 pass
     years = years or window()
     faculty = faculty or []
-    papers, stats = {}, {"years": years}
+    # `routes` lets the two halves run as separate steps: "a" is the
+    # institution query, "b" is the per-author sweep behind the gate. A CI job
+    # runs them as two named steps so progress is real rather than a spinner.
+    papers = {} if papers is None else papers
+    stats = {"years": years} if stats is None else stats
+    stats["years"] = years
 
     # --- route A: the institution
     a_total = 0
-    _stage(2, 5)
-    for i, y in enumerate(years):
+    if "a" not in routes:
+        pass
+    else:
+      _stage(2, 5)
+      for i, y in enumerate(years):
         q = "AF-ID(%s) AND PUBYEAR IS %d" % (X.AAU_AFID, y)
         total, rows = _search(q, year_hint=y, log=log)
         a_total += total
@@ -125,11 +134,14 @@ def run(faculty=None, years=None, log=print, stage=None):
                 papers.setdefault(p["eid"], p)
         log("  AF-ID %d: %d papers" % (y, total))
         _stage(2, int(90 * (i + 1) / max(1, len(years))))
-    stats["af_id_reported"] = a_total
-    stats["af_id_unique"] = len(papers)
-    if a_total != len(papers):
-        log("  !! AF-ID reported %d but %d unique EIDs -- pagination drift"
-            % (a_total, len(papers)))
+      stats["af_id_reported"] = a_total
+      stats["af_id_unique"] = len(papers)
+      if a_total != len(papers):
+          log("  !! AF-ID reported %d but %d unique EIDs -- pagination drift"
+              % (a_total, len(papers)))
+      if "b" not in routes:
+          stats["total_papers"] = len(papers)
+          return {"papers": papers, "stats": stats}
 
     # --- route B: the faculty sweep, GATED
     #
