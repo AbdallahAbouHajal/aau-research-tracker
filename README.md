@@ -1,14 +1,14 @@
 # AAU Research Tracker — web build
 
 The Al Ain University Research Tracker interface, as a website. Open
-`site/index.html` in any browser: no server, no build step, no internet.
+`docs/index.html` in any browser: no server, no build step, no internet.
 
 ## What is here
 
-    site/index.html      The whole app in ONE self-contained file (595 KB).
+    docs/index.html      The whole app in ONE self-contained file (595 KB).
                          Fonts and images are inlined. This is what gets hosted.
-    site/robots.txt      Keeps the page out of search engines.
-    site/artifact.html   The same page with the outer <html>/<head>/<body>
+    docs/robots.txt      Keeps the page out of search engines.
+    docs/artifact.html   The same page with the outer <html>/<head>/<body>
                          removed, for hosts that supply their own skeleton.
 
     source/              The authored source, for whoever rebuilds this properly:
@@ -40,11 +40,11 @@ the separate `AAU_Research_Tracker` project — this is the face that goes on it
 
 See `DEPLOY.md`. The short version: it is one static folder, so it works
 unchanged on GitHub Pages, Cloudflare Pages, Netlify, Vercel, or any Apache or
-nginx server — copy `site/` to the web root.
+nginx server — copy `docs/` to the web root.
 
 ## Editing the built file
 
-`site/index.html` is a self-unpacking bundle: the real page is a JSON string on
+`docs/index.html` is a self-unpacking bundle: the real page is a JSON string on
 **line 382**. Edit the readable source in `source/` instead. If you must edit
 the bundle directly, re-encode exactly this way or the page will not open:
 
@@ -55,3 +55,8 @@ json.dumps(text, ensure_ascii=False).replace("</", "<\\u002F")
 `ensure_ascii=False` keeps em-dashes raw; the `</` escape stops an inner
 `</script>` from closing the host script tag early. Line 370 is the asset
 manifest — 502 KB of base64 fonts and images. Leave it alone.
+
+> `docs/` is the website. GitHub Pages is configured to serve that folder, which
+> is why it is named `docs` rather than `site` — the legacy Pages builder only
+> accepts the repository root or `/docs`, and `/docs` keeps the built page from
+> mixing with the source.
