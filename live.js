@@ -574,6 +574,31 @@
   /* Two columns are required and five are optional, and the importer is
    * forgiving about the college wording -- "engineering" or "Eng." both land
    * on College of Engineering. Say so before someone builds a file blind. */
+  /* Roster edits go through the proxy when the page has no engine behind it.
+   * The passphrase is the same one that starts a run: it was deliberately
+   * given this reach, so somebody with it can fix the roster from anywhere. */
+  function viaProxy(path, payload, onOk, onErr) {
+    var send = function () {
+      return fetch(WORKER + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ passphrase: pass() }, payload)),
+      }).then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+      }).then(function (res) {
+        if (!res.ok || !res.j || res.j.error) {
+          var msg = (res.j && res.j.error) || 'It was refused.';
+          if (/passphrase/i.test(msg)) setPass('');
+          onErr(msg);
+          return;
+        }
+        onOk(res.j);
+      }).catch(function (e) { onErr(String(e.message || e)); });
+    };
+    if (!pass()) { askPass(send); return; }
+    send();
+  }
+
   function csvHelp() {
     var row = function (n, req, what) {
       return '<tr>'
@@ -631,7 +656,6 @@
   /* Adding one person by hand. A whole CSV is the wrong shape for "we hired
    * someone in March". */
   function addPerson(component) {
-    if (!window.__AAU.canRun) { needsLocal('Adding somebody'); return; }
     var opts = COLLEGES.map(function (c) {
       return '<option value="' + esc(c) + '">' + esc(c) + '</option>';
     }).join('');
@@ -662,27 +686,41 @@
           var name = box.querySelector('#apName').value.trim();
           var note = box.querySelector('#apNote');
           if (!name) { note.style.color = RED; note.textContent = 'A name at least.'; return; }
-          note.style.color = META;
-          note.textContent = 'Looking them up in Scopus…';
-          api('/api/faculty/add', {
+          var payload = {
             name: name,
             college: box.querySelector('#apCollege').value,
             title: box.querySelector('#apTitle').value.trim(),
             url: box.querySelector('#apUrl').value.trim(),
-            confirm: true,
-          }).then(function (r) {
+          };
+          note.style.color = META;
+
+          var done = function (auid) {
             m.close();
             refresh(component);
             modal({
-              eyebrow: 'Roster', title: (r.added ? 'Added' : 'Updated') + ': ' + name,
-              sub: r.auid ? ('Scopus author ' + r.auid + '. Their papers appear on the next run.')
-                          : 'No Scopus record yet. They count as faculty from now on, and their papers appear once an id is known.',
+              eyebrow: 'Roster', title: 'Added: ' + name,
+              sub: auid
+                ? ('Scopus author ' + auid + '. Their papers appear on the next run.')
+                : 'On the roster from now on. Their Scopus record is looked up on '
+                  + 'the next run — from their aau.ac.ae page if you gave one, '
+                  + 'which is the most reliable route.',
               cancelLabel: 'Close',
             });
-          }).catch(function (e) {
+          };
+          var failed = function (msg) {
             note.style.color = RED;
-            note.textContent = String(e.message || e);
-          });
+            note.textContent = msg;
+          };
+
+          if (window.__AAU.canRun) {
+            note.textContent = 'Looking them up in Scopus…';
+            api('/api/faculty/add', Object.assign({ confirm: true }, payload))
+              .then(function (r) { done(r.auid); })
+              .catch(function (e) { failed(String(e.message || e)); });
+          } else {
+            note.textContent = 'Writing them to the roster…';
+            viaProxy('/roster/add', payload, function () { done(null); }, failed);
+          }
         },
       },
     });
@@ -915,7 +953,6 @@
 
   /* ---------------------------------------------------------- import a CSV */
   function importCsv(component) {
-    if (!window.__AAU.canRun) { needsLocal('Importing a roster'); return; }
     var f = document.createElement('input');
     f.type = 'file';
     f.accept = '.csv,text/csv';
@@ -925,14 +962,31 @@
       var r = new FileReader();
       r.onload = function () {
         badge('importing roster…', G);
-        api('/api/faculty', { csv: String(r.result) })
-          .then(function (res) {
-            refresh(component);
-            modal({ eyebrow: 'Roster', title: 'Roster imported',
-                    sub: (res.count || 0) + ' people read from ' + file.name + '.',
-                    cancelLabel: 'Close' });
-          })
-          .catch(function (e) { badge('import failed', RED); console.error(e); });
+        var text = String(r.result);
+        var ok = function (n) {
+          refresh(component);
+          badge('roster imported', G);
+          modal({ eyebrow: 'Roster', title: 'Roster imported',
+                  sub: n + ' people read from ' + file.name
+                    + '. Scopus records are matched on the next run.',
+                  cancelLabel: 'Close' });
+        };
+        var bad = function (msg) {
+          badge('import failed', RED);
+          modal({ eyebrow: 'Roster', title: 'That file was not imported',
+                  sub: msg, choices: [{ label: 'What does the CSV need?',
+                    hint: 'The columns, with an example and a template.',
+                    go: function () { csvHelp(); } }],
+                  cancelLabel: 'Close' });
+        };
+        if (window.__AAU.canRun) {
+          api('/api/faculty', { csv: text })
+            .then(function (res) { ok(res.count || 0); })
+            .catch(function (e) { bad(String(e.message || e)); });
+        } else {
+          viaProxy('/roster/import', { csv: text },
+                   function (j) { ok(j.people || 0); }, bad);
+        }
       };
       r.readAsText(file);
     };

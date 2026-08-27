@@ -6,8 +6,17 @@
  * Worker secret, and never reaches a browser. A reader proves they are allowed
  * with a passphrase you give them — no GitHub account, nothing installed.
  *
- *   POST /run     { passphrase, years?, scope? }  -> starts a run
- *   GET  /status                                   -> the live run, stage by stage
+ *   POST /run            { passphrase, years?, scope?, date_from?, date_to? }
+ *   POST /roster/add     { passphrase, name, college, title?, url? }
+ *   POST /roster/import  { passphrase, csv }
+ *   GET  /status                                    -> the live run, stage by stage
+ *
+ * The roster endpoints commit to the repository, so the passphrase can change
+ * who counts as faculty. That is deliberate and was asked for. What it cannot
+ * do is anything else: it appends a person or replaces the roster, both onto a
+ * file whose every previous version is in git history, and it touches no other
+ * path. Scopus resolution is NOT done here -- the next run finds the new
+ * person through their aau.ac.ae page, the same route the engine already uses.
  *
  * /status needs no passphrase: it only reports what the workflow is doing, and
  * the page has to poll it to move the progress bar. It cannot start anything.
@@ -20,6 +29,72 @@
  */
 
 const GH = 'https://api.github.com';
+
+// AAU's eight. A college outside this list is a typo, not a new college.
+const COLLEGES = [
+  'College of Engineering', 'College of Pharmacy', 'College of Law',
+  'College of Education, Humanities and Social Sciences',
+  'College of Business', 'College of Communication and Media',
+  'College of Dentistry', 'College of Nursing',
+];
+
+/** Minimal CSV -> roster rows. Quoted fields with commas are handled; anything
+ *  without a name and a college is dropped rather than guessed at. */
+function parseCsv(text) {
+  const lines = String(text).replace(/\r\n?/g, '\n').split('\n').filter((l) => l.trim());
+  if (lines.length < 2) return [];
+  const cut = (line) => {
+    const out = []; let cur = '', q = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (q) {
+        if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+        else if (c === '"') q = false;
+        else cur += c;
+      } else if (c === '"') q = true;
+      else if (c === ',') { out.push(cur); cur = ''; }
+      else cur += c;
+    }
+    out.push(cur);
+    return out.map((v) => v.trim());
+  };
+  const head = cut(lines[0]).map((h) => h.toLowerCase().replace(/^﻿/, ''));
+  const at = (r, n) => { const i = head.indexOf(n); return i < 0 ? '' : (r[i] || ''); };
+  const rows = [];
+  const seen = new Set();
+  for (let i = 1; i < lines.length; i++) {
+    const r = cut(lines[i]);
+    const name = at(r, 'name').replace(/\s*,?\s*\b(Ph\.?\s?D|M\.?\s?Sc|MBA|MD|DDS)\.?\s*$/i, '').trim();
+    const college = snapCollege(at(r, 'college'));
+    if (!name || !college) continue;
+    const k = name.toLowerCase().replace(/[^a-z ]/g, '');
+    if (seen.has(k)) continue;
+    seen.add(k);
+    rows.push({
+      name: name.slice(0, 120), college,
+      title: at(r, 'title').slice(0, 120),
+      email: at(r, 'email').slice(0, 160),
+      department: at(r, 'department').slice(0, 120),
+      profile_url: at(r, 'profile_url').slice(0, 300),
+      staff_type: /admin/i.test(at(r, 'staff_type')) ? 'administrative' : 'academic',
+      is_academic: !/admin/i.test(at(r, 'staff_type')),
+      colleges: [college],
+      scopus_auid: '', auid_tier: '', auid_candidates: [],
+    });
+  }
+  return rows;
+}
+
+/** "engineering", "Eng.", "College of Engineering" -> the same college. */
+function snapCollege(raw) {
+  const t = String(raw || '').toLowerCase();
+  if (!t.trim()) return '';
+  const map = [['engineer', 0], ['pharmac', 1], ['law', 2], ['education', 3],
+    ['humanities', 3], ['social', 3], ['business', 4], ['communicat', 5],
+    ['media', 5], ['dentist', 6], ['nurs', 7]];
+  for (const [k, i] of map) if (t.includes(k)) return COLLEGES[i];
+  return '';
+}
 
 function cors(res, origin) {
   const h = new Headers(res.headers);
@@ -158,6 +233,100 @@ export default {
         status: r.status,
         detail: detail.slice(0, 300),
       }, 502), origin);
+    }
+
+    // ---- roster edits ------------------------------------------------------
+    if (path.startsWith('/roster/') && request.method === 'POST') {
+      let body = {};
+      try { body = await request.json(); } catch (e) { body = {}; }
+      if (!env.RUN_PASSPHRASE || !sameSecret(body.passphrase, env.RUN_PASSPHRASE)) {
+        await new Promise((r) => setTimeout(r, 600));
+        return cors(json({ error: 'That passphrase is not right.' }, 403), origin);
+      }
+
+      const FILE = 'engine/data/roster.json';
+      const get = await fetch(
+        `${GH}/repos/${env.REPO}/contents/${FILE}?ref=main`,
+        { headers: ghHeaders(env) },
+      );
+      if (!get.ok) {
+        return cors(json({ error: 'could not read the roster' }, 502), origin);
+      }
+      const meta = await get.json();
+      let blob;
+      try {
+        blob = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\n/g, '')))));
+      } catch (e) {
+        return cors(json({ error: 'the roster on the repo is unreadable' }, 500), origin);
+      }
+      const people = blob.people || [];
+      const norm = (v) => String(v || '').replace(/\s+/g, ' ').trim();
+      const key = (v) => norm(v).toLowerCase().replace(/[^a-z ]/g, '');
+      let message = '';
+
+      if (path === '/roster/add') {
+        const name = norm(body.name).slice(0, 120);
+        const college = norm(body.college).slice(0, 120);
+        if (!name || !college) {
+          return cors(json({ error: 'a name and a college are needed' }, 400), origin);
+        }
+        if (!COLLEGES.includes(college)) {
+          return cors(json({ error: 'that is not one of the eight colleges' }, 400), origin);
+        }
+        if (people.some((p) => key(p.name) === key(name))) {
+          return cors(json({ added: false, error: name + ' is already on the roster.' }, 409), origin);
+        }
+        const url = norm(body.url).slice(0, 300);
+        if (url && !/^https:\/\/(www\.)?aau\.ac\.ae\//i.test(url)) {
+          return cors(json({ error: 'the profile link must be on aau.ac.ae' }, 400), origin);
+        }
+        people.push({
+          name, college,
+          title: norm(body.title).slice(0, 120),
+          profile_url: url,
+          email: '', department: '',
+          staff_type: 'academic', is_academic: true,
+          colleges: [college],
+          scopus_auid: '', auid_tier: '', auid_candidates: [],
+          added_from_page: true,
+        });
+        message = 'Roster: add ' + name + ' (' + college + ')';
+      } else if (path === '/roster/import') {
+        const csv = String(body.csv || '');
+        if (csv.length > 400000) {
+          return cors(json({ error: 'that file is too big' }, 413), origin);
+        }
+        const rows = parseCsv(csv);
+        if (!rows.length) {
+          return cors(json({ error: 'no rows with a name and a college' }, 400), origin);
+        }
+        if (rows.length > 2000) {
+          return cors(json({ error: 'that is more people than AAU has' }, 400), origin);
+        }
+        blob.people = rows;
+        blob.replaced_from_page = new Date().toISOString();
+        message = 'Roster: import ' + rows.length + ' people';
+      } else {
+        return cors(json({ error: 'not found' }, 404), origin);
+      }
+
+      blob.people = blob.people || people;
+      if (path === '/roster/add') blob.people = people;
+      const put = await fetch(`${GH}/repos/${env.REPO}/contents/${FILE}`, {
+        method: 'PUT',
+        headers: { ...ghHeaders(env), 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: message + '\n\nMade from the published page.',
+          content: btoa(unescape(encodeURIComponent(JSON.stringify(blob, null, 1)))),
+          sha: meta.sha,
+          branch: 'main',
+        }),
+      });
+      if (!put.ok) {
+        const t = await put.text();
+        return cors(json({ error: 'the change was refused', detail: t.slice(0, 240) }, 502), origin);
+      }
+      return cors(json({ ok: true, people: blob.people.length, message }), origin);
     }
 
     return cors(json({ error: 'not found' }, 404), origin);
