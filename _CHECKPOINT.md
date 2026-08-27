@@ -91,6 +91,50 @@ The published page has no engine behind it, so it shows the sample figures and
 says so in a badge. That is deliberate: named colleagues with silently stale
 numbers is the worse failure.
 
+## The engine on GitHub
+
+Pages serves files, not processes, so the engine cannot listen on the published
+site. It does not need to: it RUNS on GitHub Actions, on GitHub's machines.
+
+    .github/workflows/refresh.yml   Monday 03:00 UTC + "Run workflow" on demand
+    engine/                         the whole engine, vendored
+    docs/data/state.json            what it wrote last time -- the page reads this
+
+**One thing is needed before the Action can run:** add a repository secret
+`SCOPUS_KEYS` (Settings > Secrets and variables > Actions) holding the keys as a
+JSON array, e.g. `["<32 hex>", "<32 hex>", ...]`. Keys are never committed; the
+workflow writes them to a temp file and deletes it before pushing.
+
+`engine/vendor/common.py` is the census module that owns the AAU affiliation
+rule -- **vendored, not reimplemented**, so the rule that decides who counts as
+AAU still lives in exactly one file. Paths and keys come from env
+(`AAU_DATA`, `AAU_CACHE`, `SCOPUS_KEYS_FILE`), so the same code runs on a
+laptop and on a runner. Verified: with `AAU_CENSUS_DIR=/nonexistent` the engine
+still builds 536 authors and 170 settled AU-IDs from repo data alone.
+
+**Deliberately not committed: the raw Scopus export.** A bulk export carries
+Elsevier licensing terms and contained emails. The Action refetches from the
+API, which is what the keys license. Only derived metrics ship
+(`engine/data/people_metrics.json`, 133 KB, no emails).
+
+## The blank-screen bug, and how it was found
+
+Every tab except Welcome rendered blank. Three things made it hard: the markup
+was balanced, `renderVals()` returned cleanly for all seven screens under a node
+harness, and the content was present in the DOM with real element heights.
+
+It was invisible, not missing. `min-height:100vh` on the shell div leaves every
+`data-rise` child stuck on the `uiRise` animation's `opacity: 0` start frame --
+the dc-runtime does its own min-height bookkeeping on that element. Found by
+bisecting the ten UI patches one at a time with headless Chrome screenshots
+(`--screenshot`, file size as the signal: ~25 KB blank vs ~99 KB rendered).
+
+Two rules came out of it:
+- **Never set min-height on the shell div.** Full height goes on the outer
+  wrapper.
+- **Screenshot every build.** `node --check` and DOM assertions both passed on a
+  page that was completely invisible.
+
 ## Still open
 
 - Chrome extension is unpaired (this CLI signed into a different claude.ai
