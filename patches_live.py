@@ -281,12 +281,16 @@ VALS = r"""
         if (!p || !sel) return '';
         const rec = PROGRAMS.find(x => x.name === p && x.college === sel);
         if (!rec) return '';
-        // Say whose tagging this is. Dentistry and Nursing publish one
-        // programme each and tag nobody to it, so their staff are assigned
-        // here by inference -- a count the reader cannot tell apart from
-        // AAU's own is worse than no count.
-        return rec.people + (rec.people === 1 ? ' person on ' : ' people on ')
-          + p + ' \u00b7 ' + rec.papers.toLocaleString() + ' papers'
+        // Two different numbers, and showing the wrong one reads as a bug:
+        // `tagged` is how many staff are ON the programme, `people` is how
+        // many of them have a Scopus record in this window. Dentistry has
+        // three staff and none with papers -- as "0 people" that looks like
+        // the tagging failed, so say both.
+        const n = rec.tagged || rec.people;
+        return n + (n === 1 ? ' member of staff \u00b7 ' : ' staff \u00b7 ')
+          + (rec.papers ? rec.papers.toLocaleString() + ' papers from '
+               + rec.people + ' of them'
+             : 'none of them published in this window')
           + (rec.assumed ? ' \u00b7 assigned here \u2014 AAU lists this '
              + 'college\u2019s staff but tags nobody to its one programme'
              : '');
@@ -323,11 +327,13 @@ VALS = r"""
         // the college and the chip counts sum to more than its people.
         return [chip('Everyone', '', 'All ' + mine.length
                      + ' programmes in this college')].concat(
-          mine.sort((a, b) => b.papers - a.papers).map(p =>
+          mine.slice().sort((a, b) => b.papers - a.papers
+                                 || b.tagged - a.tagged).map(p =>
             chip(shortProg(p.name) + (p.assumed ? ' *' : ''),
                  p.name,
-                 p.name + ' \u2014 ' + p.people + ' people, '
-                   + p.papers.toLocaleString() + ' papers'
+                 p.name + ' \u2014 ' + (p.tagged || p.people) + ' staff, '
+                   + (p.papers ? p.papers.toLocaleString() + ' papers'
+                      : 'no papers in this window')
                    + (p.assumed ? ' (* assigned here, not tagged by AAU)'
                       : ''))));
       })(),
