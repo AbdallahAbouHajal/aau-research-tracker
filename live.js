@@ -513,6 +513,24 @@
     'Collect the papers', 'Check the extra papers found',
     'Sort faculty from students', 'Build the census and compare'];
 
+  // The two steps that decide whether anyone SEES the new numbers -- the
+  // commit and the check that it landed -- are not among the six stages, so a
+  // run that computed everything and then failed to publish drew six green
+  // ticks over the previous census.
+  var PUBLISH_STEPS = ['Commit the new state', 'Verify the refresh actually landed'];
+
+  function publishFailure(steps) {
+    for (var i = 0; i < (steps || []).length; i++) {
+      var st = steps[i];
+      if (PUBLISH_STEPS.indexOf(st.name) >= 0 && st.status === 'completed'
+          && st.conclusion && st.conclusion !== 'success'
+          && st.conclusion !== 'skipped') {
+        return st.name;
+      }
+    }
+    return '';
+  }
+
   function stagesFromSteps(steps) {
     return STAGE_NAMES.map(function (name) {
       var st = null;
@@ -583,6 +601,20 @@
               if (component) component.setState({ screen: 'dash', running: false });
             }).catch(function () { location.reload(); });
           } else {
+            var pf = publishFailure(d.steps);
+            if (pf) {
+              badge('the census was built but not published', RED);
+              modal({
+                eyebrow: 'The run',
+                title: 'It finished the work but could not publish it',
+                sub: 'Every stage of the census completed, then "' + pf
+                  + '" failed. The figures on this page are still the '
+                  + 'previous run\'s. Nothing was lost -- the run can be '
+                  + 'repeated -- but nothing on screen has moved.',
+                cancelLabel: 'Close',
+              });
+              return;
+            }
             badge('run ' + (d.conclusion || 'failed'), RED);
           }
         })
@@ -1073,6 +1105,69 @@
       function (msg) { badge(String(msg).slice(0, 60), RED); });
   }
   window.__AAU.reject = reject;
+
+  /* "Show all" under an author's papers, and "Export this college" on the
+     roster, were drawn with no handler at all -- they looked live and did
+     nothing when pressed. */
+  function showPapers(component) {
+    var st = window.__AAU.state || {};
+    var key = component && component.state ? component.state.author : null;
+    var who = (st.authors || []).filter(function (a) { return a.key === key; })[0]
+      || (st.authors || [])[0];
+    if (!who) return;
+    var rows = (st.papers || {})[who.key] || [];
+    if (!rows.length) {
+      modal({ eyebrow: 'Papers', title: who.name,
+              sub: 'No papers for this person in the current window.',
+              cancelLabel: 'Close' });
+      return;
+    }
+    var html = rows.map(function (r, i) {
+      return '<div style="display:flex;gap:10px;padding:9px 0;border-bottom:'
+        + '1px solid #F0F3F1"><div style="width:22px;color:' + META
+        + ';font-size:12px">' + (i + 1) + '</div><div style="flex:1;min-width:0">'
+        + '<div style="font-size:13.5px;color:' + INK + '">' + esc(r[0] || '(untitled)')
+        + '</div><div style="font-size:12px;color:' + META + ';margin-top:2px">'
+        + esc(r[1] || '') + ' · ' + esc(r[2] || '') + ' · '
+        + esc(r[3] || 0) + ' citations</div></div></div>';
+    }).join('');
+    var missing = Math.max(0, (who.papers || 0) - rows.length);
+    modal({
+      eyebrow: 'Papers', title: who.name,
+      sub: rows.length + ' of ' + (who.papers || rows.length)
+        + ' papers in this window'
+        + (missing ? ' · the remaining ' + missing + ' are not published to '
+                     + 'this page' : ''),
+      html: html, cancelLabel: 'Close',
+    });
+  }
+  window.__AAU.showPapers = showPapers;
+
+  function exportCollege(component) {
+    var st = window.__AAU.state || {};
+    var col = component && component.state ? component.state.college : null;
+    var rows = (st.authors || []).filter(function (a) {
+      return !col || a.college === col;
+    });
+    if (!rows.length) { badge('nothing to export here', RED); return; }
+    var head = ['Name', 'College', 'Title', 'Papers', 'h-index', 'Citations',
+                'Scopus author id', 'Status'];
+    var q = function (v) { return '"' + String(v === undefined || v === null ? '' : v).replace(/"/g, '""') + '"'; };
+    var csv = [head.map(q).join(',')].concat(rows.map(function (a) {
+      return [a.name, a.college, a.title, a.papers, a.h, a.cites, a.auid, a.tag]
+        .map(q).join(',');
+    })).join('\r\n');
+    var name = (col || 'AAU').replace(/[^A-Za-z0-9]+/g, '_') + '_authors.csv';
+    var url = URL.createObjectURL(new Blob(['\ufeff' + csv],
+      { type: 'text/csv;charset=utf-8' }));
+    var link = document.createElement('a');
+    link.href = url; link.download = name;
+    document.body.appendChild(link); link.click();
+    document.body.removeChild(link);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    badge('exported ' + rows.length + ' people', G);
+  }
+  window.__AAU.exportCollege = exportCollege;
 
   /* ---------------------------------------------------------- import a CSV */
   function importCsv(component) {

@@ -355,6 +355,8 @@ VALS = r"""
                       : ''))));
       })(),
       csvHelp: () => window.__AAU && window.__AAU.csvHelp(),
+      showPapers: () => window.__AAU && window.__AAU.showPapers(this),
+      exportCollege: () => window.__AAU && window.__AAU.exportCollege(this),
       reviewLabel: (S_ ? (S_.review === 1 ? '1 needs a decision'
                           : S_.review + ' need a decision')
                        : '8 need a decision'),
@@ -1012,6 +1014,49 @@ ROUND2 = [
      "    grid-template-columns: 1fr !important; }\n"
      "}\n"
      "</style>\n</helmet>"),
+
+    # ---- the author panel must not invent a selection ---------------------
+    # With nobody picked -- the state on arrival, and again after a run drops
+    # the selected person from the list -- the panel fell back to AUTHORS[0]
+    # and drew a full dossier for whoever happens to publish most, while the
+    # list showed no row highlighted. A reader has no way to tell that from
+    # having selected them.
+    ("authors: nothing selected shows nothing, not the top author",
+     "const p = AUTHORS.find(a => a.key === this.state.author) || AUTHORS[0];",
+     "const p = AUTHORS.find(a => a.key === this.state.author)\n"
+     "      || (this.state.author ? null : AUTHORS[0]) || AUTHORS[0];\n"
+     "    const lostPick = !!(this.state.author\n"
+     "      && !AUTHORS.some(a => a.key === this.state.author));"),
+
+    # The caption under the paper table read {{ pick.moreLabel }} while
+    # moreLabel was a sibling of `pick`, never a property of it -- so it has
+    # rendered empty since the first build, including its own "No papers in
+    # this window." case.
+    ("authors: the caption under the papers is bound to something real",
+     "{{ pick.moreLabel }}", "{{ moreLabel }}"),
+
+    # ---- two buttons that were drawn but never wired ----------------------
+    ("authors: Show all opens the full paper list",
+     '<button type="button" style="background:#ffffff;color:{{ accent }};'
+     'border:1px solid #C3D6CA;border-radius:5px;padding:8px 15px;'
+     'font-family:Archivo,sans-serif;font-size:13px;font-weight:600;'
+     'cursor:pointer">Show all</button>',
+     '<button type="button" sc-camel-on-click="{{ showPapers }}" '
+     'style="background:#ffffff;color:{{ accent }};'
+     'border:1px solid #C3D6CA;border-radius:5px;padding:8px 15px;'
+     'font-family:Archivo,sans-serif;font-size:13px;font-weight:600;'
+     'cursor:pointer">Show all</button>'),
+
+    ("roster: Export this college writes a CSV",
+     '<button type="button" style="background:#ffffff;color:{{ accent }};'
+     'border:1px solid #C3D6CA;border-radius:6px;padding:9px 15px;'
+     'font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;'
+     'cursor:pointer">Export this college</button>',
+     '<button type="button" sc-camel-on-click="{{ exportCollege }}" '
+     'style="background:#ffffff;color:{{ accent }};'
+     'border:1px solid #C3D6CA;border-radius:6px;padding:9px 15px;'
+     'font-family:Archivo,sans-serif;font-size:13.5px;font-weight:600;'
+     'cursor:pointer">Export this college</button>'),
 
     ("roster: the college list narrows to the chosen programme",
      "    const colAuthors = (sel ? AUTHORS.filter(a => a.college === sel) : []);",

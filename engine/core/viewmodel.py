@@ -275,7 +275,7 @@ def build(roster_people=None, run_id=None):
             seen_auid[auid] = authors[-1]
         rows = by_auid.get(auid) or []
         if rows:
-            papers_map[k] = rows[:12]
+            papers_map[k] = rows[:50]
 
     # Anyone on the roster who published in this window but is not in the
     # census file. That file is the ORIGINAL census and nothing rewrites it, so
@@ -305,7 +305,7 @@ def build(roster_people=None, run_id=None):
             "suggest": False,
         })
         seen_auid[auid] = authors[-1]
-        papers_map[k] = rows[:12]
+        papers_map[k] = rows[:50]
     authors.sort(key=lambda a: -(a.get("papers") or 0))
 
     # ---- colleges ----------------------------------------------------------

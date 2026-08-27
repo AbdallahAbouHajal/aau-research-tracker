@@ -156,6 +156,66 @@ def main():
     blob = build()
     out = os.path.abspath(a.out)
     os.makedirs(os.path.dirname(out), exist_ok=True)
+
+    # "Since the last run" was empty on every run ever published, and would
+    # have stayed that way forever: RUNS.delta() compares against the run
+    # store, engine/data/runs/ is .gitignored, and the workflow commits only
+    # docs/. So every CI run began with an empty store, called itself the
+    # first run ever, and reported nothing changed -- a week with forty new
+    # papers and a week with revoked API keys rendered identically.
+    #
+    # The previous answer IS in the checkout though: it is the state.json
+    # about to be overwritten. Diffing against that is what the screen has
+    # always claimed to show.
+    if (blob.get("delta") or {}).get("first_run") and os.path.exists(out):
+        try:
+            with open(out, encoding="utf-8") as fh:
+                prev = json.load(fh)
+        except Exception:
+            prev = None
+        if prev and prev.get("run") and prev.get("run") != blob.get("run"):
+            def _eids(b):
+                out_ = set()
+                for rows in (b.get("papers") or {}).values():
+                    for r in (rows or []):
+                        if len(r) > 5 and r[5]:
+                            out_.add(r[5])
+                return out_
+
+            def _titles(b):
+                t = {}
+                for rows in (b.get("papers") or {}).values():
+                    for r in (rows or []):
+                        if len(r) > 5 and r[5]:
+                            t[r[5]] = {"title": r[0], "journal": r[1],
+                                       "year": r[2]}
+                return t
+
+            now_e, was_e = _eids(blob), _eids(prev)
+            now_t = _titles(blob)
+            now_p = {a_["auid"]: a_ for a_ in (blob.get("authors") or [])
+                     if a_.get("auid")}
+            was_p = {a_["auid"] for a_ in (prev.get("authors") or [])
+                     if a_.get("auid")}
+            fresh = sorted(now_e - was_e)
+            newp = [now_p[x] for x in now_p if x not in was_p]
+            blob["delta"] = {
+                "first_run": False,
+                "since": prev.get("generated"),
+                "new_papers": [dict(now_t.get(e, {}), eid=e) for e in fresh[:200]],
+                "new_papers_total": len(fresh),
+                "new_people": [{"name": p_.get("name"),
+                                "college": p_.get("college"),
+                                "papers": p_.get("papers")} for p_ in newp[:100]],
+                "new_people_total": len(newp),
+                "gone_papers": len(was_e - now_e),
+                "returning": [], "updated": [],
+                "compared_against": "the previously published census",
+            }
+            print("  delta against %s: +%d papers, +%d people, %d no longer "
+                  "present" % (str(prev.get("generated"))[:10], len(fresh),
+                               len(newp), len(was_e - now_e)))
+
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(blob, fh, ensure_ascii=False, separators=(",", ":"))
     # The three downloadables, written beside state.json under a stable name
