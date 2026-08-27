@@ -136,13 +136,18 @@ export default {
 
       const years = String(body.years || '').replace(/[^0-9,]/g, '').slice(0, 24);
       const scope = body.scope === 'current' ? 'current' : 'compare';
+      // YYYY-MM-DD or nothing. Anything else is dropped rather than passed on.
+      const day = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(String(v || '')) ? String(v) : '');
+      const date_from = day(body.date_from);
+      const date_to = day(body.date_to);
 
       const r = await fetch(
         `${GH}/repos/${env.REPO}/actions/workflows/${env.WORKFLOW}/dispatches`,
         {
           method: 'POST',
           headers: { ...ghHeaders(env), 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ref: 'main', inputs: { years, scope } }),
+          body: JSON.stringify({ ref: 'main',
+            inputs: { years, scope, date_from, date_to } }),
         },
       );
       if (r.status === 204) return cors(json({ started: true }), origin);

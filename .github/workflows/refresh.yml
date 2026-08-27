@@ -19,6 +19,14 @@ on:
         description: "Publication years, comma separated (blank = this year and last)"
         required: false
         default: ""
+      date_from:
+        description: "Or an exact window, from (YYYY-MM-DD)"
+        required: false
+        default: ""
+      date_to:
+        description: "…to (YYYY-MM-DD)"
+        required: false
+        default: ""
       scope:
         description: "What to report"
         required: false
@@ -43,6 +51,8 @@ env:
   # injection happens.
   YEARS: ${{ github.event.inputs.years }}
   SCOPE: ${{ github.event.inputs.scope }}
+  DATE_FROM: ${{ github.event.inputs.date_from }}
+  DATE_TO: ${{ github.event.inputs.date_to }}
 
 jobs:
   refresh:
@@ -87,7 +97,11 @@ jobs:
 
       # --- the six stages, named exactly as the interface draws them --------
       - name: Read the faculty roster
-        run: python run_stage.py 1 --years "$YEARS" --scope "${SCOPE:-compare}"
+        run: |
+          python run_stage.py 1 \
+            --years "$YEARS" \
+            --from "$DATE_FROM" --to "$DATE_TO" \
+            --scope "${SCOPE:-compare}"
 
       - name: Find each person in Scopus
         run: python run_stage.py 2

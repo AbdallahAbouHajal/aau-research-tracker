@@ -62,6 +62,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("stage", type=int, choices=range(1, 7))
     ap.add_argument("--years", default="")
+    ap.add_argument("--from", dest="date_from", default="",
+                    help="YYYY-MM-DD; a day-level window")
+    ap.add_argument("--to", dest="date_to", default="",
+                    help="YYYY-MM-DD")
     ap.add_argument("--scope", default="compare")
     ap.add_argument("--out", default="")
     a = ap.parse_args()
@@ -72,13 +76,19 @@ def main():
     print("== stage %d/6  %s" % (n, STAGES[n - 1]), flush=True)
 
     if n == 1:
-        years = [int(y) for y in a.years.split(",") if y.strip()] \
-            or FETCH.window()
+        df, dt = (a.date_from or "").strip(), (a.date_to or "").strip()
+        if df or dt:
+            lo = int((df or "1900")[:4]); hi = int((dt or "2100")[:4])
+            years = list(range(lo, hi + 1))
+        else:
+            years = [int(y) for y in a.years.split(",") if y.strip()] \
+                or FETCH.window()
         blob = FAC.load() or {}
         people = blob.get("people") or []
         if not people:
             raise SystemExit("no roster: ship engine/data/roster.json")
         b = {"run": RUNS.new_id(), "years": years, "scope": a.scope,
+             "date_from": df, "date_to": dt,
              "version": blob.get("version", ""), "people": people,
              "findings": []}
         b["findings"].append({
@@ -103,7 +113,8 @@ def main():
 
     elif n == 3:
         got = FETCH.run(faculty=b["people"], years=b["years"], log=log,
-                        routes="a")
+                        routes="a", date_from=b.get("date_from") or None,
+                        date_to=b.get("date_to") or None)
         b["papers"] = got["papers"]
         b["stats"] = got["stats"]
         b["findings"].append({
@@ -114,7 +125,9 @@ def main():
     elif n == 4:
         got = FETCH.run(faculty=b["people"], years=b["years"], log=log,
                         routes="b", papers=b.get("papers") or {},
-                        stats=b.get("stats") or {})
+                        stats=b.get("stats") or {},
+                        date_from=b.get("date_from") or None,
+                        date_to=b.get("date_to") or None)
         b["papers"] = got["papers"]
         b["stats"] = got["stats"]
         rej = got["stats"].get("faculty_sweep_rejected") or 0
@@ -157,7 +170,9 @@ def main():
                         "roster": roster, "delta": dlt, "suggestions": sug,
                         "findings": b["findings"],
                         "options": {"years": b["years"],
-                                    "scope": b.get("scope")}})
+                                    "scope": b.get("scope"),
+                                    "date_from": b.get("date_from"),
+                                    "date_to": b.get("date_to")}})
         log("saved run %s" % rid)
         import export_state
         out = a.out or export_state.DEFAULT_OUT

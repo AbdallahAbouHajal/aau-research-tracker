@@ -223,7 +223,7 @@
     var y = new Date().getFullYear();
     modal({
       eyebrow: 'New run',
-      title: 'Which years should it cover?',
+      title: 'Which papers should it cover?',
       sub: 'A paper counts only if the paper itself prints an Al Ain University address.',
       choices: [
         {
@@ -237,11 +237,73 @@
           go: function () { startRun(component, { mode: 'refresh', scope: scope, years: [y] }); },
         },
         {
-          label: 'The last three years',
-          hint: 'A wider look. Takes noticeably longer.',
-          go: function () { startRun(component, { mode: 'refresh', scope: scope, years: [y - 2, y - 1, y] }); },
+          label: 'Choose exact dates',
+          hint: 'Any window down to the day — a quarter, a semester, since a review.',
+          go: function () { askDates(component, scope); },
         },
       ],
+    });
+  }
+
+  /* A day-level window. Scopus is asked by year, because that is the filter
+   * these keys reliably have, and the exact range is applied to the cover date
+   * printed on each paper that comes back. */
+  function askDates(component, scope) {
+    var today = new Date();
+    var iso = function (d) { return d.toISOString().slice(0, 10); };
+    var deflt_to = iso(today);
+    var deflt_from = iso(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()));
+
+    var field = function (id, label, val) {
+      return '<div style="flex:1;min-width:0">'
+        + '<div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;'
+        + 'text-transform:uppercase;color:' + META + ';margin-bottom:6px">'
+        + esc(label) + '</div>'
+        + '<input id="' + id + '" type="date" value="' + esc(val) + '" '
+        + 'style="width:100%;box-sizing:border-box;border:1px solid #D5DED8;'
+        + 'border-radius:6px;padding:11px 12px;font-family:' + FONT + ';'
+        + 'font-size:14.5px;color:' + INK + ';outline:none;background:#fff"></div>';
+    };
+
+    var m = modal({
+      width: 560,
+      eyebrow: 'New run',
+      title: 'Pick the window',
+      sub: 'Papers are counted by the publication date Scopus prints on them.',
+      html: '<div style="display:flex;gap:14px;align-items:flex-end">'
+        + field('aauFrom', 'From', deflt_from)
+        + field('aauTo', 'To', deflt_to)
+        + '</div>'
+        + '<div id="aauDateNote" style="font-size:12.5px;color:' + META
+        + ';margin-top:10px;line-height:1.5;min-height:18px">Both dates are '
+        + 'included. A wider window takes longer.</div>',
+      submit: {
+        label: 'Run it',
+        go: function () {
+          var box = document.getElementById('__aau_modal');
+          var f = box.querySelector('#aauFrom').value;
+          var t = box.querySelector('#aauTo').value;
+          var note = box.querySelector('#aauDateNote');
+          if (!f || !t) {
+            note.style.color = RED;
+            note.textContent = 'Pick both dates.';
+            return;
+          }
+          if (f > t) {
+            note.style.color = RED;
+            note.textContent = 'The first date is after the second one.';
+            return;
+          }
+          if (+new Date(t) - +new Date(f) > 6 * 366 * 86400000) {
+            note.style.color = RED;
+            note.textContent = 'That is more than six years. Narrow it, or the run will take a very long time.';
+            return;
+          }
+          m.close();
+          startRun(component, { mode: 'refresh', scope: scope,
+                                date_from: f, date_to: t });
+        },
+      },
     });
   }
 
@@ -438,11 +500,14 @@
 
   function dispatch(options, comp) {
     var years = (options.years || []).join(',');
+    var df = options.date_from || '';
+    var dt = options.date_to || '';
     badge('asking GitHub to run…', G);
     gh('/actions/workflows/' + WF + '/dispatches', {
       method: 'POST',
       body: JSON.stringify({ ref: 'main',
-        inputs: { years: years, scope: options.scope || 'compare' } }),
+        inputs: { years: years, scope: options.scope || 'compare',
+                  date_from: df, date_to: dt } }),
     }).then(function (r) {
       if (r.status === 204) { watchGithub(options, comp); return; }
       return r.json().then(function (j) {
