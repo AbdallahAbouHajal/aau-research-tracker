@@ -348,6 +348,8 @@
     return api('/api/state').then(function (d) {
       window.__AAU.live = true;
       window.__AAU.state = d;
+      window.__AAU.suggestions = d.suggestions || [];
+      if (d.stats && d.stats.years) window.__AAU.years = d.stats.years;
       if (window.__aauApply) window.__aauApply(d);
       component.forceUpdate();
       badge('live data · ' + (d.stats ? d.stats.papers.toLocaleString() + ' papers' : 'ok'), G);

@@ -222,13 +222,20 @@ LIVE_HOOK = open(os.path.join(HERE, "live.js")).read() \
 
 
 def inject_live(tpl):
-    """Make the component load its data from the local engine instead of the
-    baked-in constants, and fall back to them when no engine is reachable."""
+    """Put the bridge in the document as its OWN script tag.
+
+    It must NOT go next to `class Component`, because that class lives inside
+    <script type="text/x-dc">. Nesting a <script> there means the bridge's own
+    </script> closes the component block early and the page dies -- which is
+    exactly what happened the first time. So the bridge goes immediately before
+    that block, and only the tiny module-scope shim (patches_live.APPLY, no
+    tags) goes inside it.
+    """
     if not LIVE_HOOK:
-        raise SystemExit("--live needs live.js next to build.py")
-    anchor = "class Component extends DCLogic {"
-    assert tpl.count(anchor) == 1
-    return tpl.replace(anchor, LIVE_HOOK + "\n" + anchor)
+        raise SystemExit("live.js is missing next to build.py")
+    anchor = '<script type="text/x-dc"'
+    assert tpl.count(anchor) == 1, "expected exactly one x-dc script block"
+    return tpl.replace(anchor, LIVE_HOOK.strip() + "\n" + anchor)
 
 
 def main():

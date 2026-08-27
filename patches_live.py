@@ -131,6 +131,66 @@ PATCHES = [
      'style="background:{{ c.btnBg }};color:{{ c.btnFg }};'
      'border:1px solid {{ c.btnBorder }};border-radius:5px;'),
 
+    # ---- headline figures come from the run, not from a literal -----------
+    ("dashboard: the three tiles read live figures",
+     "    const tiles = [\n"
+     "      { v: '1,336', l: 'papers in the census', sub: 'publication years "
+     "2025 and 2026', color: accent },\n"
+     "      { v: '6', l: 'added by the sweep', sub: 'found on an author, not "
+     "on the university tag', color: accent },\n"
+     "      { v: '511', l: 'authors', sub: '161 of them on the faculty "
+     "roster', color: accent },\n"
+     "    ];",
+     "    const S_ = (window.__AAU && window.__AAU.state "
+     "&& window.__AAU.state.stats) || null;\n"
+     "    const yrs_ = (window.__AAU && window.__AAU.years) "
+     "|| [2025, 2026];\n"
+     "    const tiles = S_ ? [\n"
+     "      { v: S_.papers.toLocaleString(), l: 'papers in the census',\n"
+     "        sub: 'publication years ' + yrs_.join(' and '), color: accent },\n"
+     "      { v: String(S_.review), l: 'need a decision',\n"
+     "        sub: 'names matching more than one Scopus author', color: accent },\n"
+     "      { v: S_.authors.toLocaleString(), l: 'authors',\n"
+     "        sub: S_.faculty.toLocaleString() + ' of them on the faculty "
+     "roster', color: accent },\n"
+     "    ] : [\n"
+     "      { v: '1,336', l: 'papers in the census', sub: 'publication years "
+     "2025 and 2026', color: accent },\n"
+     "      { v: '6', l: 'added by the sweep', sub: 'found on an author, not "
+     "on the university tag', color: accent },\n"
+     "      { v: '511', l: 'authors', sub: '161 of them on the faculty "
+     "roster', color: accent },\n"
+     "    ];"),
+
+    # The mockup's donut appended two categories that do not exist on the
+    # roster -- "Computer and Info. Sciences" is the invented college the
+    # census produced before the curated roster replaced guessing. With real
+    # data they must not reappear.
+    ("dashboard: drop the two invented pie categories when data is live",
+     "      .concat([['Computer and Info. Sciences', 79, '#14563A'], "
+     "['No college stated', 48, '#9BB0A4']])",
+     "      .concat((window.__AAU && window.__AAU.live) ? [] : "
+     "[['Computer and Info. Sciences', 79, '#14563A'], "
+     "['No college stated', 48, '#9BB0A4']])"),
+
+    # ---- what the run actually reported ----------------------------------
+    ("dashboard: findings come from the run that just happened",
+     "    const findings = running ? [",
+     "    const liveF_ = (window.__AAU && window.__AAU.status\n"
+     "      && window.__AAU.status.findings) || null;\n"
+     "    const findings = liveF_ && liveF_.length ? liveF_.map(f => ({\n"
+     "      text: f.text,\n"
+     "      color: f.kind === 'bad' ? '#E0303F'\n"
+     "        : (f.kind === 'warn' ? '#E8A33D' : accent),\n"
+     "    })) : running ? ["),
+
+    ("dashboard: the run caption reflects the real run",
+     "      runTitle: running ? 'Run in progress' : 'Last run finished',",
+     "      runTitle: running ? 'Run in progress'\n"
+     "        : ((window.__AAU && window.__AAU.status) ? 'Last run finished'\n"
+     "           : (window.__AAU && window.__AAU.live ? 'No run yet' "
+     ": 'Last run finished')),"),
+
     # ---- import roster CSV -------------------------------------------------
     ("roster: 'Import roster CSV' opens a file picker",
      '<button type="button" style="background:#ffffff;color:{{ accent }};'
