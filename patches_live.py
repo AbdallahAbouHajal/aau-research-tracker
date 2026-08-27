@@ -191,11 +191,15 @@ PATCHES = [
     ("dashboard: the run caption reflects the real run",
      "      runTitle: running ? 'Run in progress' : 'Last run finished',",
      "      runTitle: running ? 'Run in progress'\n"
+     "        : (((window.__AAU && window.__AAU.status\n"
+     "            && (window.__AAU.status.stages || []).some(x =>\n"
+     "                 /fail|cancel|timed|error/i.test(x.label || '')))\n"
+     "           ? 'Last run failed'\n"
      "        : ((window.__AAU && (window.__AAU.status\n"
      "            || (window.__AAU.state && window.__AAU.state.generated)))\n"
      "           ? 'Last run finished'\n"
      "           : (window.__AAU && window.__AAU.live ? 'No run yet'\n"
-     "              : 'Last run finished')),"),
+     "              : 'Last run finished')))),"),
 
     # ---- import roster CSV -------------------------------------------------
     ("roster: 'Import roster CSV' opens a file picker",
@@ -272,6 +276,15 @@ VALS = r"""
       openSuggestions: () => window.__AAU && window.__AAU.showSuggestions(this),
       addPerson: () => window.__AAU && window.__AAU.addPerson(this),
       hasPrograms: !!(PROGRAMS.length && sel),
+      // Empty is a real answer. The design had no way to show it, so it
+      // substituted three other people instead -- see the patch below.
+      colEmpty: !!(sel && !colAuthors.length),
+      colEmptyNote: (() => {
+        if (!sel || colAuthors.length) return '';
+        if (this.state.program) return 'Nobody on ' + this.state.program
+          + ' has a paper in this window.';
+        return 'Nobody in this college has a paper in this window.';
+      })(),
       // The degree prefix is the same on every chip in a college, so it says
       // nothing; what distinguishes them is the subject. Cut on a word, never
       // mid-word -- "Networks and Communication Enginee" reads as a mistake.
@@ -607,7 +620,30 @@ ROUND2 = [
      "      const pct = L_ ? (L_.pct || 0) : (running ? d[2] : 100);\n"
      "      const done = pct >= 100;\n"
      "      const active = L_ ? !!L_.active\n"
-     "        : (running && d[2] > 0 && d[2] < 100);"),
+     "        : (running && d[2] > 0 && d[2] < 100);\n"
+     "      const lab_ = String((L_ && L_.label) || '');\n"
+     "      const bad = /fail|cancel|timed|error/i.test(lab_);\n"
+     "      const skip = /skip/i.test(lab_);\n"
+     "      const ok = done && !bad && !skip;"),
+
+    ("dashboard: a failed or skipped stage is not a green tick",
+     "        mark: done ? '\u2713' : String(i + 1),",
+     "        mark: bad ? '\u2715' : (skip ? '\u2013'\n"
+     "          : (ok ? '\u2713' : String(i + 1))),"),
+
+    ("dashboard: nor a green dot",
+     "        dotBg: done ? accent : (active ? '#ffffff' : '#F4F6F5'),",
+     "        dotBg: bad ? '#E0303F' : (skip ? '#E4EAE6'\n"
+     "          : (ok ? accent : (active ? '#ffffff' : '#F4F6F5'))),"),
+
+    ("dashboard: nor a green bar",
+     "        barColor: pct > 0 ? accent : '#EDF1EE',",
+     "        barColor: bad ? '#E0303F' : (skip ? '#E4EAE6'\n"
+     "          : (pct > 0 ? accent : '#EDF1EE')),"),
+
+    ("dashboard: the caption reads in the failure colour",
+     "        statusColor: active ? accent : '#63736A',",
+     "        statusColor: bad ? '#E0303F' : (active ? accent : '#63736A'),"),
 
     ("dashboard: the stage caption is the live one",
      "        status: running ? d[3] : 'Done',",
@@ -849,6 +885,27 @@ ROUND2 = [
      '    <div style="background:#ffffff;border-radius:8px;padding:20px 22px">\n'
      '      <div style="display:grid;grid-template-columns:1.7fr 1.1fr 90px '
      '78px 90px 120px;gap:14px;font-size:11.5px;font-weight:700;'),
+
+    # ---- an empty college says so, never borrows somebody else's people ----
+    # The design shipped `colAuthors.length ? colAuthors : AUTHORS.slice(0, 3)`
+    # so the mockup never showed an empty table. Against real data that is a
+    # fabrication: Dentistry has nobody with a paper in the window, so opening
+    # it listed the first three authors overall -- El Refae and Tabash, who are
+    # Business -- under a Dentistry heading.
+    ("roster: an empty college shows nothing, not the first three authors",
+     "const filled = colAuthors.length ? colAuthors : AUTHORS.slice(0, 3);",
+     "const filled = colAuthors;"),
+
+    ("roster: and says why it is empty",
+     '</sc-for>\n    </div>\n  </div>\n  </sc-if>\n\n'
+     '  <!-- ============ REVIEW QUEUE ============ -->',
+     '</sc-for>\n'
+     '      <sc-if value="{{ colEmpty }}" hint-placeholder-val="{{ false }}">\n'
+     '      <div style="padding:26px 4px;text-align:center;font-size:13.5px;'
+     'color:#63736A">{{ colEmptyNote }}</div>\n'
+     '      </sc-if>\n'
+     '    </div>\n  </div>\n  </sc-if>\n\n'
+     '  <!-- ============ REVIEW QUEUE ============ -->'),
 
     ("roster: the college subtitle names the programme when one is chosen",
      '<div style="font-size:13.5px;color:#63736A;margin-top:3px">{{ colMeta }}'

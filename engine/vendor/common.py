@@ -144,8 +144,19 @@ def scopus_get(path, params, tries_per_key=3):
         with open(cp) as fh:
             return json.loads(json.load(fh)["body"])
 
+    # Two different failures wear the same shape here and want opposite
+    # treatment. A 401/403/429 is about THIS key, so rotate at once and keep
+    # the eight-key budget. A 5xx or a timeout is Elsevier being briefly
+    # unavailable: every key sees it, rotating buys nothing, and what is
+    # needed is patience. Without that split a single HTTP 503 on one page of
+    # one year killed an entire six-year run three minutes in -- eight retries
+    # a second apart, all against a service that was simply down for a moment.
     last = None
-    for attempt in range(min(len(keys), 8)):
+    key_tries = 0
+    soft_tries = 0
+    max_keys = min(len(keys), 8)
+    max_soft = 6                      # 2+4+8+16+32+60 = about two minutes
+    while key_tries < max_keys:
         k = keys[_ki[0] % len(keys)]
         _ki[0] += 1
         try:
@@ -160,13 +171,18 @@ def scopus_get(path, params, tries_per_key=3):
         except Exception as exc:  # noqa: BLE001
             last = exc
             code = getattr(exc, "code", None)
+            if code == 400:
+                break                 # a bad query never improves by asking again
             if code in (401, 403, 429):
+                key_tries += 1
                 time.sleep(0.4)
                 continue
-            if code == 400:
+            soft_tries += 1
+            if soft_tries > max_soft:
                 break
-            time.sleep(1.0)
-    raise RuntimeError("scopus_get failed %s :: %s" % (url, str(last)[:200]))
+            time.sleep(min(60, 2 ** soft_tries))
+    raise RuntimeError("scopus_get failed after %d key tries and %d waits %s :: %s"
+                       % (key_tries, soft_tries, url, str(last)[:200]))
 
 
 def openalex(path, **params):
