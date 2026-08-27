@@ -26,6 +26,10 @@ window.__aauApply = function (d) {
     Object.keys(PAPERS).forEach(function (k) { delete PAPERS[k]; });
     Object.assign(PAPERS, d.papers);
   }
+  if (d && d.programs) {
+    PROGRAMS.length = 0;
+    d.programs.forEach(function (p) { PROGRAMS.push(p); });
+  }
 };
 
 """
@@ -267,6 +271,57 @@ VALS = r"""
         + 'Until you add them they count as outside faculty.',
       openSuggestions: () => window.__AAU && window.__AAU.showSuggestions(this),
       addPerson: () => window.__AAU && window.__AAU.addPerson(this),
+      hasPrograms: !!(PROGRAMS.length && sel),
+      // The degree prefix is the same on every chip in a college, so it says
+      // nothing; what distinguishes them is the subject. Cut on a word, never
+      // mid-word -- "Networks and Communication Enginee" reads as a mistake.
+      shortProgUnused: 0,
+      progNote: (() => {
+        const p = this.state.program;
+        if (!p || !sel) return '';
+        const rec = PROGRAMS.find(x => x.name === p && x.college === sel);
+        return rec ? (rec.people + (rec.people === 1 ? ' person on ' : ' people on ')
+          + p + ' \u00b7 ' + rec.papers.toLocaleString() + ' papers')
+          : '';
+      })(),
+      progChips: (() => {
+        const shortProg = (n) => {
+          let t = String(n)
+            .replace(/^(Bachelor|Master|Doctor) of (Science|Arts|Philosophy) in /, '')
+            .replace(/^(Bachelor|Master|Doctor) of /, '')
+            .replace(/^(Bachelor|Master) in /, '')
+            .replace(/^Postgraduate Professional Diploma in /, 'Diploma, ')
+            .replace(/^BBA in /, '')
+            .replace(/ Engineering$/, ' Eng.');
+          if (t.length <= 30) return t;
+          const cut = t.slice(0, 30);
+          const sp = cut.lastIndexOf(' ');
+          return (sp > 14 ? cut.slice(0, sp) : cut).replace(/[ ,]+$/, '') + '\u2026';
+        };
+        if (!sel) return [];
+        const mine = PROGRAMS.filter(p => p.college === sel);
+        if (!mine.length) return [];
+        const chosen = this.state.program || '';
+        const chip = (label, value, title) => {
+          const on = chosen === value;
+          return {
+            label, title,
+            bg: on ? accent : '#ffffff',
+            fg: on ? '#ffffff' : '#3A4A41',
+            border: on ? accent : '#D5DED8',
+            pick: () => this.setState({ program: on ? null : value }),
+          };
+        };
+        // A person can teach on several programmes, so these do not partition
+        // the college and the chip counts sum to more than its people.
+        return [chip('Everyone', '', 'All ' + mine.length
+                     + ' programmes in this college')].concat(
+          mine.sort((a, b) => b.papers - a.papers).map(p =>
+            chip(shortProg(p.name),
+                 p.name,
+                 p.name + ' \u2014 ' + p.people + ' people, '
+                   + p.papers.toLocaleString() + ' papers')));
+      })(),
       csvHelp: () => window.__AAU && window.__AAU.csvHelp(),
       reviewLabel: (S_ ? (S_.review === 1 ? '1 needs a decision'
                           : S_.review + ' need a decision')
@@ -752,4 +807,62 @@ ROUND2 = [
      "        && window.__AAU.removePerson(this, a.name, a.college),\n"
      "      dropShow: a.tag === 'Faculty' ? 'visible' : 'hidden',\n"
      "      dropTitle: 'Take ' + a.name + ' off the roster',\n    }));"),
+    # ---- college -> programme -> people ------------------------------------
+    # AAU publishes which programmes each person teaches on, on the college's
+    # own subsite. A person can be on several, so a paper counts for every
+    # programme represented on it -- the same whole counting the colleges use.
+    ("roster: a programme row inside each college",
+     '<div style="background:#ffffff;border-radius:8px;padding:20px 22px">\n'
+     '      <div style="display:grid;grid-template-columns:1.7fr 1.1fr 90px '
+     '78px 90px 120px;gap:14px;font-size:11.5px;font-weight:700;',
+     '<sc-if value="{{ hasPrograms }}" hint-placeholder-val="{{ true }}">\n'
+     '    <div data-rise style="animation-delay:.04s;display:flex;'
+     'align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px">\n'
+     '      <span style="font-size:11.5px;font-weight:700;letter-spacing:.07em;'
+     'text-transform:uppercase;color:#63736A;margin-right:2px">Programme'
+     '</span>\n'
+     '      <sc-for list="{{ progChips }}" as="p" hint-placeholder-count="5">\n'
+     '        <button type="button" sc-camel-on-click="{{ p.pick }}" '
+     'title="{{ p.title }}" '
+     'style="background:{{ p.bg }};color:{{ p.fg }};border:1px solid '
+     '{{ p.border }};border-radius:14px;padding:5px 12px;'
+     'font-family:Archivo,sans-serif;font-size:12.5px;font-weight:600;'
+     'cursor:pointer">{{ p.label }}</button>\n'
+     '      </sc-for>\n'
+     '    </div>\n'
+     '    </sc-if>\n'
+     '    <div style="background:#ffffff;border-radius:8px;padding:20px 22px">\n'
+     '      <div style="display:grid;grid-template-columns:1.7fr 1.1fr 90px '
+     '78px 90px 120px;gap:14px;font-size:11.5px;font-weight:700;'),
+
+    ("roster: the college subtitle names the programme when one is chosen",
+     '<div style="font-size:13.5px;color:#63736A;margin-top:3px">{{ colMeta }}'
+     '</div>',
+     '<div style="font-size:13.5px;color:#63736A;margin-top:3px">{{ colMeta }}'
+     '</div>\n        <sc-if value="{{ progNote }}" '
+     'hint-placeholder-val="{{ false }}">\n'
+     '        <div style="font-size:12.5px;color:#63736A;margin-top:4px">'
+     '{{ progNote }}</div>\n        </sc-if>'),
+    ("programmes: a constant the bridge can fill, beside the others",
+     "const PAPERS = {",
+     "// Filled from data/programs.json by __aauApply, the same way the three\n"
+     "// constants above are. Empty until then, and the programme row hides.\n"
+     "const PROGRAMS = [];\n\nconst PAPERS = {"),
+
+    ("roster: the college list narrows to the chosen programme",
+     "    const colAuthors = (sel ? AUTHORS.filter(a => a.college === sel) : []);",
+     "    const chosenProg = this.state.program || '';\n"
+     "    const colAuthors = (sel ? AUTHORS.filter(a =>\n"
+     "      a.college === sel && (!chosenProg\n"
+     "        || (a.programs || []).indexOf(chosenProg) >= 0)) : []);"),
+
+    ("roster: leaving a college forgets its programme",
+     "backToColleges: () => this.setState({ college: null, review: false }),",
+     "backToColleges: () => this.setState({ college: null, review: false,\n"
+     "        program: null }),"),
+
+    ("roster: opening a college starts on Everyone",
+     "      open: () => this.setState({ college: c.name, review: false }),",
+     "      open: () => this.setState({ college: c.name, review: false,\n"
+     "        program: null }),"),
 ]

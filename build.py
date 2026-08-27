@@ -198,7 +198,8 @@ def apply_patches(tpl, live=False):
           "college: null, review: false, author: 'tkhayneh' };")
     assert tpl.count(st) == 1
     tpl = tpl.replace(st, st.replace("author: 'tkhayneh' }",
-                                     "author: null, q: '', tag: 'all' }")
+                                     "author: null, q: '', tag: 'all', "
+                                     "program: null }")
                       + "\n" + PL.MOUNT)
     applied.append("live: load real data on mount")
 

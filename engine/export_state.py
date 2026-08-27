@@ -83,6 +83,7 @@ def build(run_id=None):
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "run": rid,
         "colleges": vm["colleges"],
+        "programs": vm.get("programs") or [],
         "authors": vm["authors"],
         "papers": vm["papers"],
         "stats": dict(vm["stats"], suggested=len(sug)),
