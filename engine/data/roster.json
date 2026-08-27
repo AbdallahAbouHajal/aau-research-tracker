@@ -1,0 +1,5216 @@
+{
+ "version": "2026-08-27-6",
+ "captured": "2026-08-27",
+ "source": "claude-chrome",
+ "note": "fixed resolver",
+ "count": 208,
+ "people": [
+  {
+   "name": "Qutaibah Althebyan",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Dean, College of Engineering",
+   "email": "engineering@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/qutaibah-althebyan",
+   "staff_type": "academic",
+   "raw_name": "Qutaibah Althebyan, Ph.D",
+   "name_key": "qutaibah thebyan",
+   "initial_keys": [
+    "qutaibah thebyan|q",
+    "qutaibah|a",
+    "thebyan|q"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "24480714400",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Faten Kharbat",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Deputy Dean, College of Engineering",
+   "email": "engineering_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/faten-kharbat",
+   "staff_type": "academic",
+   "raw_name": "Faten Kharbat, Ph.D",
+   "name_key": "faten kharbat",
+   "initial_keys": [
+    "faten kharbat|f",
+    "faten|k",
+    "kharbat|f"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "19639814600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mawahib H. Sulieman",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Director of (Computer Engineering, Networks and Communications Engineering, and Artificial Intelligence and Robotics) programs",
+   "email": "communication.engineering@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mawahib-sulieman",
+   "staff_type": "academic",
+   "raw_name": "Mawahib H. Sulieman, Ph.D",
+   "name_key": "mawahib sulieman",
+   "initial_keys": [
+    "h sulieman|m",
+    "mawahib h|s",
+    "mawahib|h",
+    "sulieman|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "9732920600",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Thabet Mismar",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Director of (Computer Engineering, Networks and Communications Engineering, and Artificial Intelligence and Robotics) programs",
+   "email": "communication.engineering_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/thabet-mismar",
+   "staff_type": "academic",
+   "raw_name": "Thabet Mismar, Ph.D",
+   "name_key": "mismar thabet",
+   "initial_keys": [
+    "mismar|t",
+    "thabet mismar|t",
+    "thabet|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "25927311100",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Saqib Iqbal",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Director, Software Engineering and Computer Science Programs",
+   "email": "softwareengineering@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/saqib-iqbal",
+   "staff_type": "academic",
+   "raw_name": "Saqib Iqbal, Ph.D",
+   "name_key": "iqbal saqib",
+   "initial_keys": [
+    "iqbal|s",
+    "saqib iqbal|s",
+    "saqib|i"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57212034484",
+   "auid_tier": "manual:medium:shared-name-first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Yazeed Yasin Ghadi",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Director, Software Engineering and Computer Science Programs",
+   "email": "softwareengineering_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/yazeed",
+   "staff_type": "academic",
+   "raw_name": "Yazeed Yasin Ghadi, Ph.D",
+   "name_key": "ghadi yasin yazeed",
+   "initial_keys": [
+    "ghadi|y",
+    "yasin ghadi|y",
+    "yazeed yasin|g",
+    "yazeed|y"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "55797735700",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Zina Houhamdi",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Director, Cybersecurity Program",
+   "email": "cybersecurity@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/zina-houhamdi",
+   "staff_type": "academic",
+   "raw_name": "Zina Houhamdi, Ph.D",
+   "name_key": "houhamdi zina",
+   "initial_keys": [
+    "houhamdi|z",
+    "zina houhamdi|z",
+    "zina|h"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "8051136100",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Muath Ziad Najib Al-Shaikh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Director, Cybersecurity Program",
+   "email": "cybersecurity_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/muath-Al-Shaikh",
+   "staff_type": "academic",
+   "raw_name": "Muath Ziad Najib Al-Shaikh, Ph.D",
+   "name_key": "muath najib shaikh ziad",
+   "initial_keys": [
+    "muath ziad|n",
+    "muath|z",
+    "najib shaikh|m",
+    "shaikh|m"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57188834531",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nazih Khaddaj Mallat",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Professor",
+   "email": "nazih.mallat@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nazih-khaddajmallat-1",
+   "staff_type": "academic",
+   "raw_name": "Nazih Khaddaj Mallat, Ph.D",
+   "name_key": "khaddaj mallat nazih",
+   "initial_keys": [
+    "khaddaj mallat|n",
+    "mallat|n",
+    "nazih khaddaj|m",
+    "nazih|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "25031731100",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Haythem Bany Salameh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Professor",
+   "email": "haythem.banysalameh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/haythem-bany-salameh",
+   "staff_type": "academic",
+   "raw_name": "Haythem Bany Salameh, Ph.D",
+   "name_key": "bany haythem salameh",
+   "initial_keys": [
+    "bany salameh|h",
+    "haythem bany|s",
+    "haythem|b",
+    "salameh|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57205146444",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad AlHassan",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Professor",
+   "email": "mohammad.alhassan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-alhassan",
+   "staff_type": "academic",
+   "raw_name": "Mohammad AlHassan, Ph.D",
+   "name_key": "hassan mohammad",
+   "initial_keys": [
+    "hassan|m",
+    "mohammad hassan|m",
+    "mohammad|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "16549090800",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Hussam Abdel-Karim Al-Rabai'ah",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Professor",
+   "email": "hussam.alrabaiah@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/hussam",
+   "staff_type": "academic",
+   "raw_name": "Hussam Abdel-Karim Al-Rabai'ah, Ph.D",
+   "name_key": "abdel hussam karim rabai'ah",
+   "initial_keys": [
+    "abdel karim rabai'ah|h",
+    "hussam abdel karim|r",
+    "hussam|a",
+    "rabai'ah|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57195346626",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mousa Bani Baker",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Director of Al Ain University Center for Water, Energy, and Sustainability.",
+   "email": "mousa.banibaker@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mousa-BaniBaker",
+   "staff_type": "academic",
+   "raw_name": "Mousa Bani Baker, Ph.D",
+   "name_key": "baker bani mousa",
+   "initial_keys": [
+    "baker|m",
+    "bani baker|m",
+    "mousa bani|b",
+    "mousa|b"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57203210357",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Layla Khalil Amaireh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "layla.amaireh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/layla-amaireh",
+   "staff_type": "academic",
+   "raw_name": "Layla Khalil Amaireh, Ph.D",
+   "name_key": "amaireh khalil layla",
+   "initial_keys": [
+    "amaireh|l",
+    "khalil amaireh|l",
+    "layla khalil|a",
+    "layla|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57203765026",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Issam Al-Azzoni",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "issam.alazzoni@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/issam-al-azzoni",
+   "staff_type": "academic",
+   "raw_name": "Issam Al-Azzoni, Ph.D",
+   "name_key": "azzoni issam",
+   "initial_keys": [
+    "azzoni|i",
+    "issam azzoni|i",
+    "issam|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "25225108500",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Sh. Daoud",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "mohammad.daoud@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-daoud",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Sh. Daoud, Ph.D",
+   "name_key": "daoud mohammad sh",
+   "initial_keys": [
+    "daoud|m",
+    "mohammad sh|d",
+    "mohammad|s",
+    "sh daoud|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "55539511200",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Muath Jodei Al Hasan",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "muath.alhasan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/muath-alhasan",
+   "staff_type": "academic",
+   "raw_name": "Muath Jodei Al Hasan, Ph.D",
+   "name_key": "hasan jodei muath",
+   "initial_keys": [
+    "hasan|m",
+    "muath jodei|h",
+    "muath|j"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "35145370900",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Khubaib Amjad Alam",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "khubaib.alam@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/khubaib-Alam",
+   "staff_type": "academic",
+   "raw_name": "Khubaib Amjad Alam, Ph.D",
+   "name_key": "alam amjad khubaib",
+   "initial_keys": [
+    "alam|k",
+    "amjad alam|k",
+    "khubaib amjad|a",
+    "khubaib|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "56504833200",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nuha Hamed Hamada",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "nuha.hamada@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nuha-hamada",
+   "staff_type": "academic",
+   "raw_name": "Nuha Hamed Hamada, Ph.D",
+   "name_key": "hamada hamed nuha",
+   "initial_keys": [
+    "hamada|n",
+    "hamed hamada|n",
+    "nuha hamed|h",
+    "nuha|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "56604692200",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ubaid Ullah",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "ubaid.ullah@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ubaid",
+   "staff_type": "academic",
+   "raw_name": "Ubaid Ullah, Ph.D",
+   "name_key": "ubaid ullah",
+   "initial_keys": [
+    "ubaid ullah|u",
+    "ubaid|u",
+    "ullah|u"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57210185494",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Noor Aldeen Alawad",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "nooraldeen.alawad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nooraldeen-alawad",
+   "staff_type": "academic",
+   "raw_name": "Noor Aldeen Alawad, Ph.D",
+   "name_key": "awad deen noor",
+   "initial_keys": [
+    "awad|n",
+    "deen awad|n",
+    "noor deen|a",
+    "noor|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57190494811",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Armagan Elibol",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "armagan.elibol@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/armagan-elibol",
+   "staff_type": "academic",
+   "raw_name": "Armagan Elibol, Ph.D",
+   "name_key": "armagan ibol",
+   "initial_keys": [
+    "armagan ibol|a",
+    "armagan|e",
+    "ibol|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "24733903500",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Salah Taamneh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "salah.taamneh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/salah-taamneh",
+   "staff_type": "academic",
+   "raw_name": "Salah Taamneh, Ph.D",
+   "name_key": "salah taamneh",
+   "initial_keys": [
+    "salah taamneh|s",
+    "salah|t",
+    "taamneh|s"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57189440588",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Khaled Al-Hattab",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "mohammad.alhattab@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-alhattab",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Khaled Al-Hattab, Ph.D",
+   "name_key": "hattab khaled mohammad",
+   "initial_keys": [
+    "hattab|m",
+    "khaled hattab|m",
+    "mohammad khaled|h",
+    "mohammad|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "24823991700",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tarik Elamsy",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "tarik.elamsy@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tarik-elamsy",
+   "staff_type": "academic",
+   "raw_name": "Tarik Elamsy, Ph.D",
+   "name_key": "amsy tarik",
+   "initial_keys": [
+    "amsy|t",
+    "tarik amsy|t",
+    "tarik|e"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "60684633200",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tareq Mohamed Oshan",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "tareq.oshan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tareq-oshan",
+   "staff_type": "academic",
+   "raw_name": "Tareq Mohamed Oshan, Ph.D",
+   "name_key": "mohammad oshan tareq",
+   "initial_keys": [
+    "mohammad oshan|t",
+    "oshan|t",
+    "tareq mohammad|o",
+    "tareq|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "58368817700",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Omar Fawwaz Najm",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "omar.najm@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/omar-najm",
+   "staff_type": "academic",
+   "raw_name": "Omar Fawwaz Najm, Ph.D",
+   "name_key": "fawwaz najm omar",
+   "initial_keys": [
+    "fawwaz najm|o",
+    "najm|o",
+    "omar fawwaz|n",
+    "omar|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57189215293",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Muhammad Ilyas",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "muhammad.ilyas@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/muhammad-ilyas",
+   "staff_type": "academic",
+   "raw_name": "Muhammad Ilyas, Ph.D",
+   "name_key": "ilyas mohammad",
+   "initial_keys": [
+    "ilyas|m",
+    "mohammad ilyas|m",
+    "mohammad|i"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57203258353",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Haroon Mahmood",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "haroon.mahmood@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/haroon-mahmood",
+   "staff_type": "academic",
+   "raw_name": "Haroon Mahmood, Ph.D",
+   "name_key": "haroon mahmood",
+   "initial_keys": [
+    "haroon mahmood|h",
+    "haroon|m",
+    "mahmood|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57210927054",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mahmoud Sharkawi",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "mahmoud.sharkawi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mahmoud-sharkawi",
+   "staff_type": "academic",
+   "raw_name": "Mahmoud Sharkawi, Ph.D",
+   "name_key": "mahmoud sharkawi",
+   "initial_keys": [
+    "mahmoud sharkawi|m",
+    "mahmoud|s",
+    "sharkawi|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57226579956",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Suhib Bani Melhem",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "suhib.melhem@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/suhib",
+   "staff_type": "academic",
+   "raw_name": "Suhib Bani Melhem , Ph.D",
+   "name_key": "bani melhem suhib",
+   "initial_keys": [
+    "bani melhem|s",
+    "melhem|s",
+    "suhib bani|m",
+    "suhib|b"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "56786127900",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Huda Yousef Mohammad Alsheyab",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "huda.alsheyab@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/huda-alsheyab",
+   "staff_type": "academic",
+   "raw_name": "Huda Yousef Mohammad Alsheyab, Ph.D",
+   "name_key": "huda mohammad sheyab yousif",
+   "initial_keys": [
+    "huda yousif|m",
+    "huda|y",
+    "mohammad sheyab|h",
+    "sheyab|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57210170292",
+   "auid_tier": "manual:high:profile-declared",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Okour",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "mohammad.okour@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-okour",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Okour, Ph.D",
+   "name_key": "mohammad okour",
+   "initial_keys": [
+    "mohammad okour|m",
+    "mohammad|o",
+    "okour|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "58204141100",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ayman Hussien Odeh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Instructor",
+   "email": "ayman.odeh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ayman-odeh",
+   "staff_type": "academic",
+   "raw_name": "Ayman Hussien Odeh, M.Sc",
+   "name_key": "ayman hussien odeh",
+   "initial_keys": [
+    "ayman hussien|o",
+    "ayman|h",
+    "hussien odeh|a",
+    "odeh|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57198420445",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Musab Mustafa Hijazi",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Instructor",
+   "email": "musab.hijazi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/musab-hijazi",
+   "staff_type": "academic",
+   "raw_name": "Musab Mustafa Hijazi, M.Sc",
+   "name_key": "hijazi musab mustafa",
+   "initial_keys": [
+    "hijazi|m",
+    "musab mustafa|h",
+    "musab|m",
+    "mustafa hijazi|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57222079373",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Yazan Nawaf Al-Ahmed",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Instructor",
+   "email": "yazan.alahmed@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/yazan-al-ahmed",
+   "staff_type": "academic",
+   "raw_name": "Yazan Nawaf Al-Ahmed",
+   "name_key": "ahmad nawaf yazan",
+   "initial_keys": [
+    "ahmad|y",
+    "nawaf ahmad|y",
+    "yazan nawaf|a",
+    "yazan|n"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "59670111200",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Esra'a Sami Ahmad Hijah",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Instructor",
+   "email": "esraa.hijah@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/esraa-sami-ahmad",
+   "staff_type": "academic",
+   "raw_name": "Esra'a Sami Ahmad Hijah",
+   "name_key": "ahmad esra'a hijah sami",
+   "initial_keys": [
+    "ahmad hijah|e",
+    "esra'a sami|a",
+    "esra'a|s",
+    "hijah|e"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "60572439900",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nura shifa musa",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Instructor",
+   "email": "nura.musa@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nura-musa",
+   "staff_type": "academic",
+   "raw_name": "Nura shifa musa",
+   "name_key": "musa nura shifa",
+   "initial_keys": [
+    "musa|n",
+    "nura shifa|m",
+    "nura|s",
+    "shifa musa|n"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "58078101700",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Huda Alheeh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Instructor",
+   "email": "huda.alheeh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/huda-alheeh",
+   "staff_type": "academic",
+   "raw_name": "Huda Alheeh",
+   "name_key": "heeh huda",
+   "initial_keys": [
+    "heeh|h",
+    "huda heeh|h",
+    "huda|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57929716900",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Sawsan AlAwad",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Instructor",
+   "email": "sawsan.alawad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/sawsan.alawad",
+   "staff_type": "academic",
+   "raw_name": "Sawsan AlAwad",
+   "name_key": "awad sawsan",
+   "initial_keys": [
+    "awad|s",
+    "sawsan awad|s",
+    "sawsan|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "60745295900",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tamer Saleh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "tamer.saleh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tamer-saleh",
+   "staff_type": "administrative",
+   "raw_name": "Tamer Saleh",
+   "name_key": "saleh tamer",
+   "initial_keys": [
+    "saleh|t",
+    "tamer saleh|t",
+    "tamer|s"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "60035417900",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mhd Akram Nazar",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "mhd.nazar@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohd-Akram",
+   "staff_type": "administrative",
+   "raw_name": "Mhd Akram Nazar",
+   "name_key": "akram mhd nazar",
+   "initial_keys": [
+    "akram nazar|m",
+    "mhd akram|n",
+    "mhd|a",
+    "nazar|m"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "60775098400",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Esra Jamil Hasan Al-Nashash",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "esra.alnashash@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/esra-jamil-hasan-al-nashash",
+   "staff_type": "administrative",
+   "raw_name": "Esra Jamil Hasan Al-Nashash",
+   "name_key": "esra hasan jamil nashash",
+   "initial_keys": [
+    "esra jamil|h",
+    "esra|j",
+    "hasan nashash|e",
+    "nashash|e"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ayesha Siddique",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "ayesha.siddique@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ayesha-Siddique",
+   "staff_type": "administrative",
+   "raw_name": "Ayesha Siddique",
+   "name_key": "ayesha siddique",
+   "initial_keys": [
+    "ayesha siddique|a",
+    "ayesha|s",
+    "siddique|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "60775215000",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Yara Rashwan",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "yara.rashwan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/yara-rashwan",
+   "staff_type": "administrative",
+   "raw_name": "Yara Rashwan",
+   "name_key": "rashwan yara",
+   "initial_keys": [
+    "rashwan|y",
+    "yara rashwan|y",
+    "yara|r"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Yaman Sufian Albadawi",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "yaman.albadawi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/yaman-albadawi",
+   "staff_type": "administrative",
+   "raw_name": "Yaman Sufian Albadawi",
+   "name_key": "badawi sufian yaman",
+   "initial_keys": [
+    "badawi|y",
+    "sufian badawi|y",
+    "yaman sufian|a",
+    "yaman|s"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "57193070058",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Fawzi Mohammed",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "fawzi.mohd@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/fawzi-Mohammed",
+   "staff_type": "administrative",
+   "raw_name": "Fawzi Mohammed",
+   "name_key": "fawzi mohammad",
+   "initial_keys": [
+    "fawzi mohammad|f",
+    "fawzi|m",
+    "mohammad|f"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "review:surname-initial-ambiguous",
+   "auid_candidates": [
+    {
+     "auid": "57193433390",
+     "papers": 1
+    },
+    {
+     "auid": "59941358200",
+     "papers": 1
+    }
+   ]
+  },
+  {
+   "name": "Kenan Ismail Hassan",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Assistant",
+   "email": "kenan.hassan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/kenan-hassan",
+   "staff_type": "administrative",
+   "raw_name": "Kenan Ismail Hassan",
+   "name_key": "hassan ismail kenan",
+   "initial_keys": [
+    "hassan|k",
+    "ismail hassan|k",
+    "kenan ismail|h",
+    "kenan|i"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "60102726600",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Dalia Rami Darweesh",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Assistant",
+   "email": "dalia.darweesh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/dalia-darweesh",
+   "staff_type": "administrative",
+   "raw_name": "Dalia Rami Darweesh",
+   "name_key": "dalia darweesh rami",
+   "initial_keys": [
+    "dalia rami|d",
+    "dalia|r",
+    "darweesh|d",
+    "rami darweesh|d"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Zaid Hadya",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Lab Assistant",
+   "email": "zaid.hadya@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/zaid-hadya",
+   "staff_type": "administrative",
+   "raw_name": "Zaid Hadya",
+   "name_key": "hadya zaid",
+   "initial_keys": [
+    "hadya|z",
+    "zaid hadya|z",
+    "zaid|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nuha Hakim",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Senior Secretary, College of Engineering",
+   "email": "engineering.secretary@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nuha-hakim",
+   "staff_type": "administrative",
+   "raw_name": "Nuha Hakim",
+   "name_key": "hakim nuha",
+   "initial_keys": [
+    "hakim|n",
+    "nuha hakim|n",
+    "nuha|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Lina Nahil Chehayber",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Secretary, College of Engineering",
+   "email": "engineering.secretary_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/lina-chehayber",
+   "staff_type": "administrative",
+   "raw_name": "Lina Nahil Chehayber",
+   "name_key": "chehayber lina nahil",
+   "initial_keys": [
+    "chehayber|l",
+    "lina nahil|c",
+    "lina|n",
+    "nahil chehayber|l"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Shamma Husain Alblooshi",
+   "college": "College of Engineering",
+   "department": "",
+   "title": "Admin Assistant",
+   "email": "shamma.alblooshi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/shamma-husain-alblooshi",
+   "staff_type": "administrative",
+   "raw_name": "Shamma Husain Alblooshi",
+   "name_key": "blooshi hussain shamma",
+   "initial_keys": [
+    "blooshi|s",
+    "hussain blooshi|s",
+    "shamma hussain|a",
+    "shamma|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "review:surname-initial-ambiguous",
+   "auid_candidates": [
+    {
+     "auid": "59669838400",
+     "papers": 1
+    },
+    {
+     "auid": "60592645500",
+     "papers": 1
+    }
+   ]
+  },
+  {
+   "name": "Mohammad Ahmad Ghattas",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Dean, College of Pharmacy",
+   "email": "pharmacy@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-ghattas",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Ahmad Ghattas, Ph.D",
+   "name_key": "ahmad ghattas mohammad",
+   "initial_keys": [
+    "ahmad ghattas|m",
+    "ghattas|m",
+    "mohammad ahmad|g",
+    "mohammad|a"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "36463516700",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mosab Arafat",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Deputy Dean, College of Pharmacy",
+   "email": "pharmacy.deputy@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mosab-arafat",
+   "staff_type": "academic",
+   "raw_name": "Mosab Arafat, Ph.D",
+   "name_key": "arafat mosab",
+   "initial_keys": [
+    "arafat|m",
+    "mosab arafat|m",
+    "mosab|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "56380109600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Faris El-Dahiyat",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Director, Master of Clinical Pharmacy and Pharmaceutical Sciences",
+   "email": "clinicalpharmacy@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/faris-el-dahiyat",
+   "staff_type": "academic",
+   "raw_name": "Faris El-Dahiyat, Ph.D",
+   "name_key": "dahiyat faris",
+   "initial_keys": [
+    "dahiyat|f",
+    "faris dahiyat|f",
+    "faris|d"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "36005436900",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Bostanudin",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Director, Pharmaceutical Sciences Program",
+   "email": "pharmaceuticalsciences_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-bostanudin",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Bostanudin, Ph.D",
+   "name_key": "bostanudin mohammad",
+   "initial_keys": [
+    "bostanudin|m",
+    "mohammad bostanudin|m",
+    "mohammad|b"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57214623127",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mahmoud Abu-Ghoush",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Director, Nutrition and Dietetics Program",
+   "email": "nutrition.dietetics@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mahmoud-abu-ghoush",
+   "staff_type": "academic",
+   "raw_name": "Mahmoud Abu-Ghoush, Ph.D",
+   "name_key": "abu ghoush mahmoud",
+   "initial_keys": [
+    "abu ghoush|m",
+    "mahmoud abu ghoush|m",
+    "mahmoud|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "58641585300",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Sehar Iqbal",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Director, Nutrition and Dietetics Program",
+   "email": "sehar.iqbal@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/sehar-iqbal",
+   "staff_type": "academic",
+   "raw_name": "Sehar Iqbal, Ph.D",
+   "name_key": "iqbal sehar",
+   "initial_keys": [
+    "iqbal|s",
+    "sehar iqbal|s",
+    "sehar|i"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "58987438800",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Rose Ghemrawi",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Director, Health and Biomedical Research Center",
+   "email": "rose.ghemrawi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/rose-ghemrawi",
+   "staff_type": "academic",
+   "raw_name": "Rose Ghemrawi, Ph.D",
+   "name_key": "ghemrawi rose",
+   "initial_keys": [
+    "ghemrawi|r",
+    "rose ghemrawi|r",
+    "rose|g"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "55643594600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Khairi Mustafa Salem",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Professor",
+   "email": "khairi.mustafa@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/khairi-mustafa",
+   "staff_type": "academic",
+   "raw_name": "Khairi Mustafa Salem, Ph.D",
+   "name_key": "khairi mustafa salem",
+   "initial_keys": [
+    "khairi mustafa|s",
+    "khairi|m",
+    "mustafa salem|k",
+    "salem|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57209829585",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Arshad Mahmood",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "arshad.mahmood@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/arshad",
+   "staff_type": "academic",
+   "raw_name": "Arshad Mahmood, Ph.D",
+   "name_key": "arshad mahmood",
+   "initial_keys": [
+    "arshad mahmood|a",
+    "arshad|m",
+    "mahmood|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "56706906200",
+   "auid_tier": "manual:medium:shared-name-first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Majed Al Ahmad",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "mohammad.alahmad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-AlAhmad",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Majed Al Ahmad, Ph.D",
+   "name_key": "ahmad majed mohammad",
+   "initial_keys": [
+    "ahmad|m",
+    "mohammad majed|a",
+    "mohammad|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57216648477",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Amira Shaaban Ahmed",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "amira.ahmed@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/amira-shaaban",
+   "staff_type": "academic",
+   "raw_name": "Amira Shaaban Ahmed, Ph.D",
+   "name_key": "ahmad amira shaaban",
+   "initial_keys": [
+    "ahmad|a",
+    "amira shaaban|a",
+    "amira|s",
+    "shaaban ahmad|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "55331656100",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Muhammad Sarfraz",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "muhammad.sarfraz@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/muhammad-sarfraz",
+   "staff_type": "academic",
+   "raw_name": "Muhammad Sarfraz, Ph.D",
+   "name_key": "mohammad sarfraz",
+   "initial_keys": [
+    "mohammad sarfraz|m",
+    "mohammad|s",
+    "sarfraz|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "36775730700",
+   "auid_tier": "manual:medium:shared-name-first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nadia Hussain",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "nadia.hussain@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nadia-hussain",
+   "staff_type": "academic",
+   "raw_name": "Nadia Hussain, Ph.D",
+   "name_key": "hussain nadia",
+   "initial_keys": [
+    "hussain|n",
+    "nadia hussain|n",
+    "nadia|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57898788600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nezar Al Bataineh",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "nezar.albataineh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nezar-albataineh",
+   "staff_type": "academic",
+   "raw_name": "Nezar Al Bataineh, Ph.D",
+   "name_key": "bataineh nezar",
+   "initial_keys": [
+    "bataineh|n",
+    "nezar al|b",
+    "nezar|b"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "36766892200",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Asim Ahmed Elnour Ahmed",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "asim.ahmed@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/asim-ahmed",
+   "staff_type": "academic",
+   "raw_name": "Asim Ahmed Elnour Ahmed, Ph.D",
+   "name_key": "ahmad ahmad asim nour",
+   "initial_keys": [
+    "ahmad|a",
+    "asim ahmad|e",
+    "asim|a",
+    "nour ahmad|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "23004340700",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Azza Galal Ramadan",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "azza.ramadan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/azza-ramadan",
+   "staff_type": "academic",
+   "raw_name": "Azza Galal Ramadan,Ph.D",
+   "name_key": "azza galal ramadan",
+   "initial_keys": [
+    "azza galal|r",
+    "azza|g",
+    "galal ramadan|a",
+    "ramadan|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy",
+    "College of Nursing"
+   ],
+   "also_listed_in": [
+    "College of Nursing"
+   ],
+   "scopus_auid": "57221312212",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Narmeen El Awwad",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "narmeen.elawaad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/narmeen-elawaad",
+   "staff_type": "academic",
+   "raw_name": "Narmeen El Awwad, Ph.D",
+   "name_key": "awwad narmeen",
+   "initial_keys": [
+    "awwad|n",
+    "narmeen el|a",
+    "narmeen|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "14321071700",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Razan Almomani",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "razan.almomani@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/razan-almomani",
+   "staff_type": "academic",
+   "raw_name": "Razan Almomani, Ph.d",
+   "name_key": "momani razan",
+   "initial_keys": [
+    "momani|r",
+    "razan momani|r",
+    "razan|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "58541873100",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Yazan K. Ranneh",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "yazan.ranneh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/yazan-k-ranneh",
+   "staff_type": "academic",
+   "raw_name": "Yazan K. Ranneh, Ph.D",
+   "name_key": "ranneh yazan",
+   "initial_keys": [
+    "k ranneh|y",
+    "ranneh|y",
+    "yazan k|r",
+    "yazan|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "55771711000",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Taima Zakaria Alqudah",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "taima.alqudah@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/taima-alqudah",
+   "staff_type": "academic",
+   "raw_name": "Taima Zakaria Alqudah, Ph.D",
+   "name_key": "qudah taima zakaria",
+   "initial_keys": [
+    "qudah|t",
+    "taima zakaria|a",
+    "taima|z",
+    "zakaria qudah|t"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "55856345500",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Saad Touqeer",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "saad.touqeer@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/saad-touqeer",
+   "staff_type": "academic",
+   "raw_name": "Saad Touqeer, Ph.D",
+   "name_key": "saad touqeer",
+   "initial_keys": [
+    "saad touqeer|s",
+    "saad|t",
+    "touqeer|s"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "56237819700",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Awfa Alazzeh",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "awfa.alazzeh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/awfa-alazzeh",
+   "staff_type": "academic",
+   "raw_name": "Awfa Alazzeh, Ph.D",
+   "name_key": "awfa azzeh",
+   "initial_keys": [
+    "awfa azzeh|a",
+    "awfa|a",
+    "azzeh|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ahmed Eissa",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "ahmed.eissa@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ahmed-Eissa",
+   "staff_type": "academic",
+   "raw_name": "Ahmed Eissa, Ph.D",
+   "name_key": "ahmad eissa",
+   "initial_keys": [
+    "ahmad eissa|a",
+    "ahmad|e",
+    "eissa|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57136518500",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Kareem Abdou",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "kareem.abdou@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/kareem",
+   "staff_type": "academic",
+   "raw_name": "Kareem Abdou, Ph.D",
+   "name_key": "abdou kareem",
+   "initial_keys": [
+    "abdou|k",
+    "kareem abdou|k",
+    "kareem|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57203212201",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Jumana Yousef Almegdadi",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Adjunct Clinical Assistant Professor",
+   "email": "jumana.almegdadi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/jumana-almegdadi",
+   "staff_type": "academic",
+   "raw_name": "Jumana Yousef Almegdadi, MSc",
+   "name_key": "jumana megdadi yousif",
+   "initial_keys": [
+    "jumana yousif|a",
+    "jumana|y",
+    "megdadi|j",
+    "yousif megdadi|j"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Zakieh Abuelkhair",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Adjunct Instructor",
+   "email": "zakieh.abuelkhair@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/zakieh-abuelkhair",
+   "staff_type": "academic",
+   "raw_name": "Zakieh Abuelkhair",
+   "name_key": "abuelkhair zakieh",
+   "initial_keys": [
+    "abuelkhair|z",
+    "zakieh abuelkhair|z",
+    "zakieh|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Kawthar Mohammad Kayed",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Instructor",
+   "email": "kawthar.kayed@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/kawthar-kayed",
+   "staff_type": "academic",
+   "raw_name": "Kawthar Mohammad Kayed, M.Sc",
+   "name_key": "kawthar kayed mohammad",
+   "initial_keys": [
+    "kawthar mohammad|k",
+    "kawthar|m",
+    "kayed|k",
+    "mohammad kayed|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57203727811",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Imranul Haq",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "imranul.haq@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/imranul-haq",
+   "staff_type": "administrative",
+   "raw_name": "Imranul Haq",
+   "name_key": "haq imranul",
+   "initial_keys": [
+    "haq|i",
+    "imranul haq|i",
+    "imranul|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57213986306",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Rami Abu Jarad",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Pharmacy Lab Lead",
+   "email": "rami.abujarad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/rami-abu-jarad",
+   "staff_type": "administrative",
+   "raw_name": "Rami Abu Jarad",
+   "name_key": "abu jarad rami",
+   "initial_keys": [
+    "abu jarad|r",
+    "jarad|r",
+    "rami abu|j",
+    "rami|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Dana Obaid",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Senior Lab Supervisor",
+   "email": "dana.obaid@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/dana-obaid",
+   "staff_type": "administrative",
+   "raw_name": "Dana Obaid",
+   "name_key": "dana obaid",
+   "initial_keys": [
+    "dana obaid|d",
+    "dana|o",
+    "obaid|d"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Shaima Emad Ahmad Hasan",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "shaima.hasan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/shaima-emad-ahmad-hasan",
+   "staff_type": "administrative",
+   "raw_name": "Shaima Emad Ahmad Hasan",
+   "name_key": "ahmad emad hasan shaima",
+   "initial_keys": [
+    "ahmad hasan|s",
+    "hasan|s",
+    "shaima emad|a",
+    "shaima|e"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "review:surname-initial-ambiguous",
+   "auid_candidates": [
+    {
+     "auid": "24461907900",
+     "papers": 1
+    },
+    {
+     "auid": "56803252000",
+     "papers": 1
+    },
+    {
+     "auid": "57201069050",
+     "papers": 13
+    },
+    {
+     "auid": "57202907165",
+     "papers": 3
+    },
+    {
+     "auid": "57226514373",
+     "papers": 1
+    },
+    {
+     "auid": "60225431100",
+     "papers": 1
+    }
+   ]
+  },
+  {
+   "name": "Ahmad Ziad Al Meslamani",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "ahmad.almeslamani@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ahmad-al-meslamani",
+   "staff_type": "administrative",
+   "raw_name": "Ahmad Ziad Al Meslamani",
+   "name_key": "ahmad meslamani ziad",
+   "initial_keys": [
+    "ahmad ziad|m",
+    "ahmad|z",
+    "meslamani|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "review:surname-initial-ambiguous",
+   "auid_candidates": [
+    {
+     "auid": "57218251509",
+     "papers": 37
+    },
+    {
+     "auid": "58518519800",
+     "papers": 1
+    },
+    {
+     "auid": "59970560100",
+     "papers": 1
+    },
+    {
+     "auid": "60705875400",
+     "papers": 2
+    }
+   ]
+  },
+  {
+   "name": "Lana Bustanji",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research & Lab assistant",
+   "email": "lana.bustanji@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/lana-bustanji",
+   "staff_type": "administrative",
+   "raw_name": "Lana Bustanji",
+   "name_key": "bustanji lana",
+   "initial_keys": [
+    "bustanji|l",
+    "lana bustanji|l",
+    "lana|b"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "60232747200",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nasrin Akther Rima",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research & Lab Assistant",
+   "email": "nasrin.rima@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nasrin-rima",
+   "staff_type": "administrative",
+   "raw_name": "Nasrin Akther Rima",
+   "name_key": "akther nasrin rima",
+   "initial_keys": [
+    "akther rima|n",
+    "nasrin akther|r",
+    "nasrin|a",
+    "rima|n"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nour Dabbagh",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research & Lab assistant",
+   "email": "nour.dabbagh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nour-dabbagh",
+   "staff_type": "administrative",
+   "raw_name": "Nour Dabbagh",
+   "name_key": "dabbagh nour",
+   "initial_keys": [
+    "dabbagh|n",
+    "nour dabbagh|n",
+    "nour|d"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "60694077400",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Abdelrahman H. Abdeen",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research & Lab Assistant",
+   "email": "abdelrahman.abdeen@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/abdelrahman-Abdeen",
+   "staff_type": "administrative",
+   "raw_name": "Abdelrahman H. Abdeen",
+   "name_key": "abdeen abdelrahman",
+   "initial_keys": [
+    "abdeen|a",
+    "abdelrahman h|a",
+    "abdelrahman|h",
+    "h abdeen|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohd Molham Sakkal",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "mohammad.sakkal@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-Molham-Sakkal",
+   "staff_type": "administrative",
+   "raw_name": "Mohd Molham Sakkal",
+   "name_key": "mohammad molham sakkal",
+   "initial_keys": [
+    "mohammad molham|s",
+    "mohammad|m",
+    "molham sakkal|m",
+    "sakkal|m"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "review:surname-initial-ambiguous",
+   "auid_candidates": [
+    {
+     "auid": "57209007025",
+     "papers": 2
+    },
+    {
+     "auid": "57576555400",
+     "papers": 9
+    },
+    {
+     "auid": "58144884000",
+     "papers": 8
+    },
+    {
+     "auid": "58209400600",
+     "papers": 10
+    },
+    {
+     "auid": "58535182000",
+     "papers": 1
+    },
+    {
+     "auid": "58659804900",
+     "papers": 1
+    },
+    {
+     "auid": "59340875100",
+     "papers": 1
+    },
+    {
+     "auid": "59540891000",
+     "papers": 1
+    },
+    {
+     "auid": "59658682500",
+     "papers": 1
+    },
+    {
+     "auid": "60742070500",
+     "papers": 1
+    }
+   ]
+  },
+  {
+   "name": "Khawla AbouHait",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research & Lab assistant",
+   "email": "khawla.abouhait@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/khawla-abouhait",
+   "staff_type": "administrative",
+   "raw_name": "Khawla AbouHait",
+   "name_key": "abouhait khawla",
+   "initial_keys": [
+    "abouhait|k",
+    "khawla abouhait|k",
+    "khawla|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "60611061600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Rahma Elsherif",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research& Lab Assistant",
+   "email": "rahma.elsherif@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/rahma-elsherif",
+   "staff_type": "administrative",
+   "raw_name": "Rahma Elsherif",
+   "name_key": "rahma sherif",
+   "initial_keys": [
+    "rahma sherif|r",
+    "rahma|e",
+    "sherif|r"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "60414310300",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Pretty Jane",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Senior Office Coordinator",
+   "email": "pretty.jane@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/pretty",
+   "staff_type": "administrative",
+   "raw_name": "Pretty Jane",
+   "name_key": "jane pretty",
+   "initial_keys": [
+    "jane|p",
+    "pretty jane|p",
+    "pretty|j"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Reem Abdalla Ali",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research & Lab Assistant",
+   "email": "reem.abdalla@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/reem-abdalla",
+   "staff_type": "administrative",
+   "raw_name": "Reem Abdalla Ali",
+   "name_key": "abdalla ali reem",
+   "initial_keys": [
+    "abdalla ali|r",
+    "ali|r",
+    "reem abdalla|a",
+    "reem|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "57211501723",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Haya Yasser AlDakheel",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Research & Lab Assistant",
+   "email": "haya.aldakheel@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/haya-aldakheel",
+   "staff_type": "administrative",
+   "raw_name": "Haya Yasser AlDakheel",
+   "name_key": "dakheel haya yasser",
+   "initial_keys": [
+    "dakheel|h",
+    "haya yasser|a",
+    "haya|y",
+    "yasser dakheel|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Vinnah Jenn Ibarrola",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Senior Secretary, College of Pharmacy",
+   "email": "pharmacy.secretary@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/vinnah-jenn-banaag",
+   "staff_type": "administrative",
+   "raw_name": "Vinnah Jenn Ibarrola",
+   "name_key": "ibarrola jenn vinnah",
+   "initial_keys": [
+    "ibarrola|v",
+    "jenn ibarrola|v",
+    "vinnah jenn|i",
+    "vinnah|j"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Verna Princess Jimenez",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Secretary",
+   "email": "pharmacy.secretary_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/verna-jimenez",
+   "staff_type": "administrative",
+   "raw_name": "Verna Princess Jimenez",
+   "name_key": "jimenez princess verna",
+   "initial_keys": [
+    "jimenez|v",
+    "princess jimenez|v",
+    "verna princess|j",
+    "verna|p"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "58773294700",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Shambhavi Joshi",
+   "college": "College of Pharmacy",
+   "department": "",
+   "title": "Lab Assistant",
+   "email": "shambhavi.joshi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/shambhavi-Joshi",
+   "staff_type": "administrative",
+   "raw_name": "Shambhavi Joshi",
+   "name_key": "joshi shambhavi",
+   "initial_keys": [
+    "joshi|s",
+    "shambhavi joshi|s",
+    "shambhavi|j"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Pharmacy"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Moustafa Kandeel",
+   "college": "College of Law",
+   "department": "",
+   "title": "Dean, College of Law & Head, Private Law Department",
+   "email": "law@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/moustafa-kandeel",
+   "staff_type": "academic",
+   "raw_name": "Moustafa Kandeel, Ph.D",
+   "name_key": "kandeel moustafa",
+   "initial_keys": [
+    "kandeel|m",
+    "moustafa kandeel|m",
+    "moustafa|k"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57219603105",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ramzi Ahmad Madi",
+   "college": "College of Law",
+   "department": "",
+   "title": "Deputy Dean, College of Law",
+   "email": "law_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ramzi-madi",
+   "staff_type": "academic",
+   "raw_name": "Ramzi Ahmad Madi, Ph.D",
+   "name_key": "ahmad madi ramzi",
+   "initial_keys": [
+    "ahmad madi|r",
+    "madi|r",
+    "ramzi ahmad|m",
+    "ramzi|a"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "36008823000",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ahmed Fekry Taha Moussa",
+   "college": "College of Law",
+   "department": "",
+   "title": "Head, Public Law Department",
+   "email": "public.law@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ahmed-moussa",
+   "staff_type": "academic",
+   "raw_name": "Ahmed Fekry Taha Moussa, Ph.D",
+   "name_key": "ahmad fekry moussa taha",
+   "initial_keys": [
+    "ahmad fekry|t",
+    "ahmad|f",
+    "moussa|a",
+    "taha moussa|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57232817000",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ali Hadi Alwan Elobaidi",
+   "college": "College of Law",
+   "department": "",
+   "title": "Professor",
+   "email": "ali.obaidi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/alihadi-alwanelobaidi",
+   "staff_type": "academic",
+   "raw_name": "Ali Hadi Alwan Elobaidi, Ph.D",
+   "name_key": "ali alwan hadi obaidi",
+   "initial_keys": [
+    "ali hadi|a",
+    "ali|h",
+    "alwan obaidi|a",
+    "obaidi|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57226685678",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tayil Mohmoud Sheyab",
+   "college": "College of Law",
+   "department": "",
+   "title": "Professor",
+   "email": "tayil.sheyab@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tayilmohmoud-alarif",
+   "staff_type": "academic",
+   "raw_name": "Tayil Mohmoud Sheyab, Ph.D",
+   "name_key": "mohmoud sheyab tayil",
+   "initial_keys": [
+    "mohmoud sheyab|t",
+    "sheyab|t",
+    "tayil mohmoud|s",
+    "tayil|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57217286955",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tariq Abdel Rahman Kameel",
+   "college": "College of Law",
+   "department": "",
+   "title": "Professor",
+   "email": "tariq.kameel@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tariq-kameel",
+   "staff_type": "academic",
+   "raw_name": "Tariq Abdel Rahman Kameel, Ph.D",
+   "name_key": "abdel kameel rahman tariq",
+   "initial_keys": [
+    "kameel|t",
+    "rahman kameel|t",
+    "tariq abdel|r",
+    "tariq|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57212559077",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ibrahim Suleiman Alqatawneh",
+   "college": "College of Law",
+   "department": "",
+   "title": "Professor",
+   "email": "ibrahim.alqatawneh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ibrahim-al-qatawnah",
+   "staff_type": "academic",
+   "raw_name": "Ibrahim Suleiman Alqatawneh, Ph.D",
+   "name_key": "ibrahim qatawneh suleiman",
+   "initial_keys": [
+    "ibrahim suleiman|a",
+    "ibrahim|s",
+    "qatawneh|i",
+    "suleiman qatawneh|i"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57458331400",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ziad kh. Alenizi",
+   "college": "College of Law",
+   "department": "",
+   "title": "Professor",
+   "email": "ziad.alenizi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/zeyad-alenizi",
+   "staff_type": "academic",
+   "raw_name": "Ziad kh. Alenizi, Ph.D",
+   "name_key": "enizi kh ziad",
+   "initial_keys": [
+    "enizi|z",
+    "kh enizi|z",
+    "ziad kh|a",
+    "ziad|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57210587518",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Faisal Abdelhafez Shawabkeh",
+   "college": "College of Law",
+   "department": "",
+   "title": "Professor",
+   "email": "faisal.shawabkeh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/faisal-shawabkeh",
+   "staff_type": "academic",
+   "raw_name": "Faisal Abdelhafez Shawabkeh, Ph.D",
+   "name_key": "abdelhafez faisal shawabkeh",
+   "initial_keys": [
+    "abdelhafez shawabkeh|f",
+    "faisal abdelhafez|s",
+    "faisal|a",
+    "shawabkeh|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57215425146",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Fayez Mohammad Al Nusair",
+   "college": "College of Law",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "fayez.alnusair@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/fayez-alnusair",
+   "staff_type": "academic",
+   "raw_name": "Fayez Mohammad Al Nusair, Ph.D",
+   "name_key": "fayez mohammad nusair",
+   "initial_keys": [
+    "fayez mohammad|n",
+    "fayez|m",
+    "nusair|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57891349600",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Suhaib Walid Sharaiyra",
+   "college": "College of Law",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "suhaib.sharaiyra@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/suhaib-sharaiyra",
+   "staff_type": "academic",
+   "raw_name": "Suhaib Walid Sharaiyra, Ph.D",
+   "name_key": "sharaiyra suhaib walid",
+   "initial_keys": [
+    "sharaiyra|s",
+    "suhaib walid|s",
+    "suhaib|w",
+    "walid sharaiyra|s"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "57208001697",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Amal Aboeida",
+   "college": "College of Law",
+   "department": "",
+   "title": "Academic Support Specialist",
+   "email": "law.secretary@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/amal-aboeida",
+   "staff_type": "administrative",
+   "raw_name": "Amal Aboeida",
+   "name_key": "aboeida amal",
+   "initial_keys": [
+    "aboeida|a",
+    "amal aboeida|a",
+    "amal|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Wafa Al Zayyat",
+   "college": "College of Law",
+   "department": "",
+   "title": "Academic Support Specialist",
+   "email": "law.secretary_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/wafa",
+   "staff_type": "administrative",
+   "raw_name": "Wafa Al Zayyat",
+   "name_key": "wafa zayyat",
+   "initial_keys": [
+    "wafa al|z",
+    "wafa|z",
+    "zayyat|w"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Law"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Emad Mohammad Alghazo",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Dean, College of Education, Humanities & Social Sciences",
+   "email": "education@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/emad",
+   "staff_type": "academic",
+   "raw_name": "Emad Mohammad Alghazo, Ph.D",
+   "name_key": "emad ghazo mohammad",
+   "initial_keys": [
+    "emad mohammad|a",
+    "emad|m",
+    "ghazo|e",
+    "mohammad ghazo|e"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "14324208400",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Hanene Lahiani",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Deputy Dean, College of Education, Humanities and Social Sciences, & Director, English Language and Translation Program",
+   "email": "education_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/hanene-lahiani",
+   "staff_type": "academic",
+   "raw_name": "Hanene Lahiani, Ph.D",
+   "name_key": "hanene lahiani",
+   "initial_keys": [
+    "hanene lahiani|h",
+    "hanene|l",
+    "lahiani|h"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57211925114",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mona Kamal Ibrahim",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Deputy Dean, Accreditation and Educational Programs",
+   "email": "education.deputy@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mona-ibrahim",
+   "staff_type": "academic",
+   "raw_name": "Mona Kamal Ibrahim, Ph.D",
+   "name_key": "ibrahim kamal mona",
+   "initial_keys": [
+    "ibrahim|m",
+    "kamal ibrahim|m",
+    "mona kamal|i",
+    "mona|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57193867771",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Suad Abdel Karim Alwaely",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director of Postgraduate Programs (PhD in Arabic Language Curricula and Teaching Methods, Master's Arabic Language Curricula and Islamic Education Curricula)",
+   "email": "ma.edu.arabic@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/suad-alwaely",
+   "staff_type": "academic",
+   "raw_name": "Suad Abdel Karim Alwaely, Ph.D",
+   "name_key": "abdel karim suad waely",
+   "initial_keys": [
+    "karim waely|s",
+    "suad abdel|k",
+    "suad|a",
+    "waely|s"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57214223477",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Khawlah Mitib Al-Takhayneh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director, Applied Sociology Program",
+   "email": "appliedsociology@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/khawlah-al-takhayneh",
+   "staff_type": "academic",
+   "raw_name": "Khawlah Mitib Al-Takhayneh, Ph.D",
+   "name_key": "khawlah mitib takhayneh",
+   "initial_keys": [
+    "khawlah mitib|t",
+    "khawlah|m",
+    "mitib takhayneh|k",
+    "takhayneh|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57205494668",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Khaled Khamis Nser",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director, Applied Sociology Program",
+   "email": "appliedsociology_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/khaled-nser",
+   "staff_type": "academic",
+   "raw_name": "Khaled Khamis Nser, Ph.D",
+   "name_key": "khaled khamis nser",
+   "initial_keys": [
+    "khaled khamis|n",
+    "khaled|k",
+    "khamis nser|k",
+    "nser|k"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57211635227",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Samir Jabra Dukmak",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director of (Special Education, Applied Psychology Programs), and the Master's in Gifted and Talented Education",
+   "email": "samir.duqmaq@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/samir-dukmak",
+   "staff_type": "academic",
+   "raw_name": "Samir Jabra Dukmak, Ph.D",
+   "name_key": "dukmak jabra samir",
+   "initial_keys": [
+    "dukmak|s",
+    "jabra dukmak|s",
+    "samir jabra|d",
+    "samir|j"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "24400893500",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Samer Adnan Abdel-Hadi",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director of (Special Education, Applied Psychology Programs), and the Master's in Gifted and Talented Education",
+   "email": "appliedpsychology_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/samer-abdel-hadi",
+   "staff_type": "academic",
+   "raw_name": "Samer Adnan Abdel-Hadi, Ph.D",
+   "name_key": "abdel adnan hadi samer",
+   "initial_keys": [
+    "abdel hadi|s",
+    "adnan abdel hadi|s",
+    "samer adnan|a",
+    "samer|a"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57200498605",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Husien Faqeeh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director, Arabic Language and Literature and Islamic Studies Programs",
+   "email": "arabiclanguage@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-faqeeh",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Husien Faqeeh, Ph.D",
+   "name_key": "faqeeh husien mohammad",
+   "initial_keys": [
+    "faqeeh|m",
+    "husien faqeeh|m",
+    "mohammad husien|f",
+    "mohammad|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57200332286",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Issa Al-Hourani",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director, Arabic Language and Literature, and Islamic Studies Programs",
+   "email": "arabiclanguage_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-al-hourani",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Issa Al-Hourani, Ph.D",
+   "name_key": "hourani issa mohammad",
+   "initial_keys": [
+    "hourani|m",
+    "issa hourani|m",
+    "mohammad issa|h",
+    "mohammad|i"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57215611725",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Eman Ali Zaitoun",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director, Postgraduate Professional Diploma in Teaching Program",
+   "email": "professionaldiploma@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/eman-zaitoun",
+   "staff_type": "academic",
+   "raw_name": "Eman Ali Zaitoun, Ph.D",
+   "name_key": "ali eman zaitoun",
+   "initial_keys": [
+    "ali zaitoun|e",
+    "eman ali|z",
+    "eman|a",
+    "zaitoun|e"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57205345987",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Suzan Al Abidi",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director, Postgraduate Professional Diploma in Teaching Program",
+   "email": "professionaldiploma_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/suzan-mahmoud-al-abidi",
+   "staff_type": "academic",
+   "raw_name": "Suzan Al Abidi, Ph.D",
+   "name_key": "abidi suzan",
+   "initial_keys": [
+    "abidi|s",
+    "suzan al|a",
+    "suzan|a"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57847529400",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Abdel Ghani Amar Remache",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Director, English Language and Translation Program",
+   "email": "englishlanguage@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/abdelghani-remache",
+   "staff_type": "academic",
+   "raw_name": "Abdel Ghani Amar Remache, Ph.D",
+   "name_key": "abdel amar ghani remache",
+   "initial_keys": [
+    "abdel ghani|a",
+    "abdel|g",
+    "amar remache|a",
+    "remache|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "56662200500",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Salman Alkhazaleh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Professor",
+   "email": "mohammad.alkhazaleh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/Mohammad-alkhazaleh",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Salman Alkhazaleh, Ph.D",
+   "name_key": "khazaleh mohammad salman",
+   "initial_keys": [
+    "khazaleh|m",
+    "mohammad salman|a",
+    "mohammad|s",
+    "salman khazaleh|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57222655314",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohamed Elsayed Elzeiny",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Professor",
+   "email": "mohamed.elzeiny@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohamed-elzeiny",
+   "staff_type": "academic",
+   "raw_name": "Mohamed Elsayed Elzeiny, Ph.D",
+   "name_key": "mohammad sayed zeiny",
+   "initial_keys": [
+    "mohammad sayed|e",
+    "mohammad|e",
+    "sayed zeiny|m",
+    "zeiny|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "58545542900",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ashraf Alazab",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Visiting Professor",
+   "email": "ashraf.alazab@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ashraf-alazab",
+   "staff_type": "academic",
+   "raw_name": "Ashraf Alazab, PhD",
+   "name_key": "ashraf azab",
+   "initial_keys": [
+    "ashraf azab|a",
+    "ashraf|a",
+    "azab|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57223987827",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Salwa Abdallah Al-Majali",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "salwa.almajali@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/salwa-almajali",
+   "staff_type": "academic",
+   "raw_name": "Salwa Abdallah Al-Majali, Ph.D",
+   "name_key": "abdallah majali salwa",
+   "initial_keys": [
+    "abdallah majali|s",
+    "majali|s",
+    "salwa abdallah|m",
+    "salwa|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "59232342900",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Omran Ahmad Musleh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "omran.musleh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/omran-musleh",
+   "staff_type": "academic",
+   "raw_name": "Omran Ahmad Musleh, Ph.D",
+   "name_key": "ahmad musleh omran",
+   "initial_keys": [
+    "ahmad musleh|o",
+    "musleh|o",
+    "omran ahmad|m",
+    "omran|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57218879552",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Hussein Khazer Saleh Almajali",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "hussein.almajali@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/hussein-almajali",
+   "staff_type": "academic",
+   "raw_name": "Hussein Khazer Saleh Almajali, Ph.D",
+   "name_key": "hussain khazer majali saleh",
+   "initial_keys": [
+    "hussain khazer|s",
+    "hussain|k",
+    "majali|h",
+    "saleh majali|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57222368483",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Imad Ibraheem KH.Mostafa",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "imad.mostafa@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/imad-ibraheem-kh-mostafa",
+   "staff_type": "academic",
+   "raw_name": "Imad Ibraheem KH.Mostafa,Ph.D",
+   "name_key": "ibrahim imad kh mostafa",
+   "initial_keys": [
+    "ibrahim kh mostafa|i",
+    "imad ibrahim|k",
+    "imad|i",
+    "kh mostafa|i"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57225930384",
+   "auid_tier": "manual:medium:middle-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Hatem Ahmed Suleiman Al-qudah",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "hatem.alqudah@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/hatem-al-qudah",
+   "staff_type": "academic",
+   "raw_name": "Hatem Ahmed Suleiman Al-qudah, Ph.D",
+   "name_key": "ahmad hatem qudah suleiman",
+   "initial_keys": [
+    "hatem ahmad|s",
+    "hatem|a",
+    "qudah|h",
+    "suleiman qudah|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57221477618",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Enas Said Abulibdeh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "enas.abulibdeh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/enas-abulibdeh",
+   "staff_type": "academic",
+   "raw_name": "Enas Said Abulibdeh, Ph.D",
+   "name_key": "abulibdeh enas said",
+   "initial_keys": [
+    "abulibdeh|e",
+    "enas said|a",
+    "enas|s",
+    "said abulibdeh|e"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "54395007700",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Wafa' Abdemahdi Hazaymeh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "wafa.hazaymeh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/wafa-abdemahdi-hazaymeh",
+   "staff_type": "academic",
+   "raw_name": "Wafa' Abdemahdi Hazaymeh, Ph.D",
+   "name_key": "abdemahdi hazaymeh wafa'",
+   "initial_keys": [
+    "abdemahdi hazaymeh|w",
+    "hazaymeh|w",
+    "wafa' abdemahdi|h",
+    "wafa'|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57211599555",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Razan Numan AlKhatib",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "razan.alkhatib@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/razan-alKhatib",
+   "staff_type": "academic",
+   "raw_name": "Razan Numan AlKhatib, Ph.D",
+   "name_key": "khatib numan razan",
+   "initial_keys": [
+    "khatib|r",
+    "numan khatib|r",
+    "razan numan|a",
+    "razan|n"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57213257593",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Rakan Alhrahsheh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "rakan.alhrahsheh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/rakan-alhrahsheh",
+   "staff_type": "academic",
+   "raw_name": "Rakan Alhrahsheh, Ph.D",
+   "name_key": "hrahsheh rakan",
+   "initial_keys": [
+    "hrahsheh|r",
+    "rakan hrahsheh|r",
+    "rakan|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57201617442",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nahla Alshalabi",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "nahla.alshalabi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nahla-alshalabi",
+   "staff_type": "academic",
+   "raw_name": "Nahla Alshalabi, Ph.D",
+   "name_key": "nahla shalabi",
+   "initial_keys": [
+    "nahla shalabi|n",
+    "nahla|a",
+    "shalabi|n"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "59963490300",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Hussein Al Sarhan",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "hussein.alsrehan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/hussien-alsarhan",
+   "staff_type": "academic",
+   "raw_name": "Hussein Al Sarhan,Ph.D",
+   "name_key": "hussain sarhan",
+   "initial_keys": [
+    "hussain al|s",
+    "hussain|s",
+    "sarhan|h"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57210948993",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Abdoulaye Kaba",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "kaba.abdoulaye@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/abdoulaye1",
+   "staff_type": "academic",
+   "raw_name": "Abdoulaye Kaba, Ph.D",
+   "name_key": "abdoulaye kaba",
+   "initial_keys": [
+    "abdoulaye kaba|a",
+    "abdoulaye|k",
+    "kaba|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "36951393200",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Salem Khalil Al Aqtash",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "salem.alaqtash@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/salem-alaqtash",
+   "staff_type": "academic",
+   "raw_name": "Salem Khalil Al Aqtash, Ph.D",
+   "name_key": "aqtash khalil salem",
+   "initial_keys": [
+    "aqtash|s",
+    "salem khalil|a",
+    "salem|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57191485851",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Shirin Saleh Al-Odwan",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "shirin.alodwan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/shirin-al-odwan",
+   "staff_type": "academic",
+   "raw_name": "Shirin Saleh Al-Odwan, Ph.D",
+   "name_key": "odwan saleh shirin",
+   "initial_keys": [
+    "odwan|s",
+    "saleh odwan|s",
+    "shirin saleh|o",
+    "shirin|s"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57215874181",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Dina Naser Tahat",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "dina.tahat@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/dina-tahat",
+   "staff_type": "academic",
+   "raw_name": "Dina Naser Tahat, Ph.D",
+   "name_key": "dina naser tahat",
+   "initial_keys": [
+    "dina naser|t",
+    "dina|n",
+    "naser tahat|d",
+    "tahat|d"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57210446636",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohannad Salameh Alkhalaileh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "mohannad.alkhalaileh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohannad-alkhalaileh",
+   "staff_type": "academic",
+   "raw_name": "Mohannad Salameh Alkhalaileh, Ph.D",
+   "name_key": "khalaileh mohannad salameh",
+   "initial_keys": [
+    "khalaileh|m",
+    "mohannad salameh|a",
+    "mohannad|s",
+    "salameh khalaileh|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "55545318300",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Sura Qiqieh",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "sura.qiqieh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/sura-qiqieh",
+   "staff_type": "academic",
+   "raw_name": "Sura Qiqieh, Ph.D",
+   "name_key": "qiqieh sura",
+   "initial_keys": [
+    "qiqieh|s",
+    "sura qiqieh|s",
+    "sura|q"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "58538321700",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Shirin Abdallah AlAmoor",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "shirin.alamoor@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/shirin-alamoor",
+   "staff_type": "academic",
+   "raw_name": "Shirin Abdallah AlAmoor, Ph.D",
+   "name_key": "abdallah amoor shirin",
+   "initial_keys": [
+    "abdallah amoor|s",
+    "amoor|s",
+    "shirin abdallah|a",
+    "shirin|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "58612046300",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Maram Salah Jaradat",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "maram.jaradat@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/maram-jaradat",
+   "staff_type": "academic",
+   "raw_name": "Maram Salah Jaradat, Ph.D",
+   "name_key": "jaradat maram salah",
+   "initial_keys": [
+    "jaradat|m",
+    "maram salah|j",
+    "maram|s",
+    "salah jaradat|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57201584144",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Abdeldjalil Bouzenoun",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "abdeljalil.bouzenoun@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/abdeldjalil-bouzenoun",
+   "staff_type": "academic",
+   "raw_name": "Abdeldjalil Bouzenoun, Ph.D",
+   "name_key": "abdeldjalil bouzenoun",
+   "initial_keys": [
+    "abdeldjalil bouzenoun|a",
+    "abdeldjalil|b",
+    "bouzenoun|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "58712340900",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Jihan Yousef",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "jihan.mousa@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/jihan-mousa",
+   "staff_type": "academic",
+   "raw_name": "Jihan Yousef, Ph.D",
+   "name_key": "jihan yousif",
+   "initial_keys": [
+    "jihan yousif|j",
+    "jihan|y",
+    "yousif|j"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "58290704200",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Dima Farhat",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "dima.farhat@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/dima-farhat",
+   "staff_type": "academic",
+   "raw_name": "Dima Farhat, Ph.D",
+   "name_key": "dima farhat",
+   "initial_keys": [
+    "dima farhat|d",
+    "dima|f",
+    "farhat|d"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "59390231700",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Amjad Alhenawi",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "amjad.alhenawi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/amjad-alhenawi",
+   "staff_type": "academic",
+   "raw_name": "Amjad Alhenawi, Ph.D",
+   "name_key": "amjad henawi",
+   "initial_keys": [
+    "amjad henawi|a",
+    "amjad|a",
+    "henawi|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Amjad Kamal Owais",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Instructor",
+   "email": "amjad.owais@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/amjad-owais",
+   "staff_type": "academic",
+   "raw_name": "Amjad Kamal Owais, MA",
+   "name_key": "amjad kamal owais",
+   "initial_keys": [
+    "amjad kamal|o",
+    "amjad|k",
+    "kamal owais|a",
+    "owais|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57216809009",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Moath Kalef Al Omery",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Instructor",
+   "email": "moath.alomery@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/moath-kalef-al-omery",
+   "staff_type": "academic",
+   "raw_name": "Moath Kalef Al Omery, MA",
+   "name_key": "kalef moath omery",
+   "initial_keys": [
+    "moath kalef|o",
+    "moath|k",
+    "omery|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "57215814165",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Reem Hamad Sala",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Academic Support Specialist",
+   "email": "education.secretary@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/reem-hamad",
+   "staff_type": "administrative",
+   "raw_name": "Reem Hamad Sala",
+   "name_key": "hamad reem sala",
+   "initial_keys": [
+    "hamad sala|r",
+    "reem hamad|s",
+    "reem|h",
+    "sala|r"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "60685057700",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Randa Radwan Abu Eida",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Senior Secretary",
+   "email": "education.secretary_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/randa-abu-eida",
+   "staff_type": "administrative",
+   "raw_name": "Randa Radwan Abu Eida",
+   "name_key": "abu eida radwan randa",
+   "initial_keys": [
+    "abu eida|r",
+    "eida|r",
+    "randa radwan|a",
+    "randa|r"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mariam Alnaqbi",
+   "college": "College of Education, Humanities and Social Sciences",
+   "department": "",
+   "title": "Secretary",
+   "email": "mariam.alnaqbi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mariam",
+   "staff_type": "administrative",
+   "raw_name": "Mariam Alnaqbi",
+   "name_key": "mariam naqbi",
+   "initial_keys": [
+    "mariam naqbi|m",
+    "mariam|a",
+    "naqbi|m"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "60705794500",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Zafar Husain",
+   "college": "College of Business",
+   "department": "",
+   "title": "Dean, College of Business",
+   "email": "business@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/zafar-husain",
+   "staff_type": "academic",
+   "raw_name": "Zafar Husain, Ph.D",
+   "name_key": "hussain zafar",
+   "initial_keys": [
+    "hussain|z",
+    "zafar hussain|z",
+    "zafar|h"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "8304977600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Iffat Sabir",
+   "college": "College of Business",
+   "department": "",
+   "title": "Deputy Dean, College of Business",
+   "email": "business_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/iffat.sabir",
+   "staff_type": "academic",
+   "raw_name": "Iffat Sabir, Ph.D",
+   "name_key": "iffat sabir",
+   "initial_keys": [
+    "iffat sabir|i",
+    "iffat|s",
+    "sabir|i"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57195561731",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Jamil Razmak",
+   "college": "College of Business",
+   "department": "",
+   "title": "Director, BBA(Management, HR, and Marketing) Programs",
+   "email": "businessadministration_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/jamil-razmak",
+   "staff_type": "academic",
+   "raw_name": "Jamil Razmak, Ph.D",
+   "name_key": "jamil razmak",
+   "initial_keys": [
+    "jamil razmak|j",
+    "jamil|r",
+    "razmak|j"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "55820308400",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Riham Suleiman Muqattash",
+   "college": "College of Business",
+   "department": "",
+   "title": "Director BBA Programs (Accounting, Finance, Management Information Systems, and Business Analytics)",
+   "email": "accounting.finance_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/riham-muqattash",
+   "staff_type": "academic",
+   "raw_name": "Riham Suleiman Muqattash, Ph.D",
+   "name_key": "muqattash riham suleiman",
+   "initial_keys": [
+    "muqattash|r",
+    "riham suleiman|m",
+    "riham|s",
+    "suleiman muqattash|r"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57194492587",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Ahmad Al Omari",
+   "college": "College of Business",
+   "department": "",
+   "title": "Director, Business Administration Program",
+   "email": "businessadministration@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-al-omari",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Ahmad Al Omari, Ph.D",
+   "name_key": "ahmad mohammad omari",
+   "initial_keys": [
+    "mohammad ahmad|o",
+    "mohammad|a",
+    "omari|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "60684522400",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Abdelhafid Belarbi",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "abdelhafid.belarbi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/abdelhafid-belarbi",
+   "staff_type": "academic",
+   "raw_name": "Abdelhafid Belarbi, Ph.D",
+   "name_key": "abdelhafid belarbi",
+   "initial_keys": [
+    "abdelhafid belarbi|a",
+    "abdelhafid|b",
+    "belarbi|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57193390999",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Habib Chabchoub",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "habib.chabchoub@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/habib-chabchoub",
+   "staff_type": "academic",
+   "raw_name": "Habib Chabchoub, Ph.D",
+   "name_key": "chabchoub habib",
+   "initial_keys": [
+    "chabchoub|h",
+    "habib chabchoub|h",
+    "habib|c"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "56007650900",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammed Nuseir",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "mohammed.nuseir@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammed-nuseir",
+   "staff_type": "academic",
+   "raw_name": "Mohammed Nuseir, Ph.D",
+   "name_key": "mohammad nuseir",
+   "initial_keys": [
+    "mohammad nuseir|m",
+    "mohammad|n",
+    "nuseir|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "26638922500",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Amer Mohammad Jaser Qasem",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "amer.qasim@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/amer-qasim-1",
+   "staff_type": "academic",
+   "raw_name": "Amer Mohammad Jaser Qasem, Ph.D",
+   "name_key": "amer jaser mohammad qasem",
+   "initial_keys": [
+    "amer mohammad|j",
+    "amer|m",
+    "jaser qasem|a",
+    "qasem|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "36155955800",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Belkacem Athamena",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "belkacem.athamena@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/belkacem-athamena",
+   "staff_type": "academic",
+   "raw_name": "Belkacem Athamena, Ph.D",
+   "name_key": "athamena belkacem",
+   "initial_keys": [
+    "athamena|b",
+    "belkacem athamena|b",
+    "belkacem|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "6507855990",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohanad Ali Halaweh",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "mohanad.halaweh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohanad-halaweh",
+   "staff_type": "academic",
+   "raw_name": "Mohanad Ali Halaweh, Ph.D",
+   "name_key": "ali halaweh mohanad",
+   "initial_keys": [
+    "ali halaweh|m",
+    "halaweh|m",
+    "mohanad ali|h",
+    "mohanad|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "25960639300",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Rania Badreldin Mostafa",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "rania.mostafa@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/rania-mostafa",
+   "staff_type": "academic",
+   "raw_name": "Rania Badreldin Mostafa, Ph.D",
+   "name_key": "badreldin mostafa rania",
+   "initial_keys": [
+    "badreldin mostafa|r",
+    "mostafa|r",
+    "rania badreldin|m",
+    "rania|b"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "56829186600",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Shorouq F. Eletter",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "shorouq.eletter@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/shorouq-eletter",
+   "staff_type": "academic",
+   "raw_name": "Shorouq F. Eletter, Ph.D",
+   "name_key": "etter shorouq",
+   "initial_keys": [
+    "etter|s",
+    "f etter|s",
+    "shorouq f|e",
+    "shorouq|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "55539589600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ibrahim Niankara",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "ibrahim.niankara@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ibrahim-niankara",
+   "staff_type": "academic",
+   "raw_name": "Ibrahim Niankara, Ph.D",
+   "name_key": "ibrahim niankara",
+   "initial_keys": [
+    "ibrahim niankara|i",
+    "ibrahim|n",
+    "niankara|i"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57200579496",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mosab Tabash",
+   "college": "College of Business",
+   "department": "",
+   "title": "Professor",
+   "email": "mosab.tabash@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mosab-tabash",
+   "staff_type": "academic",
+   "raw_name": "Mosab Tabash, Ph.D",
+   "name_key": "mosab tabash",
+   "initial_keys": [
+    "mosab tabash|m",
+    "mosab|t",
+    "tabash|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57194232562",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mariam Farooq",
+   "college": "College of Business",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "mariam.farooq@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mariam-farooq",
+   "staff_type": "academic",
+   "raw_name": "Mariam Farooq, Ph.D",
+   "name_key": "farooq mariam",
+   "initial_keys": [
+    "farooq|m",
+    "mariam farooq|m",
+    "mariam|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "56045457600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Kholoud Al Qeisi",
+   "college": "College of Business",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "kholoud.alqeisi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/kholoud-alqeisi",
+   "staff_type": "academic",
+   "raw_name": "Kholoud Al Qeisi, Ph.D",
+   "name_key": "kholoud qeisi",
+   "initial_keys": [
+    "kholoud al|q",
+    "kholoud|q",
+    "qeisi|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57222239635",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tahira Yasmin",
+   "college": "College of Business",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "tahira.yasmin@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tahira-yasmin",
+   "staff_type": "academic",
+   "raw_name": "Tahira Yasmin, Ph.D",
+   "name_key": "tahira yasmin",
+   "initial_keys": [
+    "tahira yasmin|t",
+    "tahira|y",
+    "yasmin|t"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "56406291900",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Wejdan Farhan",
+   "college": "College of Business",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "wejdan.farhan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/wejdan-farhan",
+   "staff_type": "academic",
+   "raw_name": "Wejdan Farhan, Ph.D",
+   "name_key": "farhan wejdan",
+   "initial_keys": [
+    "farhan|w",
+    "wejdan farhan|w",
+    "wejdan|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57204125292",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohamed Elmaghrabi",
+   "college": "College of Business",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "mohamed.elmaghrabi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohamed-elmaghrabi",
+   "staff_type": "academic",
+   "raw_name": "Mohamed Elmaghrabi, Ph.D",
+   "name_key": "maghrabi mohammad",
+   "initial_keys": [
+    "maghrabi|m",
+    "mohammad maghrabi|m",
+    "mohammad|e"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57218997711",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammad Sharairi",
+   "college": "College of Business",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "mohammad.sharairi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammad-sharairi",
+   "staff_type": "academic",
+   "raw_name": "Mohammad Sharairi, Ph.D",
+   "name_key": "mohammad sharairi",
+   "initial_keys": [
+    "mohammad sharairi|m",
+    "mohammad|s",
+    "sharairi|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57213149438",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Maha Nayef Rahrouh",
+   "college": "College of Business",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "maha.rahrouh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/maha-rahrouh",
+   "staff_type": "academic",
+   "raw_name": "Maha Nayef Rahrouh, Ph.D",
+   "name_key": "maha nayef rahrouh",
+   "initial_keys": [
+    "maha nayef|r",
+    "maha|n",
+    "nayef rahrouh|m",
+    "rahrouh|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "6504655800",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Yasin Khalil Karsoo",
+   "college": "College of Business",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "yasin.karsoo@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/yasin-karsoo",
+   "staff_type": "academic",
+   "raw_name": "Yasin Khalil Karsoo, Ph.D",
+   "name_key": "karsoo khalil yasin",
+   "initial_keys": [
+    "karsoo|y",
+    "khalil karsoo|y",
+    "yasin khalil|k",
+    "yasin|k"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "58965168900",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohamed Ahmed Shaker Ahmed",
+   "college": "College of Business",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "mohamed.ahmed@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohamed-ahmed",
+   "staff_type": "academic",
+   "raw_name": "Mohamed Ahmed Shaker Ahmed, Ph.D",
+   "name_key": "ahmad ahmad mohammad shaker",
+   "initial_keys": [
+    "ahmad|m",
+    "mohammad ahmad|s",
+    "mohammad|a",
+    "shaker ahmad|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57217167465",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohsin Murtaza",
+   "college": "College of Business",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "mohsin.murtaza@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohsin-murtza",
+   "staff_type": "academic",
+   "raw_name": "Mohsin Murtaza, PhD",
+   "name_key": "mohsin murtaza",
+   "initial_keys": [
+    "mohsin murtaza|m",
+    "mohsin|m",
+    "murtaza|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "57660474800",
+   "auid_tier": "manual:manual",
+   "auid_candidates": []
+  },
+  {
+   "name": "Sajjad Ahamed",
+   "college": "College of Business",
+   "department": "",
+   "title": "Internship & Student Recruitment Coordinator",
+   "email": "sajjad.nazar@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/sajjad-ahamed",
+   "staff_type": "administrative",
+   "raw_name": "Sajjad Ahamed",
+   "name_key": "ahamed sajjad",
+   "initial_keys": [
+    "ahamed|s",
+    "sajjad ahamed|s",
+    "sajjad|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "review:transliteration-ambiguous",
+   "auid_candidates": [
+    {
+     "auid": "24729039200",
+     "papers": 1
+    },
+    {
+     "auid": "58179871800",
+     "papers": 2
+    }
+   ]
+  },
+  {
+   "name": "Manar Hamed",
+   "college": "College of Business",
+   "department": "",
+   "title": "Academic Support Specialist",
+   "email": "business.secretary@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/manar-majid",
+   "staff_type": "administrative",
+   "raw_name": "Manar Hamed",
+   "name_key": "hamed manar",
+   "initial_keys": [
+    "hamed|m",
+    "manar hamed|m",
+    "manar|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "26026940800",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Amal Mohamed Almessabi",
+   "college": "College of Business",
+   "department": "",
+   "title": "Admin Assistant",
+   "email": "amal.almessabi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/amal-almessabi",
+   "staff_type": "administrative",
+   "raw_name": "Amal Mohamed Almessabi",
+   "name_key": "amal messabi mohammad",
+   "initial_keys": [
+    "amal mohammad|a",
+    "amal|m",
+    "messabi|a",
+    "mohammad messabi|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Fidha Parvin",
+   "college": "College of Business",
+   "department": "",
+   "title": "Secretary Collage of business",
+   "email": "business.secretary_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/fidha-parvin",
+   "staff_type": "administrative",
+   "raw_name": "Fidha Parvin",
+   "name_key": "fidha parvin",
+   "initial_keys": [
+    "fidha parvin|f",
+    "fidha|p",
+    "parvin|f"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Malak Hidq",
+   "college": "College of Business",
+   "department": "",
+   "title": "Internship & Job Placement Coordinator",
+   "email": "business.internship_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/malak-hidq",
+   "staff_type": "administrative",
+   "raw_name": "Malak Hidq",
+   "name_key": "hidq malak",
+   "initial_keys": [
+    "hidq|m",
+    "malak hidq|m",
+    "malak|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Business"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Rahima Aissani",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Dean, College of Communication and Media",
+   "email": "communication@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/rahima-aissani",
+   "staff_type": "academic",
+   "raw_name": "Rahima Aissani, Ph.D",
+   "name_key": "aissani rahima",
+   "initial_keys": [
+    "aissani|r",
+    "rahima aissani|r",
+    "rahima|a"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "57201681276",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Mohammed Taher Nuseir",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Deputy Dean, College of Communication and Media",
+   "email": "communication_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/mohammed-Taher-Nuseir",
+   "staff_type": "academic",
+   "raw_name": "Mohammed Taher Nuseir, Ph.D",
+   "name_key": "mohammad nuseir taher",
+   "initial_keys": [
+    "mohammad taher|n",
+    "mohammad|t",
+    "nuseir|m",
+    "taher nuseir|m"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "26638922500",
+   "auid_tier": "manual:high:first-last",
+   "auid_candidates": []
+  },
+  {
+   "name": "Rania Abdallah",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Director, Communication and Media Program",
+   "email": "masscommunication_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/rania-abdallah",
+   "staff_type": "academic",
+   "raw_name": "Rania Abdallah, Ph.D",
+   "name_key": "abdallah rania",
+   "initial_keys": [
+    "abdallah|r",
+    "rania abdallah|r",
+    "rania|a"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "58516968500",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Muhammad noor aladwan",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "muhammadnoor.aladwan@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/muhammadnoor-aladwan",
+   "staff_type": "academic",
+   "raw_name": "Muhammad noor aladwan,Ph.D",
+   "name_key": "adwan mohammad noor",
+   "initial_keys": [
+    "adwan|m",
+    "mohammad noor|a",
+    "mohammad|n",
+    "noor adwan|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "57212214124",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Reneh Abokhoza",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "reneh.escaros@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/reneh-escaros",
+   "staff_type": "academic",
+   "raw_name": "Reneh Abokhoza, Ph.D",
+   "name_key": "abokhoza reneh",
+   "initial_keys": [
+    "abokhoza|r",
+    "reneh abokhoza|r",
+    "reneh|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "57217288397",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nahida Makhadmeh",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "nahida.makhadmeh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nahida-makhadmeh",
+   "staff_type": "academic",
+   "raw_name": "Nahida Makhadmeh, Ph.D",
+   "name_key": "makhadmeh nahida",
+   "initial_keys": [
+    "makhadmeh|n",
+    "nahida makhadmeh|n",
+    "nahida|m"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "56223821600",
+   "auid_tier": "manual:high:surname-initial",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ahmad AlJumah",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "ahmad.aljumah@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/ahmad-aljumah",
+   "staff_type": "academic",
+   "raw_name": "Ahmad AlJumah, Ph.D",
+   "name_key": "ahmad jumah",
+   "initial_keys": [
+    "ahmad jumah|a",
+    "ahmad|a",
+    "jumah|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "57200986764",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Sawsan Taha",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Associate Professor",
+   "email": "sawsan.taha@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/sawsan-taha",
+   "staff_type": "academic",
+   "raw_name": "Sawsan Taha, Ph.D",
+   "name_key": "sawsan taha",
+   "initial_keys": [
+    "sawsan taha|s",
+    "sawsan|t",
+    "taha|s"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "58079096600",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Amer Khaled Ahmed",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "amer.ahmad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/amer-ahmad",
+   "staff_type": "academic",
+   "raw_name": "Amer Khaled Ahmed, Ph.D",
+   "name_key": "ahmad amer khaled",
+   "initial_keys": [
+    "ahmad|a",
+    "amer khaled|a",
+    "amer|k",
+    "khaled ahmad|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "57821359000",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Ala'aldin Zahra",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "alaaldin.zahra@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/alaaldin-zahra",
+   "staff_type": "academic",
+   "raw_name": "Ala'aldin Zahra, PhD",
+   "name_key": "a'aldin zahra",
+   "initial_keys": [
+    "a'aldin zahra|a",
+    "a'aldin|z",
+    "zahra|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "58105071500",
+   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_candidates": []
+  },
+  {
+   "name": "Farah Saboune",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "farah.saboune@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/farah-saboune",
+   "staff_type": "academic",
+   "raw_name": "Farah Saboune, PhD",
+   "name_key": "farah saboune",
+   "initial_keys": [
+    "farah saboune|f",
+    "farah|s",
+    "saboune|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "58244574400",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Haneen Shabaneh",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Senior Lab Supervisor",
+   "email": "haneen.shabaneh@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/haneen-shabaneh",
+   "staff_type": "administrative",
+   "raw_name": "Haneen Shabaneh",
+   "name_key": "haneen shabaneh",
+   "initial_keys": [
+    "haneen shabaneh|h",
+    "haneen|s",
+    "shabaneh|h"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Reem Mohamed Shehada",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Secretary",
+   "email": "communication.secretary_ad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/reem-shehada",
+   "staff_type": "administrative",
+   "raw_name": "Reem Mohamed Shehada",
+   "name_key": "mohammad reem shehada",
+   "initial_keys": [
+    "mohammad shehada|r",
+    "reem mohammad|s",
+    "reem|m",
+    "shehada|r"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tasnim Koufi",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Secretary",
+   "email": "tasnim.koufi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tasnim-",
+   "staff_type": "administrative",
+   "raw_name": "Tasnim Koufi",
+   "name_key": "koufi tasnim",
+   "initial_keys": [
+    "koufi|t",
+    "tasnim koufi|t",
+    "tasnim|k"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "60572178700",
+   "auid_tier": "manual:high:exact-name",
+   "auid_candidates": []
+  },
+  {
+   "name": "Geron Galela Ronquillo",
+   "college": "College of Communication and Media",
+   "department": "",
+   "title": "Lab assistant",
+   "email": "geron.ronquillo@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/geron-galela-ronquillo",
+   "staff_type": "administrative",
+   "raw_name": "Geron Galela Ronquillo",
+   "name_key": "galela geron ronquillo",
+   "initial_keys": [
+    "galela ronquillo|g",
+    "geron galela|r",
+    "geron|g",
+    "ronquillo|g"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Firas Abedal-Rahman Alquran",
+   "college": "College of Dentistry",
+   "department": "",
+   "title": "Dean, College of Dentistry",
+   "email": "firas.alquran@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/firas-alquran",
+   "staff_type": "academic",
+   "raw_name": "Firas Abedal-Rahman Alquran, Ph.d",
+   "name_key": "abedal firas quran rahman",
+   "initial_keys": [
+    "abedal rahman quran|f",
+    "firas abedal rahman|a",
+    "firas|a",
+    "quran|f"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Dentistry"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Sabrin Azim",
+   "college": "College of Dentistry",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "sabrin.azim@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/sabrin-Azim",
+   "staff_type": "academic",
+   "raw_name": "Sabrin Azim, PhD",
+   "name_key": "azim sabrin",
+   "initial_keys": [
+    "azim|s",
+    "sabrin azim|s",
+    "sabrin|a"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Dentistry"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Niazur Rahman",
+   "college": "College of Dentistry",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "s.rahman@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/niazur-rahman",
+   "staff_type": "academic",
+   "raw_name": "Niazur Rahman, Ph.D",
+   "name_key": "niazur rahman",
+   "initial_keys": [
+    "niazur rahman|n",
+    "niazur|r",
+    "rahman|n"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Dentistry"
+   ],
+   "scopus_auid": "57881654400",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Sara Gad",
+   "college": "College of Dentistry",
+   "department": "",
+   "title": "Executive Secretary",
+   "email": "sara.gad@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/sara-gad",
+   "staff_type": "administrative",
+   "raw_name": "Sara Gad",
+   "name_key": "gad sara",
+   "initial_keys": [
+    "gad|s",
+    "sara gad|s",
+    "sara|g"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Dentistry"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Tala Alaa Altamimi",
+   "college": "College of Dentistry",
+   "department": "",
+   "title": "Lab Supervisor",
+   "email": "tala.altamimi@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/tala-altamimi",
+   "staff_type": "administrative",
+   "raw_name": "Tala Alaa Altamimi",
+   "name_key": "alaa tala tamimi",
+   "initial_keys": [
+    "alaa tamimi|t",
+    "tala alaa|a",
+    "tala|a",
+    "tamimi|t"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Dentistry"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Lo'ai AbuSharour",
+   "college": "College of Nursing",
+   "department": "",
+   "title": "Dean, College of Nursing",
+   "email": "nursing@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/loai-mohammad-dean-nursing",
+   "staff_type": "academic",
+   "raw_name": "Lo'ai AbuSharour, Ph.D",
+   "name_key": "abusharour lo'ai",
+   "initial_keys": [
+    "abusharour|l",
+    "lo'ai abusharour|l",
+    "lo'ai|a"
+   ],
+   "is_academic": true,
+   "email_kind": "role",
+   "colleges": [
+    "College of Nursing"
+   ],
+   "scopus_auid": "57192697518",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  },
+  {
+   "name": "Nadeen Alshakhshir",
+   "college": "College of Nursing",
+   "department": "",
+   "title": "Assistant Professor",
+   "email": "nadeen.alshakhshir@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/nadeen-alshakhshir",
+   "staff_type": "academic",
+   "raw_name": "Nadeen Alshakhshir, Ph.D",
+   "name_key": "nadeen shakhshir",
+   "initial_keys": [
+    "nadeen shakhshir|n",
+    "nadeen|a",
+    "shakhshir|n"
+   ],
+   "is_academic": true,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Nursing"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "none:no-papers",
+   "auid_candidates": []
+  },
+  {
+   "name": "Alaa Masoud",
+   "college": "College of Nursing",
+   "department": "",
+   "title": "Secretary",
+   "email": "alaa.masoud@aau.ac.ae",
+   "profile_url": "https://aau.ac.ae/en/staff/alaa-masoud",
+   "staff_type": "administrative",
+   "raw_name": "Alaa Masoud",
+   "name_key": "alaa masoud",
+   "initial_keys": [
+    "alaa masoud|a",
+    "alaa|m",
+    "masoud|a"
+   ],
+   "is_academic": false,
+   "email_kind": "personal",
+   "colleges": [
+    "College of Nursing"
+   ],
+   "scopus_auid": "56121354400",
+   "auid_tier": "manual:medium:transliteration",
+   "auid_candidates": []
+  }
+ ]
+}

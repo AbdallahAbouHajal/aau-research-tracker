@@ -1,2 +1,6 @@
 .DS_Store
 _extracted/
+docs/_*.html
+engine/.cache/
+engine/config/
+engine/data/runs/

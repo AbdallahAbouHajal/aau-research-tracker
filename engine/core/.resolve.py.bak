@@ -1,0 +1,184 @@
+"""Resolve a faculty name to its Scopus AU-ID.
+
+The Scopus Author Search API is locked with these keys, so the only place
+AU-IDs exist in bulk is the Scopus CSV export, whose "Author full names"
+column reads "Surname, Given (60611061600)". That gives ~9,500 name->AU-ID
+pairs to match against.
+
+Matching is tiered and never silently guesses. Anything that matches more
+than one AU-ID goes to a review queue instead of picking a winner -- 13 real
+people share the name "Muhammad Ilyas" in this corpus, so picking is wrong.
+
+Measured on the 322 names already scraped from aau.ac.ae:
+    182 auto-resolved (high/medium) | 56 review | 84 no match
+
+"No match" is a normal outcome: a faculty member with no 2025-26 papers has
+no AU-ID to find, and needs none -- the sweep would return nothing anyway.
+"""
+import csv
+import collections
+import os
+import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import census as X
+import translit as TL
+
+csv.field_size_limit(10 ** 9)
+_NAMED_ID = re.compile(r"^(.*?)\s*\((\d{6,})\)\s*$")
+
+
+def known_shared_names():
+    """Names the census proved are shared by several different people.
+
+    "Muhammad Ilyas" resolves to a single AU-ID in the export, which looks
+    like a confident match -- but 13 distinct people publish under that name
+    at AAU. A confident match to the wrong person is worse than no match, so
+    these are forced into review regardless of tier.
+    """
+    out = set()
+    path = X.census_file("review_queue.json")
+    if not os.path.exists(path):
+        return out
+    try:
+        import json
+        for r in json.load(open(path)):
+            if r.get("reason") in ("possible_duplicate_common_name",
+                                   "distinct_orcids",
+                                   "subset_merge_BLOCKED_common_name",
+                                   "subset_merge_BLOCKED_orcid_conflict"):
+                for part in str(r.get("name_key", "")).split("|"):
+                    part = part.strip()
+                    if part:
+                        out.add(part)
+    except Exception:
+        pass
+    return out
+
+
+def build_index(export_csv=None):
+    """name -> {AU-IDs}, in three lookup shapes."""
+    path = export_csv or X.census_file("scopus_export.csv")
+    by_key = collections.defaultdict(set)
+    by_init = collections.defaultdict(set)
+    by_toks = []
+    names = collections.defaultdict(set)      # display name -> AU-IDs
+    by_fl = collections.defaultdict(set)      # surname|first-given -> AU-IDs
+    counts = collections.Counter()
+
+    with open(path, newline="", encoding="utf-8-sig") as fh:
+        for row in csv.DictReader(fh):
+            for chunk in (row.get("Author full names") or "").split(";"):
+                m = _NAMED_ID.match(chunk.strip())
+                if not m:
+                    continue
+                nm, aid = m.group(1), m.group(2)
+                counts[aid] += 1
+                k = X.name_key(nm)
+                by_key[k].add(aid)
+                for ik in X.initial_keys(nm):
+                    by_init[ik].add(aid)
+                by_toks.append((frozenset(k.split()), aid))
+                names[nm].add(aid)
+                fk = TL.fl_key(nm)
+                if fk:
+                    by_fl[fk].add(aid)
+    return {"by_key": by_key, "by_init": by_init, "by_toks": by_toks,
+            "papers": counts, "shared": known_shared_names(), "names": names,
+            "by_fl": by_fl}
+
+
+def resolve_one(name, idx):
+    """-> (auid|None, tier, candidates). Never guesses between candidates."""
+    k = X.name_key(name)
+    if not k:
+        return None, "none", []
+
+    if k in idx.get("shared", ()):
+        cands = sorted((idx["by_key"].get(k) or set())
+                       | {a for ik in X.initial_keys(name)
+                          for a in idx["by_init"].get(ik, set())})
+        # Flagged as shared, but only one AU-ID exists -- there is nothing to
+        # choose between, so resolve it and mark it for visibility rather than
+        # parking it in a queue with a single option.
+        if len(cands) == 1:
+            return cands[0], "medium:shared-name-single-id", []
+        if cands:
+            return None, "review:name-shared-by-several-people", cands
+        return None, "none:no-papers", []
+
+    hits = idx["by_key"].get(k) or set()
+    if len(hits) == 1:
+        return next(iter(hits)), "high:exact-name", []
+    if hits:
+        return None, "review:exact-name-ambiguous", sorted(hits)
+
+    # FIRST NAME + LAST NAME. Runs before the initials tier because it is
+    # far more specific: "Sarfraz, Muhammad" is one person, "sarfraz|m" is
+    # three. Middle names are dropped -- they are the source of the noise.
+    fk = TL.fl_key(name)
+    if fk:
+        fl = idx["by_fl"].get(fk) or set()
+        if len(fl) == 1:
+            return next(iter(fl)), "high:first-last", []
+        if fl:
+            return None, "review:first-last-ambiguous", sorted(fl)
+
+    hits = set()
+    for ik in X.initial_keys(name):
+        hits |= idx["by_init"].get(ik, set())
+    if len(hits) == 1:
+        return next(iter(hits)), "high:surname-initial", []
+    if hits:
+        return None, "review:surname-initial-ambiguous", sorted(hits)
+
+    # a spelled-out middle name against an initial, e.g.
+    # "Suad Abdel Karim Alwaely" vs "Suad Abdalkareem Alwaely"
+    t = frozenset(k.split())
+    sub = {aid for ts, aid in idx["by_toks"]
+           if t and ts and (t < ts or ts < t)
+           and len(t & ts) >= 2 and abs(len(t) - len(ts)) <= 1}
+    if len(sub) == 1:
+        return next(iter(sub)), "medium:middle-name", []
+    if sub:
+        return None, "review:subset-ambiguous", sorted(sub)
+
+    # Last resort: a transliteration variant. The roster says
+    # "Khawlah Mitib Al-Takhayneh"; Scopus prints "Al-Tkhayneh, Khawlah M."
+    # Without this she lands in "no Scopus record" while holding 41 papers.
+    near = {}
+    for nm, ids in idx["names"].items():
+        if TL.match(name, nm):
+            for a in ids:
+                near[a] = max(near.get(a, 0), idx["papers"].get(a, 0))
+    if len(near) == 1:
+        return next(iter(near)), "medium:transliteration", []
+    if near:
+        return None, "review:transliteration-ambiguous", sorted(near)
+    return None, "none:no-papers", []
+
+
+def resolve_all(people, idx=None):
+    """Annotate each faculty record in place; return a tier summary."""
+    idx = idx or build_index()
+    tiers = collections.Counter()
+    for p in people:
+        if p.get("scopus_auid") and p.get("auid_tier", "").startswith("manual"):
+            tiers["manual"] += 1
+            continue
+        auid, tier, cands = resolve_one(p["name"], idx)
+        p["scopus_auid"] = auid or ""
+        p["auid_tier"] = tier
+        p["auid_candidates"] = [
+            {"auid": c, "papers": idx["papers"].get(c, 0)} for c in cands]
+        tiers[tier.split(":")[0]] += 1
+    return dict(tiers)
+
+
+def review_queue(people):
+    """Faculty whose AU-ID needs a human. Busiest candidates first."""
+    out = [p for p in people if p.get("auid_tier", "").startswith("review")]
+    out.sort(key=lambda p: -max([c["papers"] for c in p.get("auid_candidates", [])]
+                                or [0]))
+    return out

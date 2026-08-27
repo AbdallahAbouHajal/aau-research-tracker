@@ -75,13 +75,23 @@ PATCHES = [
      'style="min-height:100vh;background:#F4F6F5;font-family:Archivo,sans-serif;'
      'color:#1A1A1A;display:block;overflow-x:auto;padding:0"'),
 
+    # NOTE: do NOT put min-height:100vh on this element. The dc-runtime does
+    # its own min-height bookkeeping here, and setting it leaves every
+    # data-rise child stuck at the animation's opacity:0 start frame -- the
+    # whole app renders, is laid out with real heights, and is invisible.
+    # Bisected: this element with min-height:100vh -> blank; without -> fine.
+    # Full height belongs on the outer wrapper instead, which already has it.
+    #
+    # max-width caps the stretch: the design is drawn for 1392px, so letting it
+    # run to 1900px inflates every card. The page ground and this element share
+    # #F4F6F5, so the capped margins are invisible.
     ("shell: full width, no rounded corners, no drop shadow",
      'style="width:1392px;max-width:100%;min-width:1180px;margin:0 auto;'
      'background:#F4F6F5;border-radius:12px;overflow:hidden;'
      'box-shadow:0 24px 70px -24px rgba(10,60,35,.35),'
      '0 4px 12px rgba(10,60,35,.08)"',
-     'style="width:100%;min-width:1180px;margin:0;'
-     'background:#F4F6F5;min-height:100vh;overflow:visible"'),
+     'style="width:100%;max-width:1560px;min-width:1180px;margin:0 auto;'
+     'background:#F4F6F5;overflow:visible"'),
 
     ("shell: delete the fake mac title bar and its localhost:8765 label",
      '\n  <div style="height:38px;background:#0F1512;display:flex;'

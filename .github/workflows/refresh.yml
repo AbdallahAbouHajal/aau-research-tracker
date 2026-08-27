@@ -1,0 +1,126 @@
+name: Refresh the census
+
+# The engine runs HERE, on GitHub's machines. GitHub Pages serves files rather
+# than processes, so the engine cannot listen for requests on the published
+# site -- instead it runs on a schedule (and whenever you press Run workflow),
+# fetches Scopus for real, and commits its answer as docs/data/state.json.
+# The page reads that file, so what you see published is real data.
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"        # every Monday 03:00 UTC (07:00 Gulf time)
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "Publication years, comma separated (blank = this year and last)"
+        required: false
+        default: ""
+      scope:
+        description: "What to report"
+        required: false
+        default: compare
+        type: choice
+        options: [compare, current]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The engine is standard library only, so there is nothing to install.
+      - name: Check the engine imports
+        working-directory: engine
+        run: |
+          python -c "import sys; sys.path.insert(0,'core'); import viewmodel, fetch, resolve, classify, runs; print('engine ok')"
+
+      # Keys never live in the repo. Set SCOPUS_KEYS in
+      # Settings > Secrets and variables > Actions as a JSON array of strings.
+      - name: Provide the Scopus keys
+        env:
+          SCOPUS_KEYS: ${{ secrets.SCOPUS_KEYS }}
+        run: |
+          if [ -z "$SCOPUS_KEYS" ]; then
+            echo "::error::SCOPUS_KEYS secret is not set. Add it in Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          mkdir -p engine/config
+          printf '%s' "$SCOPUS_KEYS" > engine/config/scopus_keys.json
+          python - <<'PY'
+          import json
+          k = json.load(open("engine/config/scopus_keys.json"))
+          assert isinstance(k, list) and k, "SCOPUS_KEYS must be a non-empty JSON array"
+          print("%d Scopus keys loaded" % len(k))
+          PY
+
+      # Keeps the Scopus/OpenAlex cache between runs so a weekly refresh is
+      # cheap and only genuinely new queries hit the network.
+      - name: Restore the fetch cache
+        uses: actions/cache@v4
+        with:
+          path: engine/.cache
+          key: aau-cache-${{ github.run_id }}
+          restore-keys: aau-cache-
+
+      - name: Run the census
+        working-directory: engine
+        env:
+          AAU_DATA: ${{ github.workspace }}/engine/data
+          AAU_CACHE: ${{ github.workspace }}/engine/.cache
+          SCOPUS_KEYS_FILE: ${{ github.workspace }}/engine/config/scopus_keys.json
+          # Through env, never interpolated into the command line: a
+          # workflow_dispatch input is user-supplied text and pasting it into a
+          # shell is how workflow injection happens.
+          YEARS: ${{ github.event.inputs.years }}
+          WORKSPACE: ${{ github.workspace }}
+        run: |
+          python export_state.py --run \
+            --years "$YEARS" \
+            --out "$WORKSPACE/docs/data/state.json"
+
+      - name: Commit the new state
+        run: |
+          rm -f engine/config/scopus_keys.json
+          git config user.name  "aau-tracker[bot]"
+          git config user.email "aau-tracker@users.noreply.github.com"
+          git add docs/data/state.json
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "Census refresh $(date -u +%Y-%m-%d) [skip ci]"
+            git push
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, os
+          p = "docs/data/state.json"
+          if not os.path.exists(p):
+              print("## Refresh failed\n\nNo state.json was written."); raise SystemExit
+          d = json.load(open(p)); s = d.get("stats", {})
+          print("## Census refreshed\n")
+          print("| | |\n|---|---|")
+          for k, v in (("Generated", d.get("generated")),
+                       ("Papers", s.get("papers")),
+                       ("Authors", s.get("authors")),
+                       ("On the roster", s.get("faculty")),
+                       ("Rejected by the affiliation gate", s.get("rejected")),
+                       ("Added by the author sweep", s.get("swept_in")),
+                       ("Not on the roster but publishing", s.get("suggested"))):
+              print("| %s | %s |" % (k, v))
+          PY

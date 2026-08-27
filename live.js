@@ -344,15 +344,32 @@
   }
 
   /* --------------------------------------------------- load the real data  */
+  /* Two sources, best first:
+   *   /api/state        the engine running on this machine -- can start runs
+   *   data/state.json   what the engine wrote on its last GitHub Actions run
+   * The published page has no process behind it, so it reads the file. That is
+   * still real data produced by the real pipeline, just not on demand. */
   function refresh(component) {
     return api('/api/state').then(function (d) {
+      window.__AAU.canRun = true;
+      return d;
+    }).catch(function () {
+      return api('data/state.json').then(function (d) {
+        window.__AAU.canRun = false;
+        window.__AAU.snapshot = true;
+        return d;
+      });
+    }).then(function (d) {
       window.__AAU.live = true;
       window.__AAU.state = d;
       window.__AAU.suggestions = d.suggestions || [];
       if (d.stats && d.stats.years) window.__AAU.years = d.stats.years;
       if (window.__aauApply) window.__aauApply(d);
       component.forceUpdate();
-      badge('live data · ' + (d.stats ? d.stats.papers.toLocaleString() + ' papers' : 'ok'), G);
+      var when = d.generated ? d.generated.slice(0, 10) : '';
+      badge((window.__AAU.snapshot ? 'live data · ' + when
+                                   : 'connected · ' + when)
+            + (d.stats ? ' · ' + d.stats.papers.toLocaleString() + ' papers' : ''), G);
       return d;
     });
   }
@@ -479,11 +496,32 @@
   window.__AAU.stop = stop;
 
   function demoNote() {
+    var st = window.__AAU.state || {};
+    var when = st.generated ? st.generated.slice(0, 10) : 'the last run';
     modal({
-      eyebrow: 'Preview',
-      title: 'This is the interface, not the engine',
-      sub: 'You are looking at the published preview. The figures on screen are a sample from a real run. To fetch live Scopus data, run the tracker on your own machine and open it there -- the same page then drives the real pipeline.',
-      cancelLabel: 'Got it',
+      eyebrow: 'Run',
+      title: 'This page reads the last run',
+      sub: 'The figures here are real, from the run finished on ' + when +
+        '. The engine itself runs on GitHub, on a schedule and on demand -- a '
+        + 'published page has no process behind it, so it cannot start one.',
+      choices: [
+        {
+          label: 'Start a run on GitHub now',
+          hint: 'Opens the Actions tab. Press "Run workflow" and it fetches '
+            + 'Scopus, rebuilds the census and updates this page.',
+          go: function () {
+            window.open('https://github.com/AbdallahAbouHajal/'
+              + 'aau-research-tracker/actions/workflows/refresh.yml', '_blank');
+          },
+        },
+        {
+          label: 'Run it on your own machine instead',
+          hint: 'Open the project and launch it. The same page then drives the '
+            + 'pipeline directly and every button works, including exports.',
+          go: function () {},
+        },
+      ],
+      cancelLabel: 'Close',
     });
   }
   window.__AAU.demoNote = demoNote;
