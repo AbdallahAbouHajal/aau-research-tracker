@@ -5266,6 +5266,23 @@
    "auid_tier": "",
    "auid_candidates": [],
    "added_from_page": true
+  },
+  {
+   "name": "Eid Abo Hamza",
+   "college": "College of Education, Humanities and Social Sciences",
+   "title": "",
+   "profile_url": "",
+   "email": "",
+   "department": "",
+   "staff_type": "academic",
+   "is_academic": true,
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "",
+   "auid_candidates": [],
+   "added_from_page": true
   }
  ]
 }
