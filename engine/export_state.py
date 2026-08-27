@@ -133,9 +133,17 @@ def main():
     # so the published page can link straight to them. Regenerated on every
     # run, so a file can never disagree with the dashboard above it.
     if not a.no_files:
-        d = os.path.join(os.path.dirname(out), "..", "downloads")
-        d = os.path.abspath(d)
-        os.makedirs(d, exist_ok=True)
+        # …/docs/data/state.json -> …/docs/downloads. If --out points somewhere
+        # without that shape the files are skipped rather than killing a run
+        # that has already done all the work.
+        d = os.path.abspath(os.path.join(os.path.dirname(out), "..",
+                                         "downloads"))
+        try:
+            os.makedirs(d, exist_ok=True)
+        except OSError as exc:
+            print("  skipping the downloadable files: %s" % exc)
+            d = None
+    if not a.no_files and d:
         vm = VM.build(run_id=blob.get("run"))
         vm["stats"] = blob["stats"]
         try:

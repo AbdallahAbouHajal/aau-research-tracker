@@ -1,0 +1,21 @@
+name = "aau-tracker-run"
+main = "index.js"
+compatibility_date = "2026-08-01"
+
+# Public, non-secret settings. The token and the passphrase are NOT here —
+# they are set with `wrangler secret put`, which never writes them to disk.
+[vars]
+REPO = "AbdallahAbouHajal/aau-research-tracker"
+WORKFLOW = "refresh.yml"
+# Only the published page may call this. Widen it only if you move the site.
+ALLOWED_ORIGIN = "https://abdallahabouhajal.github.io"
+
+# Deploy:
+#   cd worker
+#   npx wrangler login                     # opens the browser once
+#   npx wrangler secret put GITHUB_TOKEN   # fine-grained PAT, Actions R+W
+#   npx wrangler secret put RUN_PASSPHRASE # what you tell the professor
+#   npx wrangler deploy
+#
+# You get back https://aau-tracker-run.<your-subdomain>.workers.dev
+# Put that URL in live.js as WORKER, rebuild, push.
