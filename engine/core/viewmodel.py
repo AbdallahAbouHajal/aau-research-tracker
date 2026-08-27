@@ -277,6 +277,37 @@ def build(roster_people=None, run_id=None):
         if rows:
             papers_map[k] = rows[:12]
 
+    # Anyone on the roster who published in this window but is not in the
+    # census file. That file is the ORIGINAL census and nothing rewrites it, so
+    # 105 roster people with a Scopus id could never appear on the Authors
+    # screen at all -- among them the Dean of Nursing, which is how a college
+    # came to show 9 papers and 0 people. The roster is ground truth for who
+    # belongs to AAU; a person it names who has papers in this run belongs on
+    # the screen whether or not the first census happened to catch them.
+    for r in roster:
+        auid = r.get("scopus_auid") or ""
+        if not auid or auid in seen_auid:
+            continue
+        rows = by_auid.get(auid) or []
+        if not rows:
+            continue
+        k = _key(r.get("name") or auid, taken)
+        authors.append({
+            "key": k,
+            "name": r.get("name") or "",
+            "college": CLS.map_college(r.get("college") or ""),
+            "title": r.get("title") or "",
+            "papers": len({_pk(x) for x in rows}),
+            "h": 0, "cites": 0, "corr": 0,
+            "auid": auid,
+            "tag": "Faculty",
+            "slug": _slug(r.get("profile_url"), r.get("name") or ""),
+            "suggest": False,
+        })
+        seen_auid[auid] = authors[-1]
+        papers_map[k] = rows[:12]
+    authors.sort(key=lambda a: -(a.get("papers") or 0))
+
     # ---- colleges ----------------------------------------------------------
     per = collections.Counter()
     pap = collections.Counter()
