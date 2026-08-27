@@ -5283,6 +5283,23 @@
    "auid_tier": "",
    "auid_candidates": [],
    "added_from_page": true
+  },
+  {
+   "name": "Majdi Sawalha",
+   "college": "College of Engineering",
+   "title": "",
+   "profile_url": "",
+   "email": "",
+   "department": "",
+   "staff_type": "academic",
+   "is_academic": true,
+   "colleges": [
+    "College of Engineering"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "",
+   "auid_candidates": [],
+   "added_from_page": true
   }
  ]
 }
