@@ -110,6 +110,9 @@ def build(run_id=None):
         # Consumed by main() when it writes papers.json, then dropped: the
         # page never needs the whole inverted map, only each row's slice.
         "paper_authors": vm.get("paper_authors") or {},
+        # Who each person writes with inside AAU, and how often. Small
+        # enough to ride in state.json: 124 people, at most 14 each.
+        "coauthors": vm.get("coauthors") or {},
         # Every EID in this run. The paper lists on the page are capped per
         # author, so diffing THOSE compares samples and not corpora: raising
         # the cap from 12 to 50 made the first real delta announce 1,117 new

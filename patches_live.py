@@ -483,6 +483,63 @@ VALS = r"""
       })(),
       goNet: () => { if (window.__AAU && window.__AAU.needNetwork) {
         window.__AAU.needNetwork(this); } this.setState({ screen: 'net' }); },
+      // ---- one researcher's co-authors, as a wheel -----------------------
+      // Laid out here, in JS, because the runtime does not interpolate text
+      // inside an <svg>: the circles and lines are SVG attributes, every
+      // label is an HTML box positioned on top of them.
+      coHas: (() => {
+        const st = (window.__AAU && window.__AAU.state) || {};
+        const p_ = AUTHORS.find(a => a.key === this.state.author) || AUTHORS[0];
+        return !!(p_ && ((st.coauthors || {})[p_.key] || []).length);
+      })(),
+      coNote: (() => {
+        const st = (window.__AAU && window.__AAU.state) || {};
+        const p_ = AUTHORS.find(a => a.key === this.state.author) || AUTHORS[0];
+        const rows = (st.coauthors || {})[(p_ || {}).key] || [];
+        if (!rows.length) return '';
+        const tot = rows.reduce((s2, r) => s2 + r[1], 0);
+        return rows.length + ' people at Al Ain University appear on '
+          + p_.name + '\u2019s papers, ' + tot + ' co-authorships in all. '
+          + 'Sized and thickened by how many papers they share. Only Al Ain '
+          + 'colleagues can be named \u2014 Scopus does not serve outside '
+          + 'co-author lists to these keys.';
+      })(),
+      coCentre: (() => {
+        const p_ = AUTHORS.find(a => a.key === this.state.author) || AUTHORS[0];
+        return (p_ && p_.name ? p_.name.trim().slice(0, 1) : 'A').toUpperCase();
+      })(),
+      coNodes: (() => {
+        const st = (window.__AAU && window.__AAU.state) || {};
+        const p_ = AUTHORS.find(a => a.key === this.state.author) || AUTHORS[0];
+        const rows = ((st.coauthors || {})[(p_ || {}).key] || []).slice(0, 12);
+        if (!rows.length) return [];
+        const W = 640, H = 420, CX = W / 2, CY = H / 2, R = 150;
+        const max = rows[0][1] || 1;
+        return rows.map((r, i) => {
+          const ang = (2 * Math.PI * i) / rows.length - Math.PI / 2;
+          const cos = Math.cos(ang), sin = Math.sin(ang);
+          const cx = CX + R * cos, cy = CY + R * sin;
+          const rad = 9 + Math.round(13 * r[1] / max);
+          // The label sits outside the node, on the side the node lies.
+          const out = rad + 9;
+          const lw = 150;
+          const right = cos > 0.25, left = cos < -0.25;
+          return {
+            cx: Math.round(cx), cy: Math.round(cy), r: rad,
+            x2: Math.round(CX + (cos * (R - rad))),
+            y2: Math.round(CY + (sin * (R - rad))),
+            w: Math.max(1.5, (3.5 * r[1] / max)).toFixed(1),
+            name: r[0], n: '\u00d7' + r[1], college: r[2] || '',
+            title: r[0] + (r[2] ? ' \u2014 ' + r[2] : '') + ' \u00b7 '
+              + r[1] + (r[1] === 1 ? ' shared paper' : ' shared papers'),
+            lleft: Math.round(right ? cx + out
+                   : (left ? cx - out - lw : cx - lw / 2)) + 'px',
+            ltop: Math.round(cy - 9) + 'px',
+            lwidth: lw + 'px',
+            lalign: right ? 'left' : (left ? 'right' : 'center'),
+          };
+        });
+      })(),
       // ---- the corpus ----------------------------------------------------
       corpusReady: CORPUS.length > 0,
       corpusNote: (() => {
@@ -1532,6 +1589,60 @@ ROUND2 = [
      'border:1px solid #C3D6CA;border-radius:5px;padding:8px 15px;'
      'font-family:Archivo,sans-serif;font-size:13px;font-weight:600;'
      'cursor:pointer">Show all</button>'),
+
+    # ---- one researcher's co-authors, drawn ------------------------------
+    ("authors: a co-author wheel under the paper list",
+     '<button type="button" sc-camel-on-click="{{ showPapers }}" '
+     'style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;'
+     'border-radius:5px;padding:8px 15px;font-family:Archivo,sans-serif;'
+     'font-size:13px;font-weight:600;cursor:pointer">Show all</button>',
+     '<button type="button" sc-camel-on-click="{{ showPapers }}" '
+     'style="background:#ffffff;color:{{ accent }};border:1px solid #C3D6CA;'
+     'border-radius:5px;padding:8px 15px;font-family:Archivo,sans-serif;'
+     'font-size:13px;font-weight:600;cursor:pointer">Show all</button>\n'
+     '        </div>\n'
+     '        <sc-if value="{{ coHas }}" hint-placeholder-val="{{ true }}">\n'
+     '        <div data-rise style="animation-delay:.12s;margin-top:18px;'
+     'border-top:1px solid #F0F3F1;padding-top:18px">\n'
+     '          <div style="font-size:11.5px;font-weight:700;'
+     'letter-spacing:.07em;text-transform:uppercase;color:#63736A">'
+     'Who they write with</div>\n'
+     '          <div style="font-size:12.5px;color:#63736A;margin:6px 0 4px;'
+     'line-height:1.5;max-width:640px">{{ coNote }}</div>\n'
+     '          <div style="position:relative;width:640px;height:420px;'
+     'margin:0 auto">\n'
+     '            <svg width="640" height="420" style="position:absolute;'
+     'left:0;top:0">\n'
+     '              <sc-for list="{{ coNodes }}" as="c" '
+     'hint-placeholder-count="8">\n'
+     '                <line x1="320" y1="210" sc-camel-x2="{{ c.x2 }}" '
+     'sc-camel-y2="{{ c.y2 }}" stroke="#9DC3AC" '
+     'sc-camel-stroke-width="{{ c.w }}" stroke-linecap="round"></line>\n'
+     '              </sc-for>\n'
+     '              <sc-for list="{{ coNodes }}" as="c" '
+     'hint-placeholder-count="8">\n'
+     '                <circle sc-camel-cx="{{ c.cx }}" sc-camel-cy="{{ c.cy }}" '
+     'sc-camel-r="{{ c.r }}" fill="#ffffff" stroke="#7FB394" '
+     'stroke-width="1.5"></circle>\n'
+     '              </sc-for>\n'
+     '              <circle cx="320" cy="210" r="34" fill="{{ accent }}">'
+     '</circle>\n'
+     '            </svg>\n'
+     '            <div style="position:absolute;left:286px;top:194px;'
+     'width:68px;text-align:center;font-size:19px;font-weight:700;'
+     'color:#ffffff;pointer-events:none">{{ coCentre }}</div>\n'
+     '            <sc-for list="{{ coNodes }}" as="c" '
+     'hint-placeholder-count="8">\n'
+     '              <div title="{{ c.title }}" style="position:absolute;'
+     'left:{{ c.lleft }};top:{{ c.ltop }};width:{{ c.lwidth }};'
+     'text-align:{{ c.lalign }};font-size:11.5px;line-height:1.3;'
+     'color:#3A4A41">{{ c.name }} <span style="color:#8C9A92">{{ c.n }}</span>'
+     '</div>\n'
+     '            </sc-for>\n'
+     '          </div>\n'
+     '        </div>\n'
+     '        </sc-if>\n'
+     '        <div style="display:none">'),
 
     ("roster: Export this college writes a CSV",
      '<button type="button" style="background:#ffffff;color:{{ accent }};'

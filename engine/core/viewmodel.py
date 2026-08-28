@@ -553,7 +553,36 @@ def build(roster_people=None, run_id=None):
             if not any(x[0] == nm for x in lst):
                 lst.append([nm, col])
 
+    # Who works with whom, from the papers this run collected. Two people
+    # who appear on the same paper have worked together; the count is how many
+    # papers they share. This is AAU-internal by construction -- Scopus will
+    # not serve co-author lists to these keys, so the only authors any paper
+    # can name are the ones matched to the roster. External collaboration is
+    # answered by institution on the Collaboration screen, which is a
+    # different question and has its own data.
+    pairs = collections.Counter()
+    for eid_, lst in paper_authors.items():
+        names_ = sorted({x[0] for x in lst})
+        for i_ in range(len(names_)):
+            for j_ in range(i_ + 1, len(names_)):
+                pairs[(names_[i_], names_[j_])] += 1
+    coauthors = collections.defaultdict(list)
+    for (a1, a2), n_ in pairs.items():
+        coauthors[a1].append([a2, n_])
+        coauthors[a2].append([a1, n_])
+    col_of = {}
+    for a_ in authors:
+        if a_.get("name"):
+            col_of[a_["name"]] = (a_.get("college") or "").replace("College of ", "")
+    out_co = {}
+    for a_ in authors:
+        nm_ = a_.get("name") or ""
+        rows_ = sorted(coauthors.get(nm_) or [], key=lambda r: (-r[1], r[0]))
+        if rows_:
+            out_co[a_["key"]] = [[n_, c_, col_of.get(n_, "")] for n_, c_ in rows_[:14]]
+
     return {
+        "coauthors": out_co,
         "paper_authors": paper_authors,
         "programs": programs,
         "colleges": colleges,
