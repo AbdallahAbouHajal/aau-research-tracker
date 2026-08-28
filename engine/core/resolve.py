@@ -17,6 +17,7 @@ no AU-ID to find, and needs none -- the sweep would return nothing anyway.
 """
 import csv
 import collections
+import json
 import os
 import re
 import sys
@@ -324,6 +325,42 @@ def _profile_pass(people, say, force=False):
     return n
 
 
+def _directory_pass(people, say):
+    """Take the Scopus id AAU publishes, wherever it publishes one."""
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                        "data", "directory_ids.json")
+    try:
+        blob = json.load(open(path, encoding="utf-8"))
+    except Exception:
+        return 0
+    by_slug = {}
+    for r in (blob.get("people") or []):
+        if r.get("slug") and r.get("scopus_auid"):
+            by_slug[r["slug"].lower()] = r
+    if not by_slug:
+        return 0
+    n = changed = 0
+    for p in people:
+        u = p.get("profile_url") or ""
+        if "/staff/" not in u:
+            continue
+        rec = by_slug.get(u.rstrip("/").rsplit("/", 1)[-1].lower())
+        if not rec:
+            continue
+        aid = rec["scopus_auid"]
+        if p.get("scopus_auid") and p["scopus_auid"] != aid:
+            say("      %-30s %s -> %s (AAU publishes it)"
+                % ((p.get("name") or "")[:30], p["scopus_auid"], aid))
+            changed += 1
+        p["scopus_auid"] = aid
+        p["auid_tier"] = "high:aau-directory"
+        p["auid_candidates"] = []
+        n += 1
+    say("  %d ids taken from AAU's own directory (%d corrected a guess)"
+        % (n, changed))
+    return n
+
+
 def resolve_chain(people, idx=None, use_profiles=True, log=None,
                   force_profiles=False):
     """Full resolution ladder, best evidence first.
@@ -338,6 +375,15 @@ def resolve_chain(people, idx=None, use_profiles=True, log=None,
     matcher reaches those. Their own profile page links the right ID.
     """
     say = log or (lambda *_: None)
+    # 0. What AAU itself publishes. The directory prints each person's Scopus
+    #    author id in their card, so the question every tier below is guessing
+    #    at is simply answered. It outranks all of them, including a settled
+    #    id, because those were themselves guesses that were audited once --
+    #    and eight of them were wrong: the id filed against Niazur Rahman
+    #    belonged to a natural-products chemist at the University of Nizwa.
+    #    An id that resolves to no author at all is dropped at harvest, so
+    #    anything reaching here has been checked.
+    n_dir = _directory_pass(people, say)
     # The Scopus export is what build_index() reads, and it is deliberately not
     # shipped (a bulk export carries licensing terms). When the roster already
     # carries settled AU-IDs -- which it does, because they were resolved and

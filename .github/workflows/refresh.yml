@@ -27,6 +27,10 @@ on:
         description: "…to (YYYY-MM-DD)"
         required: false
         default: ""
+      refresh_directory:
+        description: "Re-read the Scopus author ids from AAU's directory"
+        type: boolean
+        default: false
       scope:
         description: "What to report"
         required: false
@@ -74,6 +78,15 @@ jobs:
       # published the previous machine's files -- so the Exports screen served
       # a 1,338-paper census under a dashboard showing 4,245, and the run said
       # success. Installed here, and the run now fails loudly if they break.
+      # AAU prints each person's Scopus author id in their directory card, so
+      # the ids are read rather than guessed. Harvesting is 8 page fetches plus
+      # one verification call per id, so it is not done on every run -- the
+      # answer is committed and only refreshed when asked for.
+      - name: Refresh the ids AAU publishes
+        if: ${{ inputs.refresh_directory == true }}
+        working-directory: engine
+        run: python core/directory.py
+
       - name: Install the export libraries
         run: python -m pip install --quiet openpyxl matplotlib python-pptx
 
