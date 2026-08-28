@@ -127,6 +127,39 @@ def _papers_from_run(run_id):
     return out
 
 
+def _papers_by_name(run_id):
+    """name key -> papers, from the run's own author rows.
+
+    Papers are looked up by Scopus author id, which is right when there is
+    one. But someone whose id is still ambiguous -- Mohd Molham Sakkal has ten
+    candidates waiting on the review screen -- has no id, so the lookup
+    returned nothing while the header above it still claimed ten papers from
+    the old census file. The run's rows carry the printed name too, and a name
+    is enough to list what a person wrote even when it is not enough to pick
+    their Scopus record.
+    """
+    out = collections.defaultdict(list)
+    blob = (RUNS.load(run_id) or {}) if run_id else {}
+    for s in (blob.get("slots") or []):
+        k = X.name_key(s.get("author_name") or "")
+        if not k:
+            continue
+        out[k].append([(s.get("title") or "").strip(),
+                       (s.get("journal") or "").strip(),
+                       int(s.get("year") or 0),
+                       int(s.get("cited_by") or 0), "Indexed",
+                       str(s.get("eid") or "")])
+    for k in out:
+        seen, rows = set(), []
+        for r in sorted(out[k], key=lambda r: (-r[2], -r[3])):
+            if r[5] and r[5] in seen:
+                continue
+            seen.add(r[5])
+            rows.append(r)
+        out[k] = rows
+    return out
+
+
 def _papers_by_author():
     """AU-ID -> [[title, journal, year, cites, status], ...], newest first."""
     path = X.census_file("scopus_export.csv")
@@ -162,6 +195,7 @@ def build(roster_people=None, run_id=None):
             run_id = None
     people = _people()
     by_auid = _papers_by_author() or _papers_from_run(run_id)
+    by_name = _papers_by_name(run_id)
 
     # the roster the tracker resolved (152 of 160 carry an AU-ID)
     # The FULL roster, not only the 160 academics. Ghaleb El Refae is AAU's
@@ -232,8 +266,13 @@ def build(roster_people=None, run_id=None):
             continue
         hit = _roster_hit(name)
         auid = (hit or {}).get("scopus_auid", "")
-        if auid and auid in seen_auid:
-            first = seen_auid[auid]
+        # Identity is the Scopus author id where there is one, and the name
+        # otherwise -- without the second half, two census spellings of a
+        # person with no resolved id stayed two people. Mahmoud Abu-Ghoush
+        # shipped twice, both rows claiming the same twelve papers.
+        ident = auid or ("name:" + X.name_key(name))
+        if ident in seen_auid:
+            first = seen_auid[ident]
             # Keep the fullest name and the best metrics; the papers come from
             # the run and are the same for both rows by construction.
             if len(name) > len(first["name"] or ""):
@@ -256,8 +295,9 @@ def build(roster_people=None, run_id=None):
             # own `aau_papers` is what pinned every author's output to the
             # original census: the 536 rows summed to 2,020 under a headline
             # of 4,245 and no window could ever move them.
-            "papers": (len({_pk(r) for r in (by_auid.get(auid) or [])})
-                       if auid else (rec.get("aau_papers") or 0)),
+            "papers": len({_pk(r) for r in
+                           ((by_auid.get(auid) or []) if auid
+                            else (by_name.get(X.name_key(name)) or []))}),
             "h": rec.get("h_index") or 0,
             "cites": rec.get("career_citations") or 0,
             "corr": rec.get("n_corresponding") or 0,
@@ -271,9 +311,9 @@ def build(roster_people=None, run_id=None):
             "suggest": bool(not hit and (rec.get("aau_papers") or 0) >= 5
                             and rec.get("ever_corresponding")),
         })
-        if auid:
-            seen_auid[auid] = authors[-1]
-        rows = by_auid.get(auid) or []
+        seen_auid[ident] = authors[-1]
+        rows = (by_auid.get(auid) or []) if auid \
+            else (by_name.get(X.name_key(name)) or [])
         if rows:
             papers_map[k] = rows[:50]
 
@@ -287,6 +327,8 @@ def build(roster_people=None, run_id=None):
     for r in roster:
         auid = r.get("scopus_auid") or ""
         if not auid or auid in seen_auid:
+            continue
+        if ("name:" + X.name_key(r.get("name") or "")) in seen_auid:
             continue
         rows = by_auid.get(auid) or []
         if not rows:

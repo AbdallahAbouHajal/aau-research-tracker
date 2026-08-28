@@ -181,11 +181,39 @@ def _givens(name):
     return [t for t in X.norm_name(given).split() if t]
 
 
+# Names that are carried as an honorific FIRST token and dropped in print:
+# the roster says "Mohd Molham Sakkal", Scopus prints "Sakkal, Molham". These
+# are prefixes only when another given name follows -- "Mohammad Ahmad" on its
+# own keeps Mohammad as the given name -- so the token is skipped, never
+# removed. Kept deliberately small: a looser rule would start matching fathers
+# to sons, who share a surname and a given name.
+_PREFIX_GIVENS = {
+    "mohd", "mohammad", "muhammad", "mohammed", "mohamed", "muhammed",
+    "mohamad", "muhamad", "md", "syed", "sayed", "sayyid",
+}
+
+
 def _first_ok(a, b):
     """Do two given-name lists agree on the FIRST name?"""
     if not a or not b:
         return False
-    x, y = a[0], b[0]
+    # Try again past a leading honorific before giving up.
+    if not _first_tok_ok(a[0], b[0]):
+        if len(a) > 1 and a[0] in _PREFIX_GIVENS and _first_tok_ok(a[1], b[0]):
+            return True
+        if len(b) > 1 and b[0] in _PREFIX_GIVENS and _first_tok_ok(a[0], b[1]):
+            return True
+        if (len(a) > 1 and len(b) > 1 and a[0] in _PREFIX_GIVENS
+                and b[0] in _PREFIX_GIVENS and _first_tok_ok(a[1], b[1])):
+            return True
+        return False
+    return True
+
+
+def _first_tok_ok(x, y):
+    """The original test, on one token from each side."""
+    if not x or not y:
+        return False
     if len(x) == 1 or len(y) == 1:       # an initial against a full name
         return x[0] == y[0]
     if x == y or _lev1(x, y):
