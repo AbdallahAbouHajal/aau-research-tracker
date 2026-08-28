@@ -121,6 +121,14 @@ MOBILE_CSS = r'''
   [style*="padding: 80px 96px"], [style*="padding:80px 96px"] {
     padding: 56px 20px !important; }
 
+  /* Once the header wraps, its flexible spacer only adds an empty line, and
+     the window/as-of chips read better under the brand than beside it. */
+  [style*="flex: 1 1 0%"][style*="min-width: 12px"] { display: none !important; }
+  [style*="color: rgb(213, 232, 220)"][style*="white-space: nowrap"] {
+    order: 2 !important; font-size: 12px !important; gap: 10px !important; }
+  [style*="align-items: stretch"][style*="gap: 2px"] {
+    order: 3 !important; flex: 1 1 100% !important; width: 100% !important; }
+
   /* Making the header height:auto took the tabs' height with it: the buttons
      are padding:0 17px and had no height of their own. Give them one, at the
      44px Apple asks for. */
@@ -212,6 +220,11 @@ MOBILE_CSS = r'''
   [style*="width: 1308px"], [style*="width:1308px"] {
     transform: scale(.56) !important; transform-origin: top left !important;
     margin-bottom: -198px !important; }
+  /* The credit line under the diagram is a second hard 1308px block in the
+     same scroller, so it inherits the whole width without the transform. */
+  [style*="border-radius: 8px"][style*="width: 1308px"] {
+    width: auto !important; max-width: 100% !important;
+    transform: none !important; margin-bottom: 0 !important; }
 
   /* iOS zooms the page when a focused input's text is under 16px, and every
      input here was 13.5 or 14.5. The zoom is not undone on blur, so tapping
@@ -233,6 +246,15 @@ MOBILE_CSS = r'''
 }
 
 @media (max-width: 640px) {
+  /* A stacked card has no use for the column headers above it -- "NAME TITLE
+     PAPERS H STATUS PROFILE" over a card that repeats none of them in that
+     order is worse than nothing. The header row and the body rows share a
+     track list, so they are told apart by the thing only the header carries. */
+  [style*="1.7fr 1.1fr 90px 78px 90px 120px"][style*="font-size: 11.5px"],
+  [style*="1.35fr 1fr 230px 58px 66px"][style*="font-size: 11.5px"],
+  [style*="1fr 68px 64px 80px"][style*="font-size: 11.5px"] {
+    display: none !important; }
+
   /* The roster people table: six columns, four fixed, summing with the gaps to
      448px before the name and title get anything. One card per person. */
   [style*="grid-template-columns: 1.7fr 1.1fr 90px 78px 90px 120px"] {
