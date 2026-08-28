@@ -1056,7 +1056,14 @@ ROUND2 = [
 
     ("roster: each person shows the programme they are filed under",
      '<div style="font-size:13px;color:#3A4A41">{{ a.title }}</div>',
-     '<div><div style="font-size:13px;color:#3A4A41">{{ a.title }}</div>\n'
+     # min-width:0 is load-bearing. A grid column sized in fr still has an
+     # automatic minimum of its content, so the long programme line stretched
+     # the Title column past its share -- and because the header row is a
+     # SEPARATE grid with the same template but shorter content, the two
+     # resolved to different widths and stopped lining up.
+     '<div style="min-width:0"><div style="font-size:13px;color:#3A4A41;'
+     'overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
+     '{{ a.title }}</div>\n'
      '            <div title="{{ a.progs }}" style="font-size:11.5px;'
      'color:{{ a.progsColor }};margin-top:3px;line-height:1.35;'
      'overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
@@ -1067,7 +1074,8 @@ ROUND2 = [
      'background:none;border:0;padding:0;font-family:Archivo,sans-serif;'
      'font-size:14.5px;font-weight:600;color:{{ accent }};cursor:pointer">'
      '{{ a.name }}</button>',
-     '<div><button type="button" sc-camel-on-click="{{ a.open }}" '
+     '<div style="min-width:0"><button type="button" '
+     'sc-camel-on-click="{{ a.open }}" '
      'style="text-align:left;background:none;border:0;padding:0;'
      'font-family:Archivo,sans-serif;font-size:14.5px;font-weight:600;'
      'color:{{ accent }};cursor:pointer">{{ a.name }}</button>'
@@ -1076,6 +1084,14 @@ ROUND2 = [
      'style="display:{{ a.flagShow }};margin-left:8px;padding:1px 7px;'
      'border:1px solid #E0D5B8;border-radius:9px;background:#FBF6E9;'
      'font-size:11px;color:#8A6D1F;white-space:nowrap">{{ a.flag }}</span></div>'),
+
+    ("roster: no cell may stretch its column past the header's",
+     '<div style="display:grid;grid-template-columns:1.7fr 1.1fr 90px 78px '
+     '90px 120px;gap:14px;align-items:center;padding:11px 0;'
+     'border-bottom:1px solid #F0F3F1">',
+     '<div style="display:grid;grid-template-columns:1.7fr 1.1fr 90px 78px '
+     '90px 120px;gap:14px;align-items:center;padding:11px 0;'
+     'border-bottom:1px solid #F0F3F1;min-width:0">'),
 
     ("roster: a zero says which kind of zero it is",
      '<div style="font-size:14px;text-align:right;font-variant-numeric:'

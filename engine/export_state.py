@@ -107,6 +107,9 @@ def build(run_id=None):
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "run": rid,
         "review": review,
+        # Consumed by main() when it writes papers.json, then dropped: the
+        # page never needs the whole inverted map, only each row's slice.
+        "paper_authors": vm.get("paper_authors") or {},
         # Every EID in this run. The paper lists on the page are capped per
         # author, so diffing THOSE compares samples and not corpora: raising
         # the cap from 12 to 50 made the first real delta announce 1,117 new
@@ -174,6 +177,9 @@ def main():
 
     blob = build()
     out = os.path.abspath(a.out)
+    # Written into papers.json below, never into state.json.
+    _paper_authors = blob.pop("paper_authors", {})
+    blob["paper_authors"] = _paper_authors
     os.makedirs(os.path.dirname(out), exist_ok=True)
 
     # Who AAU publishes with. Its own file for the same reason as the papers:
@@ -208,21 +214,10 @@ def main():
         # Al Ain author, because his slot on it never picked up the Faculty
         # role. Inverted, the two cannot disagree: if a person's page shows a
         # paper, that paper names the person.
-        who = {}
-        for a_ in (blob.get("authors") or []):
-            if a_.get("tag") != "Faculty":
-                continue
-            nm = (a_.get("name") or "").strip()
-            if not nm:
-                continue
-            col = (a_.get("college") or "").replace("College of ", "").strip()
-            for row in ((blob.get("papers") or {}).get(a_.get("key")) or []):
-                eid = row[5] if len(row) > 5 else ""
-                if not eid:
-                    continue
-                seen = who.setdefault(eid, [])
-                if not any(x[0] == nm for x in seen):
-                    seen.append([nm, col])
+        # Computed in the view-model, off the uncapped author-to-papers map.
+        # Rebuilding it here from blob["papers"] would read the fifty rows a
+        # page displays and quietly name a third fewer papers.
+        who = blob.get("paper_authors") or {}
         for v in who.values():
             v.sort(key=lambda x: x[0])
         rows = []
@@ -323,6 +318,7 @@ def main():
                      "" if exact else "  (approximate: the previous census "
                                       "did not publish a full paper list)"))
 
+    blob.pop("paper_authors", None)
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(blob, fh, ensure_ascii=False, separators=(",", ":"))
     # The three downloadables, written beside state.json under a stable name

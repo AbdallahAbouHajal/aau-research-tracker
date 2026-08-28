@@ -530,7 +530,31 @@ def build(roster_people=None, run_id=None):
             "assumed": bool(rec.get("assumed")),
         })
 
+    # Which Al Ain people are on each paper, inverted from the SAME map the
+    # author pages read -- but from all of it, not the fifty rows each page
+    # shows. Inverting the capped list instead named 2,404 papers where the
+    # uncapped one names far more: a person with 200 papers was contributing
+    # fifty of them.
+    paper_authors = {}
+    for a_ in authors:
+        if a_.get("tag") != "Faculty":
+            continue
+        nm = (a_.get("name") or "").strip()
+        if not nm:
+            continue
+        col = (a_.get("college") or "").replace("College of ", "").strip()
+        rows_ = ((by_auid.get(a_.get("auid") or "") or []) if a_.get("auid")
+                 else (by_name.get(X.name_key(nm)) or []))
+        for r_ in rows_:
+            eid_ = r_[5] if len(r_) > 5 and r_[5] else ""
+            if not eid_:
+                continue
+            lst = paper_authors.setdefault(eid_, [])
+            if not any(x[0] == nm for x in lst):
+                lst.append([nm, col])
+
     return {
+        "paper_authors": paper_authors,
         "programs": programs,
         "colleges": colleges,
         "authors": authors,
