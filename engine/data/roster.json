@@ -1,5 +1,5 @@
 {
- "version": "2026-08-27-6",
+ "version": "2026-08-28-directory",
  "captured": "2026-08-27",
  "source": "claude-chrome",
  "note": "fixed resolver",
@@ -26,8 +26,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "24480714400",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "nEWmTKEAAAAJ"
   },
   {
    "name": "Faten Kharbat",
@@ -50,8 +51,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "19639814600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "qLSVOO0AAAAJ"
   },
   {
    "name": "Mawahib H. Sulieman",
@@ -75,8 +77,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "9732920600",
-   "auid_tier": "manual:high:profile-declared+aau",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "MlNzVL4AAAAJ"
   },
   {
    "name": "Thabet Mismar",
@@ -99,8 +102,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "25927311100",
-   "auid_tier": "manual:high:profile-declared+aau",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "c6k9SZQAAAAJ"
   },
   {
    "name": "Saqib Iqbal",
@@ -123,8 +127,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57212034484",
-   "auid_tier": "manual:medium:shared-name-first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "4BIbZhoAAAAJ"
   },
   {
    "name": "Yazeed Yasin Ghadi",
@@ -148,8 +153,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "55797735700",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "h3X_qMkAAAAJ"
   },
   {
    "name": "Zina Houhamdi",
@@ -172,8 +178,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "8051136100",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "ycuTOJsAAAAJ"
   },
   {
    "name": "Muath Ziad Najib Al-Shaikh",
@@ -197,8 +204,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57188834531",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "oCOZvcEAAAAJ"
   },
   {
    "name": "Nazih Khaddaj Mallat",
@@ -222,8 +230,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "25031731100",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "JYO2Q5gAAAAJ"
   },
   {
    "name": "Haythem Bany Salameh",
@@ -247,8 +256,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57205146444",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "4YGH0KgAAAAJ"
   },
   {
    "name": "Mohammad AlHassan",
@@ -271,8 +281,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "16549090800",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "4uCR4AIAAAAJ"
   },
   {
    "name": "Hussam Abdel-Karim Al-Rabai'ah",
@@ -296,8 +307,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57195346626",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "avzNse0AAAAJ"
   },
   {
    "name": "Mousa Bani Baker",
@@ -321,8 +333,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57203210357",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "x33qpQMAAAAJ"
   },
   {
    "name": "Layla Khalil Amaireh",
@@ -346,8 +359,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57203765026",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "I_MuoBkAAAAJ"
   },
   {
    "name": "Issam Al-Azzoni",
@@ -370,8 +384,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "25225108500",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "SMiPOBoAAAAJ"
   },
   {
    "name": "Mohammad Sh. Daoud",
@@ -395,8 +410,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "55539511200",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "WZCkBkMAAAAJ"
   },
   {
    "name": "Muath Jodei Al Hasan",
@@ -419,8 +435,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "35145370900",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "-YBjZPcAAAAJ"
   },
   {
    "name": "Khubaib Amjad Alam",
@@ -444,8 +461,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "56504833200",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "s_BMc5YAAAAJ"
   },
   {
    "name": "Nuha Hamed Hamada",
@@ -470,7 +488,8 @@
    ],
    "scopus_auid": "56604692200",
    "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "VXDlEyYAAAAJ"
   },
   {
    "name": "Ubaid Ullah",
@@ -493,8 +512,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57210185494",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "gPJaPK0AAAAJ"
   },
   {
    "name": "Noor Aldeen Alawad",
@@ -518,8 +538,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57190494811",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "IPTnKWYAAAAJ"
   },
   {
    "name": "Armagan Elibol",
@@ -542,8 +563,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "24733903500",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "0K866ugAAAAJ"
   },
   {
    "name": "Salah Taamneh",
@@ -591,8 +613,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "24823991700",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "XRk871UAAAAJ"
   },
   {
    "name": "Tarik Elamsy",
@@ -614,9 +637,10 @@
    "colleges": [
     "College of Engineering"
    ],
-   "scopus_auid": "60684633200",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "scopus_auid": "20433783900",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "G67OoAgAAAAJ"
   },
   {
    "name": "Tareq Mohamed Oshan",
@@ -640,8 +664,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "58368817700",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "gSeG_V8AAAAJ"
   },
   {
    "name": "Omar Fawwaz Najm",
@@ -665,8 +690,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57189215293",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "5AZQhF8AAAAJ"
   },
   {
    "name": "Muhammad Ilyas",
@@ -689,8 +715,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57203258353",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "io_LywsAAAAJ"
   },
   {
    "name": "Haroon Mahmood",
@@ -713,8 +740,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57210927054",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "TJv3l2QAAAAJ"
   },
   {
    "name": "Mahmoud Sharkawi",
@@ -737,8 +765,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57226579956",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "TnwW9mwAAAAJ"
   },
   {
    "name": "Suhib Bani Melhem",
@@ -762,8 +791,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "56786127900",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "GkB4a7QAAAAJ"
   },
   {
    "name": "Huda Yousef Mohammad Alsheyab",
@@ -787,8 +817,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57210170292",
-   "auid_tier": "manual:high:profile-declared",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "VlE6G1YAAAAJ"
   },
   {
    "name": "Mohammad Okour",
@@ -836,8 +867,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57198420445",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "OJ1AodEAAAAJ"
   },
   {
    "name": "Musab Mustafa Hijazi",
@@ -861,8 +893,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "57222079373",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "TI5I1AYAAAAJ"
   },
   {
    "name": "Yazan Nawaf Al-Ahmed",
@@ -885,9 +918,10 @@
    "colleges": [
     "College of Engineering"
    ],
-   "scopus_auid": "59670111200",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "scopus_auid": "58850551300",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "kIHpiFcAAAAJ"
   },
   {
    "name": "Esra'a Sami Ahmad Hijah",
@@ -910,9 +944,10 @@
    "colleges": [
     "College of Engineering"
    ],
-   "scopus_auid": "60572439900",
-   "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "scopus_auid": "58517120800",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "5dx7h7sAAAAJ"
   },
   {
    "name": "Nura shifa musa",
@@ -936,8 +971,9 @@
     "College of Engineering"
    ],
    "scopus_auid": "58078101700",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "D8ehQDEAAAAJ"
   },
   {
    "name": "Huda Alheeh",
@@ -960,7 +996,7 @@
     "College of Engineering"
    ],
    "scopus_auid": "57929716900",
-   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": []
   },
   {
@@ -1354,8 +1390,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "36463516700",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Lhpg7dsAAAAJ"
   },
   {
    "name": "Mosab Arafat",
@@ -1378,8 +1415,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "56380109600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "qHOjk0gAAAAJ"
   },
   {
    "name": "Faris El-Dahiyat",
@@ -1402,8 +1440,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "36005436900",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "VKxLTKoAAAAJ"
   },
   {
    "name": "Mohammad Bostanudin",
@@ -1426,8 +1465,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "57214623127",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "-0nwuwgAAAAJ"
   },
   {
    "name": "Mahmoud Abu-Ghoush",
@@ -1451,7 +1491,8 @@
    ],
    "scopus_auid": "58641585300",
    "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "i18R0x4AAAAJ"
   },
   {
    "name": "Sehar Iqbal",
@@ -1474,8 +1515,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "58987438800",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "gTmLXfwAAAAJ"
   },
   {
    "name": "Rose Ghemrawi",
@@ -1498,8 +1540,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "55643594600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "J5DQvlIAAAAJ"
   },
   {
    "name": "Khairi Mustafa Salem",
@@ -1523,8 +1566,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "57209829585",
-   "auid_tier": "manual:high:profile-declared+aau",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "KmLTQXkAAAAJ"
   },
   {
    "name": "Arshad Mahmood",
@@ -1547,8 +1591,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "56706906200",
-   "auid_tier": "manual:medium:shared-name-first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "qqisYJYAAAAJ"
   },
   {
    "name": "Mohammad Majed Al Ahmad",
@@ -1571,8 +1616,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "57216648477",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "IgH1h_EAAAAJ"
   },
   {
    "name": "Amira Shaaban Ahmed",
@@ -1596,8 +1642,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "55331656100",
-   "auid_tier": "manual:high:profile-declared+aau",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "ZyifriYAAAAJ"
   },
   {
    "name": "Muhammad Sarfraz",
@@ -1620,8 +1667,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "36775730700",
-   "auid_tier": "manual:medium:shared-name-first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "2CyowfIAAAAJ"
   },
   {
    "name": "Nadia Hussain",
@@ -1644,8 +1692,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "57898788600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "MvPrkI8AAAAJ"
   },
   {
    "name": "Nezar Al Bataineh",
@@ -1668,8 +1717,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "36766892200",
-   "auid_tier": "manual:high:profile-declared+aau",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "4r73J4UAAAAJ"
   },
   {
    "name": "Asim Ahmed Elnour Ahmed",
@@ -1694,7 +1744,8 @@
    ],
    "scopus_auid": "23004340700",
    "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "9B-hEpwAAAAJ"
   },
   {
    "name": "Azza Galal Ramadan",
@@ -1722,8 +1773,9 @@
     "College of Nursing"
    ],
    "scopus_auid": "57221312212",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "2_DvGj8AAAAJ"
   },
   {
    "name": "Narmeen El Awwad",
@@ -1746,8 +1798,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "14321071700",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "m6fOkeYAAAAJ"
   },
   {
    "name": "Razan Almomani",
@@ -1771,7 +1824,8 @@
    ],
    "scopus_auid": "58541873100",
    "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "9vDjNiwAAAAJ"
   },
   {
    "name": "Yazan K. Ranneh",
@@ -1795,8 +1849,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "55771711000",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "19GrEAkAAAAJ"
   },
   {
    "name": "Taima Zakaria Alqudah",
@@ -1820,8 +1875,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "55856345500",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "-BcwNT8AAAAJ"
   },
   {
    "name": "Saad Touqeer",
@@ -1844,8 +1900,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "56237819700",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "wh1l_FEAAAAJ"
   },
   {
    "name": "Awfa Alazzeh",
@@ -1893,8 +1950,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "57136518500",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "l2i1OAsAAAAJ"
   },
   {
    "name": "Kareem Abdou",
@@ -1917,8 +1975,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "57203212201",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "skY5178AAAAJ"
   },
   {
    "name": "Jumana Yousef Almegdadi",
@@ -1993,8 +2052,9 @@
     "College of Pharmacy"
    ],
    "scopus_auid": "57203727811",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Gti9xNIAAAAJ"
   },
   {
    "name": "Imranul Haq",
@@ -2552,8 +2612,9 @@
     "College of Law"
    ],
    "scopus_auid": "57219603105",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "EQEQGyUAAAAJ"
   },
   {
    "name": "Ramzi Ahmad Madi",
@@ -2577,8 +2638,9 @@
     "College of Law"
    ],
    "scopus_auid": "36008823000",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Clq9wn8AAAAJ"
   },
   {
    "name": "Ahmed Fekry Taha Moussa",
@@ -2602,7 +2664,7 @@
     "College of Law"
    ],
    "scopus_auid": "57232817000",
-   "auid_tier": "manual:high:first-last",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": []
   },
   {
@@ -2627,8 +2689,9 @@
     "College of Law"
    ],
    "scopus_auid": "57226685678",
-   "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "GwL1ssUAAAAJ"
   },
   {
    "name": "Tayil Mohmoud Sheyab",
@@ -2652,8 +2715,9 @@
     "College of Law"
    ],
    "scopus_auid": "57217286955",
-   "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "FgatXWkAAAAJ"
   },
   {
    "name": "Tariq Abdel Rahman Kameel",
@@ -2677,8 +2741,9 @@
     "College of Law"
    ],
    "scopus_auid": "57212559077",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "-IHrIwQAAAAJ"
   },
   {
    "name": "Ibrahim Suleiman Alqatawneh",
@@ -2701,9 +2766,10 @@
    "colleges": [
     "College of Law"
    ],
-   "scopus_auid": "57458331400",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "scopus_auid": "57223391279",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "eRFGEMYAAAAJ"
   },
   {
    "name": "Ziad kh. Alenizi",
@@ -2727,8 +2793,9 @@
     "College of Law"
    ],
    "scopus_auid": "57210587518",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "rCnY57oAAAAJ"
   },
   {
    "name": "Faisal Abdelhafez Shawabkeh",
@@ -2752,8 +2819,9 @@
     "College of Law"
    ],
    "scopus_auid": "57215425146",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "TB_EBcsAAAAJ"
   },
   {
    "name": "Fayez Mohammad Al Nusair",
@@ -2776,8 +2844,9 @@
     "College of Law"
    ],
    "scopus_auid": "57891349600",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "0PFeN3EAAAAJ"
   },
   {
    "name": "Suhaib Walid Sharaiyra",
@@ -2801,8 +2870,9 @@
     "College of Law"
    ],
    "scopus_auid": "57208001697",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "mwNgf8YAAAAJ"
   },
   {
    "name": "Amal Aboeida",
@@ -2876,8 +2946,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "14324208400",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "k800oB0AAAAJ"
   },
   {
    "name": "Hanene Lahiani",
@@ -2900,8 +2971,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57211925114",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "7F-nimgAAAAJ"
   },
   {
    "name": "Mona Kamal Ibrahim",
@@ -2925,8 +2997,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57193867771",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "RNFCJFcAAAAJ"
   },
   {
    "name": "Suad Abdel Karim Alwaely",
@@ -2950,8 +3023,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57214223477",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "4bWq7Y8AAAAJ"
   },
   {
    "name": "Khawlah Mitib Al-Takhayneh",
@@ -2975,8 +3049,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57205494668",
-   "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "hwmWR8gAAAAJ"
   },
   {
    "name": "Khaled Khamis Nser",
@@ -3000,8 +3075,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57211635227",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "aEgvb_sAAAAJ"
   },
   {
    "name": "Samir Jabra Dukmak",
@@ -3025,8 +3101,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "24400893500",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "N48HmXUAAAAJ"
   },
   {
    "name": "Samer Adnan Abdel-Hadi",
@@ -3050,8 +3127,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57200498605",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "fS_uDpgAAAAJ"
   },
   {
    "name": "Mohammad Husien Faqeeh",
@@ -3076,7 +3154,8 @@
    ],
    "scopus_auid": "57200332286",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "-uuy_uUAAAAJ"
   },
   {
    "name": "Mohammad Issa Al-Hourani",
@@ -3100,8 +3179,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57215611725",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "iEqDDBUAAAAJ"
   },
   {
    "name": "Eman Ali Zaitoun",
@@ -3125,8 +3205,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57205345987",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "HautztsAAAAJ"
   },
   {
    "name": "Suzan Al Abidi",
@@ -3149,8 +3230,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57847529400",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "TMG25RkAAAAJ"
   },
   {
    "name": "Abdel Ghani Amar Remache",
@@ -3174,8 +3256,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "56662200500",
-   "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Jrn_hK0AAAAJ"
   },
   {
    "name": "Mohammad Salman Alkhazaleh",
@@ -3199,8 +3282,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57222655314",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "h2gGx08AAAAJ"
   },
   {
    "name": "Mohamed Elsayed Elzeiny",
@@ -3224,8 +3308,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "58545542900",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "w-59gWQAAAAJ"
   },
   {
    "name": "Ashraf Alazab",
@@ -3248,8 +3333,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57223987827",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "AkKvkZgAAAAJ"
   },
   {
    "name": "Salwa Abdallah Al-Majali",
@@ -3272,9 +3358,10 @@
    "colleges": [
     "College of Education, Humanities and Social Sciences"
    ],
-   "scopus_auid": "59232342900",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "scopus_auid": "57203149400",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "5fu_3gkAAAAJ"
   },
   {
    "name": "Omran Ahmad Musleh",
@@ -3298,8 +3385,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57218879552",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "8mo_El4AAAAJ"
   },
   {
    "name": "Hussein Khazer Saleh Almajali",
@@ -3323,8 +3411,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57222368483",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "9JHxS6UAAAAJ"
   },
   {
    "name": "Imad Ibraheem KH.Mostafa",
@@ -3348,8 +3437,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57225930384",
-   "auid_tier": "manual:medium:middle-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "zHUJKD0AAAAJ"
   },
   {
    "name": "Hatem Ahmed Suleiman Al-qudah",
@@ -3373,8 +3463,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57221477618",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "hAhH6CwAAAAJ"
   },
   {
    "name": "Enas Said Abulibdeh",
@@ -3398,8 +3489,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "54395007700",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "wcxqxtgAAAAJ"
   },
   {
    "name": "Wafa' Abdemahdi Hazaymeh",
@@ -3423,8 +3515,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57211599555",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "qX3pTRgAAAAJ"
   },
   {
    "name": "Razan Numan AlKhatib",
@@ -3448,8 +3541,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57213257593",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Ag1tcVkAAAAJ"
   },
   {
    "name": "Rakan Alhrahsheh",
@@ -3472,7 +3566,7 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57201617442",
-   "auid_tier": "manual:high:exact-name",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": []
   },
   {
@@ -3497,7 +3591,8 @@
    ],
    "scopus_auid": "59963490300",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "JH7asoIAAAAJ"
   },
   {
    "name": "Hussein Al Sarhan",
@@ -3520,7 +3615,7 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57210948993",
-   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": []
   },
   {
@@ -3544,8 +3639,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "36951393200",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "WEN9a-QAAAAJ"
   },
   {
    "name": "Salem Khalil Al Aqtash",
@@ -3568,7 +3664,7 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57191485851",
-   "auid_tier": "manual:high:exact-name",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": []
   },
   {
@@ -3593,8 +3689,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57215874181",
-   "auid_tier": "manual:high:profile-declared+aau",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "ShuZaAsAAAAJ"
   },
   {
    "name": "Dina Naser Tahat",
@@ -3618,8 +3715,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57210446636",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "sy6px5wAA"
   },
   {
    "name": "Mohannad Salameh Alkhalaileh",
@@ -3643,8 +3741,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "55545318300",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "6yclcP8AAAAJ"
   },
   {
    "name": "Sura Qiqieh",
@@ -3667,8 +3766,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "58538321700",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "-V-Nz74AAAAJ"
   },
   {
    "name": "Shirin Abdallah AlAmoor",
@@ -3693,7 +3793,8 @@
    ],
    "scopus_auid": "58612046300",
    "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "ApYtSM4AAAAJ"
   },
   {
    "name": "Maram Salah Jaradat",
@@ -3717,8 +3818,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57201584144",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "SeDEI34AAAAJ"
   },
   {
    "name": "Abdeldjalil Bouzenoun",
@@ -3741,8 +3843,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "58712340900",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "6E9yYvUAAAAJ"
   },
   {
    "name": "Jihan Yousef",
@@ -3765,8 +3868,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "58290704200",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "1LbDtTwAAAAJ"
   },
   {
    "name": "Dima Farhat",
@@ -3789,8 +3893,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "59390231700",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "5GXlrS4AAAAJ"
   },
   {
    "name": "Amjad Alhenawi",
@@ -3839,8 +3944,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57216809009",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "nZc9rVoAAAAJ"
   },
   {
    "name": "Moath Kalef Al Omery",
@@ -3863,8 +3969,9 @@
     "College of Education, Humanities and Social Sciences"
    ],
    "scopus_auid": "57215814165",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "kl7Yd98AAAAJ"
   },
   {
    "name": "Reem Hamad Sala",
@@ -3962,8 +4069,9 @@
     "College of Business"
    ],
    "scopus_auid": "8304977600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "wQj96lkAAAAJ"
   },
   {
    "name": "Iffat Sabir",
@@ -3986,8 +4094,9 @@
     "College of Business"
    ],
    "scopus_auid": "57195561731",
-   "auid_tier": "manual:high:profile-declared+aau",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "2ohepA4AAAAJ"
   },
   {
    "name": "Jamil Razmak",
@@ -4010,8 +4119,9 @@
     "College of Business"
    ],
    "scopus_auid": "55820308400",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "hznXeRUAAAAJ"
   },
   {
    "name": "Riham Suleiman Muqattash",
@@ -4035,8 +4145,9 @@
     "College of Business"
    ],
    "scopus_auid": "57194492587",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "1-WnBnYAAAAJ"
   },
   {
    "name": "Mohammad Ahmad Al Omari",
@@ -4058,9 +4169,10 @@
    "colleges": [
     "College of Business"
    ],
-   "scopus_auid": "60684522400",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "scopus_auid": "55331479200",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "byGK83cAAAAJ"
   },
   {
    "name": "Abdelhafid Belarbi",
@@ -4083,8 +4195,9 @@
     "College of Business"
    ],
    "scopus_auid": "57193390999",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "6Pz9jXgAAAAJ"
   },
   {
    "name": "Habib Chabchoub",
@@ -4107,8 +4220,9 @@
     "College of Business"
    ],
    "scopus_auid": "56007650900",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "0TnenGsAAAAJ"
   },
   {
    "name": "Mohammed Nuseir",
@@ -4132,7 +4246,8 @@
    ],
    "scopus_auid": "26638922500",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "CG0t050AAAAJ"
   },
   {
    "name": "Amer Mohammad Jaser Qasem",
@@ -4156,8 +4271,9 @@
     "College of Business"
    ],
    "scopus_auid": "36155955800",
-   "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Ubf4X1kAAAAJ"
   },
   {
    "name": "Belkacem Athamena",
@@ -4180,8 +4296,9 @@
     "College of Business"
    ],
    "scopus_auid": "6507855990",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "N0ePhIwAAAAJ"
   },
   {
    "name": "Mohanad Ali Halaweh",
@@ -4205,8 +4322,9 @@
     "College of Business"
    ],
    "scopus_auid": "25960639300",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "94i_H0AAAAAJ"
   },
   {
    "name": "Rania Badreldin Mostafa",
@@ -4230,8 +4348,9 @@
     "College of Business"
    ],
    "scopus_auid": "56829186600",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "w8Z_T0oAAAAJ"
   },
   {
    "name": "Shorouq F. Eletter",
@@ -4255,8 +4374,9 @@
     "College of Business"
    ],
    "scopus_auid": "55539589600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "pkeDpYEAAAAJ"
   },
   {
    "name": "Ibrahim Niankara",
@@ -4279,8 +4399,9 @@
     "College of Business"
    ],
    "scopus_auid": "57200579496",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Wy1OKMUAAAAJ"
   },
   {
    "name": "Mosab Tabash",
@@ -4303,8 +4424,9 @@
     "College of Business"
    ],
    "scopus_auid": "57194232562",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "r7aMwuMAAAAJ"
   },
   {
    "name": "Mariam Farooq",
@@ -4327,8 +4449,9 @@
     "College of Business"
    ],
    "scopus_auid": "56045457600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "ajPWBboAAAAJAAJ"
   },
   {
    "name": "Kholoud Al Qeisi",
@@ -4351,8 +4474,9 @@
     "College of Business"
    ],
    "scopus_auid": "57222239635",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "zEhM-asAAAAJ"
   },
   {
    "name": "Tahira Yasmin",
@@ -4375,8 +4499,9 @@
     "College of Business"
    ],
    "scopus_auid": "56406291900",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "kmjluTgAAAAJ"
   },
   {
    "name": "Wejdan Farhan",
@@ -4399,8 +4524,9 @@
     "College of Business"
    ],
    "scopus_auid": "57204125292",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "F3qMxeQAAAAJ"
   },
   {
    "name": "Mohamed Elmaghrabi",
@@ -4423,8 +4549,9 @@
     "College of Business"
    ],
    "scopus_auid": "57218997711",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "0OEoSnIAAAAJ"
   },
   {
    "name": "Mohammad Sharairi",
@@ -4447,8 +4574,9 @@
     "College of Business"
    ],
    "scopus_auid": "57213149438",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "bi-n4Q0AAAAJ"
   },
   {
    "name": "Maha Nayef Rahrouh",
@@ -4472,8 +4600,9 @@
     "College of Business"
    ],
    "scopus_auid": "6504655800",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "hV4ME8EAAAAJ"
   },
   {
    "name": "Yasin Khalil Karsoo",
@@ -4497,8 +4626,9 @@
     "College of Business"
    ],
    "scopus_auid": "58965168900",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Z1OtNH4AAAAJ"
   },
   {
    "name": "Mohamed Ahmed Shaker Ahmed",
@@ -4522,8 +4652,9 @@
     "College of Business"
    ],
    "scopus_auid": "57217167465",
-   "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "rMVAnQYAAAAJ"
   },
   {
    "name": "Mohsin Murtaza",
@@ -4547,7 +4678,8 @@
    ],
    "scopus_auid": "57660474800",
    "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "google_scholar_id": "lLDYpPoAAAAJ"
   },
   {
    "name": "Sajjad Ahamed",
@@ -4704,8 +4836,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "57201681276",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Pc37sxAAAAAJ"
   },
   {
    "name": "Mohammed Taher Nuseir",
@@ -4729,8 +4862,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "26638922500",
-   "auid_tier": "manual:high:first-last",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "CG0t050AAAAJ"
   },
   {
    "name": "Rania Abdallah",
@@ -4753,8 +4887,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "58516968500",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "WgyCSzcAAAAJ"
   },
   {
    "name": "Muhammad noor aladwan",
@@ -4778,8 +4913,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "57212214124",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "GGaP2bcAAAAJ"
   },
   {
    "name": "Reneh Abokhoza",
@@ -4802,7 +4938,7 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "57217288397",
-   "auid_tier": "manual:high:exact-name",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": []
   },
   {
@@ -4826,8 +4962,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "56223821600",
-   "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "Y08Re8QAAAAJ"
   },
   {
    "name": "Ahmad AlJumah",
@@ -4850,8 +4987,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "57200986764",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "ldgPnGkAAAAJ"
   },
   {
    "name": "Sawsan Taha",
@@ -4874,8 +5012,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "58079096600",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "xiRQosMAAAAJ"
   },
   {
    "name": "Amer Khaled Ahmed",
@@ -4899,8 +5038,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "57821359000",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "lCYPI5QAAAAJ"
   },
   {
    "name": "Ala'aldin Zahra",
@@ -4923,7 +5063,7 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "58105071500",
-   "auid_tier": "manual:high:profile-declared+aau",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": []
   },
   {
@@ -4947,8 +5087,9 @@
     "College of Communication and Media"
    ],
    "scopus_auid": "58244574400",
-   "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "vcBSbS8AAAAJ"
   },
   {
    "name": "Haneen Shabaneh",
@@ -5122,9 +5263,10 @@
    "colleges": [
     "College of Dentistry"
    ],
-   "scopus_auid": "57881654400",
-   "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "scopus_auid": "14825540600",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "YGrUVM4AAAAJ"
   },
   {
    "name": "Sara Gad",
@@ -5198,8 +5340,9 @@
     "College of Nursing"
    ],
    "scopus_auid": "57192697518",
-   "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "google_scholar_id": "2cj2BWwAAAAJ"
   },
   {
    "name": "Nadeen Alshakhshir",
@@ -5301,5 +5444,6 @@
    "auid_candidates": [],
    "added_from_page": true
   }
- ]
+ ],
+ "id_source": "Scopus author ids as Al Ain University publishes them on its own directory cards, verified to resolve to a real author before being stored."
 }
