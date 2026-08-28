@@ -188,9 +188,20 @@ PATCHES = [
      "      && window.__AAU.status.findings) || null;\n"
      "    const findings = liveF_ && liveF_.length ? liveF_.map(f => ({\n"
      "      text: f.text,\n"
+     # 'info' is a line that is neither good news nor a fault -- the papers
+     # examined and left out are the rule working, and painting them red read
+     # as damage. `why` becomes the hover: a number nobody can interrogate is
+     # worse than no number.
+     "      why: f.why || '',\n"
      "      color: f.kind === 'bad' ? '#E0303F'\n"
-     "        : (f.kind === 'warn' ? '#E8A33D' : accent),\n"
+     "        : (f.kind === 'warn' ? '#E8A33D'\n"
+     "        : (f.kind === 'info' ? '#8C9A92' : accent)),\n"
      "    })) : running ? ["),
+
+    ("dashboard: a finding can explain itself on hover",
+     '<div style="font-size:14px;color:#2A3A31;line-height:1.45">{{ f.text }}</div>',
+     '<div title="{{ f.why }}" style="font-size:14px;color:#2A3A31;'
+     'line-height:1.45">{{ f.text }}</div>'),
 
     ("dashboard: the run caption reflects the real run",
      "      runTitle: running ? 'Run in progress' : 'Last run finished',",
@@ -863,7 +874,36 @@ ROUND2 = [
      "      drop: () => window.__AAU\n"
      "        && window.__AAU.removePerson(this, a.name, a.college),\n"
      "      dropShow: a.tag === 'Faculty' ? 'visible' : 'hidden',\n"
-     "      dropTitle: 'Take ' + a.name + ' off the roster',\n    }));"),
+     "      dropTitle: 'Take ' + a.name + ' off the roster',\n"
+     # Zero is not "0 papers", it is one of two different facts, and the roster
+     # should say which. Someone AAU prints no Scopus link for was not on this
+     # screen at all until now.
+     "      papersLabel: a.papers ? a.papers.toLocaleString() : '\\u2014',\n"
+     "      papersWhy: a.papers ? (a.papers + ' papers in this window')\n"
+     "        : (a.why_no_papers || 'no papers in this window'),\n"
+     "      flag: a.no_scopus ? 'no Scopus record' : '',\n"
+     "      flagShow: a.no_scopus ? 'inline-block' : 'none',\n    }));"),
+
+    ("roster: and marks anyone AAU publishes no Scopus record for",
+     '<button type="button" sc-camel-on-click="{{ a.open }}" style="text-align:left;'
+     'background:none;border:0;padding:0;font-family:Archivo,sans-serif;'
+     'font-size:14.5px;font-weight:600;color:{{ accent }};cursor:pointer">'
+     '{{ a.name }}</button>',
+     '<div><button type="button" sc-camel-on-click="{{ a.open }}" '
+     'style="text-align:left;background:none;border:0;padding:0;'
+     'font-family:Archivo,sans-serif;font-size:14.5px;font-weight:600;'
+     'color:{{ accent }};cursor:pointer">{{ a.name }}</button>'
+     '<span title="AAU\u2019s directory prints no Scopus author link on this '
+     'card, so there is no record to count papers from." '
+     'style="display:{{ a.flagShow }};margin-left:8px;padding:1px 7px;'
+     'border:1px solid #E0D5B8;border-radius:9px;background:#FBF6E9;'
+     'font-size:11px;color:#8A6D1F;white-space:nowrap">{{ a.flag }}</span></div>'),
+
+    ("roster: a zero says which kind of zero it is",
+     '<div style="font-size:14px;text-align:right;font-variant-numeric:'
+     'tabular-nums">{{ a.papers }}</div>',
+     '<div title="{{ a.papersWhy }}" style="font-size:14px;text-align:right;'
+     'font-variant-numeric:tabular-nums">{{ a.papersLabel }}</div>'),
     # ---- college -> programme -> people ------------------------------------
     # AAU publishes which programmes each person teaches on, on the college's
     # own subsite. A person can be on several, so a paper counts for every

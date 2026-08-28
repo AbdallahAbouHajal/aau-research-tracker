@@ -137,9 +137,28 @@ def main():
                 "text": "%d papers were added that the university tag had "
                         "missed." % add, "kind": "ok"})
         if rej:
+            # This line read like a weakness in the census. It is the opposite,
+            # and the wording was the problem: these papers were never in the
+            # count. Asking Scopus for everything a faculty member wrote returns
+            # their work at every institution they have ever been at -- Anan
+            # Jarab has 53 in the window and 30 print Al Ain University. The
+            # gate is what stops the other 23 being imported, which is exactly
+            # the mistake that produced a retracted 568-paper claim once. So
+            # say what was checked, what was kept, and that the total above is
+            # unaffected.
             b["findings"].append({
-                "text": "%d were thrown out because no author on them printed "
-                        "an Al Ain University address." % rej, "kind": "bad"})
+                "text": "%d more papers were checked and NOT counted: they came "
+                        "up under a faculty member's Scopus record but no author "
+                        "on them printed an Al Ain University address. The "
+                        "%d above does not include them."
+                        % (rej, len(b.get("papers") or {})),
+                "kind": "info",
+                "why": "A search by author returns everything that person has "
+                       "published anywhere, including work from a previous "
+                       "university. Only papers that actually print an AAU "
+                       "address are admitted, so these were examined and left "
+                       "out. Nothing here was ever added to the census and "
+                       "then removed."})
         log("+%d accepted, %d rejected at the gate" % (add, rej))
 
     elif n == 5:

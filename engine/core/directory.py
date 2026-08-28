@@ -207,6 +207,87 @@ def harvest(log=print):
     return list(seen.values())
 
 
+# A browser pass over the same directory, exported by hand, which carries what
+# a fetch cannot reach: the programme list per person, and a Google Scholar id
+# beside the Scopus one. 209 people, 143 Scopus ids, 145 Scholar ids.
+_PEOPLE_CSV = os.path.join(ROOT, "data", "directory_people.csv")
+_DEGREE_RE = re.compile(
+    r"\s*,?\s*\b(Ph\.?\s?D|M\.?\s?Sc|MBA|MD|DDS|MA|M\.A)\.?\s*$", re.I)
+
+
+def merge_people_csv(rows, roster, log=print):
+    """Fold the browser export into the scraped rows, keyed by roster name.
+
+    The CSV has no slug, so people are matched by name against the roster and
+    the slug taken from there. Any id the scrape did not already hold is
+    verified before it is accepted -- which is how the CSV's own copy of
+    Shirin AlAmoor's ten-digit id, the same dropped digit AAU prints on her
+    card, is refused for the second time.
+    """
+    if not os.path.exists(_PEOPLE_CSV) or not roster:
+        return rows
+    import csv as _csv
+    import translit as _TL
+    by_name = {X.name_key(p.get("name", "")): p for p in roster}
+
+    def _find(n):
+        p = by_name.get(X.name_key(n))
+        if p:
+            return p
+        for q in roster:
+            if _TL.compatible(q.get("name", ""), n) or _TL.compatible(n, q.get("name", "")):
+                return q
+        return None
+
+    by_slug = {r["slug"].lower(): r for r in rows if r.get("slug")}
+    added = scholars = refused = 0
+    with open(_PEOPLE_CSV, newline="", encoding="utf-8-sig") as fh:
+        for row in _csv.DictReader(fh):
+            person = _find(_DEGREE_RE.sub("", (row.get("name") or "").strip()).strip())
+            u = (person or {}).get("profile_url") or ""
+            if "/staff/" not in u:
+                continue
+            sl = u.rstrip("/").rsplit("/", 1)[-1]
+            rec = by_slug.get(sl.lower())
+            if rec is None:
+                rec = {"slug": sl, "name": person.get("name") or "",
+                       "college": person.get("college") or "",
+                       "scopus_auid": "",
+                       "profile_url": u}
+                rows.append(rec)
+                by_slug[sl.lower()] = rec
+            gs = (row.get("google_scholar_id") or "").strip()
+            if gs and not rec.get("google_scholar_id"):
+                rec["google_scholar_id"] = gs
+                scholars += 1
+            sid = (row.get("scopus_id") or "").strip()
+            if not sid or rec.get("scopus_auid") == sid:
+                continue
+            if sid == rec.get("scopus_auid_rejected"):
+                refused += 1
+                continue
+            try:
+                q = X.scopus_get("/content/search/scopus",
+                                 {"query": "AU-ID(%s)" % sid, "count": 1,
+                                  "sort": "+eid"})
+                n = int(q["search-results"].get("opensearch:totalResults") or 0)
+            except Exception:
+                continue
+            if not n:
+                rec["scopus_auid_rejected"] = sid
+                refused += 1
+                log("      %-30s csv id %s resolves to nothing -- refused"
+                    % (rec.get("name") or sl, sid))
+                continue
+            if not rec.get("scopus_auid"):
+                rec["scopus_auid"] = sid
+                added += 1
+                log("      %-30s + %s (%d papers)" % (rec.get("name") or sl, sid, n))
+    log("  browser export: %d ids added, %d Scholar ids, %d refused"
+        % (added, scholars, refused))
+    return rows
+
+
 def load():
     if not os.path.exists(OUT):
         return {}
@@ -238,6 +319,11 @@ def main():
     rows = harvest()
     if "--no-verify" not in sys.argv:
         rows = verify(rows)
+    try:
+        import faculty as _FAC
+        rows = merge_people_csv(rows, (_FAC.load() or {}).get("people") or [])
+    except Exception as exc:
+        print("  browser export not merged: %s" % str(exc)[:80])
     ids = sum(1 for r in rows if r["scopus_auid"])
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     json.dump({"generated": __import__("time").strftime("%Y-%m-%dT%H:%M:%SZ",

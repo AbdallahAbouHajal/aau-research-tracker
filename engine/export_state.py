@@ -176,6 +176,37 @@ def main():
     out = os.path.abspath(a.out)
     os.makedirs(os.path.dirname(out), exist_ok=True)
 
+    # Every paper in the run, as its own file. The dashboard says 4,245 and
+    # until now there was nowhere to go and look at them. It is ~500KB, which
+    # has no business in state.json -- the Papers screen fetches it the first
+    # time it is opened and not before.
+    try:
+        rb = RUNS.load(blob.get("run")) or {}
+        rows = []
+        for eid, p_ in (rb.get("papers") or {}).items():
+            rows.append([
+                (p_.get("title") or "").strip(),
+                (p_.get("journal") or "").strip(),
+                int(p_.get("year") or 0),
+                int(p_.get("cited_by") or 0),
+                (p_.get("doctype") or "").strip(),
+                (p_.get("doi") or "").strip(),
+                eid,
+                1 if p_.get("found_via") == "faculty_sweep" else 0,
+            ])
+        rows.sort(key=lambda r: (-r[2], -r[3]))
+        pp = os.path.join(os.path.dirname(out), "papers.json")
+        with open(pp, "w", encoding="utf-8") as fh:
+            json.dump({"generated": blob["generated"], "run": blob.get("run"),
+                       "columns": ["title", "journal", "year", "cited_by",
+                                   "type", "doi", "eid", "found_by_sweep"],
+                       "papers": rows},
+                      fh, ensure_ascii=False, separators=(",", ":"))
+        print("  papers    %s (%d papers, %.0f KB)"
+              % (os.path.basename(pp), len(rows), os.path.getsize(pp) / 1024))
+    except Exception as exc:
+        print("  papers file failed: %s" % exc)
+
     # "Since the last run" was empty on every run ever published, and would
     # have stayed that way forever: RUNS.delta() compares against the run
     # store, engine/data/runs/ is .gitignored, and the workflow commits only

@@ -251,6 +251,20 @@ def build(roster_people=None, run_id=None):
                 return cand
         return None
 
+    # AAU prints a Scopus id on most directory cards and a Google Scholar id
+    # beside it. Someone with neither is not a failure of ours to find them --
+    # the university lists no record -- and the roster should say which it is
+    # rather than leaving a blank the reader has to interpret.
+    _dir = {}
+    try:
+        _dp = os.path.join(DATA, "directory_ids.json")
+        if os.path.exists(_dp):
+            for _r in (json.load(open(_dp, encoding="utf-8")).get("people") or []):
+                if _r.get("slug"):
+                    _dir[_r["slug"].lower()] = _r
+    except Exception:
+        _dir = {}
+
     # ---- authors -----------------------------------------------------------
     # One row per PERSON, not per spelling. The census carries a record for
     # every way a name was printed, and several of them resolve to the same
@@ -348,6 +362,42 @@ def build(roster_people=None, run_id=None):
         })
         seen_auid[auid] = authors[-1]
         papers_map[k] = rows[:50]
+    # And the roster's academics who published nothing in this window. They
+    # were invisible: the screen is built from people who have papers, so
+    # someone with no Scopus record simply was not there, and a reader could
+    # not tell "no record" from "we could not find them". They appear with
+    # zero papers and a note saying which it is.
+    for r in roster:
+        if not str(r.get("staff_type") or "").lower().startswith("acad"):
+            continue
+        u = r.get("profile_url") or ""
+        sl = u.rstrip("/").rsplit("/", 1)[-1].lower() if "/staff/" in u else ""
+        aid = r.get("scopus_auid") or ""
+        if aid and aid in seen_auid:
+            continue
+        if ("name:" + X.name_key(r.get("name") or "")) in seen_auid:
+            continue
+        d_ = _dir.get(sl) or {}
+        k = _key(r.get("name") or sl or "?", taken)
+        authors.append({
+            "key": k,
+            "name": r.get("name") or "",
+            "college": CLS.map_college(r.get("college") or ""),
+            "title": r.get("title") or "",
+            "papers": 0, "h": 0, "cites": 0, "corr": 0,
+            "auid": aid,
+            "tag": "Faculty",
+            "slug": _slug(r.get("profile_url"), r.get("name") or ""),
+            "suggest": False,
+            "scholar": d_.get("google_scholar_id") or "",
+            "listed_by_aau": bool(d_),
+            "no_scopus": not aid,
+            "why_no_papers": ("AAU lists no Scopus record for them"
+                              if (not aid and d_) else
+                              ("no papers in this window" if aid else
+                               "not matched to a Scopus author record")),
+        })
+        seen_auid["name:" + X.name_key(r.get("name") or "")] = authors[-1]
     authors.sort(key=lambda a: -(a.get("papers") or 0))
 
     # ---- colleges ----------------------------------------------------------
@@ -416,6 +466,13 @@ def build(roster_people=None, run_id=None):
     # on several, so a paper is credited to every programme represented on it --
     # the same whole counting the colleges use, and the totals sum to more than
     # the paper count for the same reason.
+    for a_ in authors:
+        d_ = _dir.get((a_.get("slug") or "").lower()) or {}
+        a_["scholar"] = d_.get("google_scholar_id") or ""
+        a_["listed_by_aau"] = bool(d_)
+        # Only meaningful for people the university actually lists.
+        a_["no_scopus"] = bool(d_) and not (a_.get("auid") or d_.get("scopus_auid"))
+
     prog_blob = PROG.load() or {}
     by_slug = {k.lower(): v for k, v in (prog_blob.get("by_slug") or {}).items()}
     campus = {k.lower(): v for k, v in (prog_blob.get("campus") or {}).items()}
