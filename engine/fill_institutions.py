@@ -16,6 +16,7 @@ paper's Scopus id -- plus the published network.json to rebuild.
 import argparse
 import json
 import os
+import subprocess
 import sys
 import time
 
@@ -32,6 +33,10 @@ def main():
     ap.add_argument("--handoff", default=os.path.join(ROOT, "handoff.json"))
     ap.add_argument("--out", default=os.path.join(ROOT, "..", "docs", "data"))
     ap.add_argument("--budget", type=int, default=3000)
+    ap.add_argument("--checkpoints", action="store_true",
+                    help="write and publish at each quarter, not only at the end")
+    ap.add_argument("--publish", default="",
+                    help="shell command run after each checkpoint write")
     a = ap.parse_args()
 
     if not os.path.exists(a.handoff):
@@ -42,10 +47,49 @@ def main():
     colleges = hand.get("colleges") or {}
     papers = {e: dict(v) for e, v in (hand.get("papers") or {}).items()}
     print("%d papers, %d already carry printed addresses" % (len(papers), len(printed)))
+    out = os.path.abspath(a.out)
+    os.makedirs(out, exist_ok=True)
+    path = os.path.join(out, "network.json")
 
-    # The paper's institution list never changes once published, so the cache
-    # makes a repeat of the same window free.
-    got = NET.backfill_affiliations(papers, printed, log=print, budget_s=a.budget)
+    def rebuild_and_write(note=""):
+        slots_ = []
+        for eid_, cols_ in colleges.items():
+            for c_ in cols_:
+                slots_.append({"eid": eid_, "college": c_, "raw_affiliation": ""})
+        net_ = NET.build({"papers": papers, "slots": slots_}, [], log=lambda *_: None)
+        prev_ = {}
+        if os.path.exists(path):
+            try:
+                prev_ = json.load(open(path, encoding="utf-8"))
+            except Exception:
+                prev_ = {}
+        if ((prev_.get("coverage") or {}).get("printed") or 0) > net_["coverage"]["printed"]:
+            return None                       # never go backwards
+        net_["generated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        net_["run"] = hand.get("run") or prev_.get("run")
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(net_, fh, ensure_ascii=False, separators=(",", ":"))
+        return net_
+
+    def checkpoint(i, total):
+        net_ = rebuild_and_write()
+        if not net_:
+            return
+        c_ = net_["coverage"]
+        print("  checkpoint %d/%d: %d of %d papers carry institutions (%d%%)"
+              % (i, total, c_["printed"], c_["papers"],
+                 100 * c_["printed"] // max(1, c_["papers"])), flush=True)
+        if a.publish:
+            subprocess.run(["bash", "-c", a.publish], check=False)
+
+    # Every paper, not only the ones the export does not cover. Asking about
+    # all of them from one endpoint is what makes the coverage uniform: the
+    # first split run rebuilt without the export's 1,330 and published 68%
+    # where it should have said 99%, because this job has the paper list and
+    # not the run store those addresses live in.
+    every = max(1, len(papers) // 4) if a.checkpoints else 0
+    got = NET.backfill_affiliations(papers, set(), log=print, budget_s=a.budget,
+                                    on_progress=checkpoint, every=every)
 
     # Rebuild the collaboration view from both sources and republish it.
     slots = []
@@ -59,9 +103,6 @@ def main():
     # them here would need the run store, which this job does not have, so
     # those papers are asked for too and answered from the same endpoint.
     net = NET.build(blob, [], log=print)
-    out = os.path.abspath(a.out)
-    os.makedirs(out, exist_ok=True)
-    path = os.path.join(out, "network.json")
     prev = {}
     if os.path.exists(path):
         try:

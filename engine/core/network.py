@@ -106,7 +106,8 @@ def institution(raw):
     return inst, country
 
 
-def backfill_affiliations(papers, have_printed, log=print, budget_s=2400):
+def backfill_affiliations(papers, have_printed, log=print, budget_s=2400,
+                          on_progress=None, every=0):
     """Ask Scopus for the institutions on papers whose authors' addresses we
     do not hold.
 
@@ -163,6 +164,13 @@ def backfill_affiliations(papers, have_printed, log=print, budget_s=2400):
         if i % 200 == 0:
             log("    %d/%d (%.0f%% of the way, %.0fs elapsed)"
                 % (i, len(todo), 100.0 * i / len(todo), time.time() - t0))
+        # Publish what is known so far, so the screen fills in visibly
+        # instead of staying empty for twenty minutes and then jumping.
+        if on_progress and every and i % every == 0 and i < len(todo):
+            try:
+                on_progress(i, len(todo))
+            except Exception as exc:
+                log("    checkpoint failed: %s" % str(exc)[:60])
     log("  institutions filled in for %d papers (%d could not be fetched)"
         % (done, failed))
     return done

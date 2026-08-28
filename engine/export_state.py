@@ -201,22 +201,28 @@ def main():
     # time it is opened and not before.
     try:
         rb = RUNS.load(blob.get("run")) or {}
-        # Which Al Ain people are on each paper, and from which college. The
-        # run already knows: every author row carries the eid, the name and --
-        # for anyone matched to the roster -- their college. Collected per
-        # paper so the list can name them instead of only counting them.
+        # Which Al Ain people are on each paper. Built by INVERTING the very
+        # map the Authors screen uses, not by re-filtering the run's slots --
+        # doing the latter made the two screens disagree, and Abdallah caught
+        # it: Kareem Abdou's page listed a paper whose own row said it had no
+        # Al Ain author, because his slot on it never picked up the Faculty
+        # role. Inverted, the two cannot disagree: if a person's page shows a
+        # paper, that paper names the person.
         who = {}
-        for sl in (rb.get("slots") or []):
-            eid = sl.get("eid")
-            if not eid or sl.get("role") != "Faculty":
+        for a_ in (blob.get("authors") or []):
+            if a_.get("tag") != "Faculty":
                 continue
-            nm = (sl.get("author_name") or "").strip()
+            nm = (a_.get("name") or "").strip()
             if not nm:
                 continue
-            col = (sl.get("college") or "").replace("College of ", "").strip()
-            seen = who.setdefault(eid, [])
-            if not any(x[0] == nm for x in seen):
-                seen.append([nm, col])
+            col = (a_.get("college") or "").replace("College of ", "").strip()
+            for row in ((blob.get("papers") or {}).get(a_.get("key")) or []):
+                eid = row[5] if len(row) > 5 else ""
+                if not eid:
+                    continue
+                seen = who.setdefault(eid, [])
+                if not any(x[0] == nm for x in seen):
+                    seen.append([nm, col])
         for v in who.values():
             v.sort(key=lambda x: x[0])
         rows = []

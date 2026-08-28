@@ -298,8 +298,32 @@ jobs:
           if [ ! -f handoff.json ]; then
             echo "no hand-off from the census run; nothing to do"; exit 0
           fi
+          cat > /tmp/publish.sh <<'SH'
+          set -e
+          cd "$GITHUB_WORKSPACE"
+          git add docs/data/network.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Institutions read so far [skip ci]"
+          for i in 1 2 3; do
+            git push -q origin HEAD:main && exit 0
+            git fetch -q origin main
+            git stash push -q -- docs/data/network.json || true
+            git reset -q --hard origin/main
+            git stash pop -q || true
+            git add docs/data/network.json
+            git diff --cached --quiet && exit 0
+            git commit -q -m "Institutions read so far [skip ci]"
+          done
+          echo "checkpoint push failed; the next one will carry it" >&2
+          SH
+          chmod +x /tmp/publish.sh
+          git config --global user.name  "aau-tracker"
+          git config --global user.email "aau-tracker@users.noreply.github.com"
+          # Publishing at each quarter means the collaboration screen fills in
+          # visibly rather than staying empty for twenty minutes and jumping.
           python fill_institutions.py --handoff handoff.json \
-            --out "$GITHUB_WORKSPACE/docs/data" --budget 3000
+            --out "$GITHUB_WORKSPACE/docs/data" --budget 3000 \
+            --checkpoints --publish "bash /tmp/publish.sh"
 
       - name: Publish the collaboration data
         run: |
