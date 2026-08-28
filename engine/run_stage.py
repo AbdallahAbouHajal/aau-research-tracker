@@ -180,7 +180,7 @@ def main():
                     if s_["college"] not in cols[s_["eid"]]:
                         cols[s_["eid"]].append(s_["college"])
             hand = {"run": b["run"], "printed": have, "colleges": cols,
-                    "papers": {e: {"sid": str(p_.get("scopus_id") or "")}
+                    "papers": {e: {"scopus_id": str(p_.get("scopus_id") or "")}
                                for e, p_ in b["papers"].items()}}
             # NOT a dotfile: actions/upload-artifact excludes hidden files
             # by default, so ".handoff.json" was written, reported, and

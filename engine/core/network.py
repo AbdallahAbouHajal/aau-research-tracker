@@ -136,7 +136,14 @@ def backfill_affiliations(papers, have_printed, log=print, budget_s=2400):
             log("  stopped at the %d-minute budget: %d of %d filled in"
                 % (budget_s // 60, done, len(todo)))
             break
-        sid = str(papers[eid].get("scopus_id") or "").strip()
+        # The run store calls it scopus_id; the hand-off to the second
+        # job calls it sid. Reading only one of them skipped every paper
+        # in silence -- 2,955 iterations, no fetches, a tenth of a second.
+        rec = papers[eid]
+        sid = str(rec.get("scopus_id") or rec.get("sid") or "").strip()
+        if not sid and eid.startswith("2-s2.0-"):
+            sid = eid.split("2-s2.0-", 1)[1]          # last resort
+
         if not sid:
             continue
         try:

@@ -68,6 +68,17 @@ def main():
             prev = json.load(open(path, encoding="utf-8"))
         except Exception:
             prev = {}
+    # A job that can overwrite a good answer with an empty one is worse than
+    # a job that does not run. This one did exactly that: it skipped every
+    # paper on a key-name mismatch and published 0 partners over 1,723. It
+    # refuses now, and says so loudly enough to fail the step.
+    was = ((prev.get("coverage") or {}).get("printed") or 0)
+    now = net["coverage"]["printed"]
+    if prev and now < was:
+        print("REFUSING to publish: coverage would fall from %d papers to %d. "
+              "The existing file is better and is left alone." % (was, now),
+              file=sys.stderr)
+        raise SystemExit(1)
     net["generated"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     net["run"] = hand.get("run") or prev.get("run")
     with open(path, "w", encoding="utf-8") as fh:
