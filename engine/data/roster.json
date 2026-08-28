@@ -1,5 +1,5 @@
 {
- "version": "2026-08-28-directory",
+ "version": "2026-08-28-programmes",
  "captured": "2026-08-27",
  "source": "claude-chrome",
  "note": "fixed resolver",
@@ -28,7 +28,13 @@
    "scopus_auid": "24480714400",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "nEWmTKEAAAAJ"
+   "google_scholar_id": "nEWmTKEAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Cybersecurity",
+    "Bachelor of Science in Software Engineering"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Faten Kharbat",
@@ -53,7 +59,11 @@
    "scopus_auid": "19639814600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "qLSVOO0AAAAJ"
+   "google_scholar_id": "qLSVOO0AAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Mawahib H. Sulieman",
@@ -79,7 +89,12 @@
    "scopus_auid": "9732920600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "MlNzVL4AAAAJ"
+   "google_scholar_id": "MlNzVL4AAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Engineering",
+    "Bachelor of Science in Networks and Communication Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Thabet Mismar",
@@ -104,7 +119,12 @@
    "scopus_auid": "25927311100",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "c6k9SZQAAAAJ"
+   "google_scholar_id": "c6k9SZQAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Engineering",
+    "Bachelor of Science in Networks and Communication Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Saqib Iqbal",
@@ -129,7 +149,12 @@
    "scopus_auid": "57212034484",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "4BIbZhoAAAAJ"
+   "google_scholar_id": "4BIbZhoAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Software Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Yazeed Yasin Ghadi",
@@ -155,7 +180,13 @@
    "scopus_auid": "55797735700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "h3X_qMkAAAAJ"
+   "google_scholar_id": "h3X_qMkAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Software Engineering",
+    "Master of Science in Software Systems Engineering"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Zina Houhamdi",
@@ -180,7 +211,14 @@
    "scopus_auid": "8051136100",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "ycuTOJsAAAAJ"
+   "google_scholar_id": "ycuTOJsAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Cybersecurity",
+    "Bachelor of Science in Software Engineering",
+    "Master of Science in Artificial Intelligence"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Muath Ziad Najib Al-Shaikh",
@@ -206,7 +244,11 @@
    "scopus_auid": "57188834531",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "oCOZvcEAAAAJ"
+   "google_scholar_id": "oCOZvcEAAAAJ",
+   "programs": [
+    "Bachelor of Science in Cybersecurity"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Nazih Khaddaj Mallat",
@@ -232,7 +274,11 @@
    "scopus_auid": "25031731100",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "JYO2Q5gAAAAJ"
+   "google_scholar_id": "JYO2Q5gAAAAJ",
+   "programs": [
+    "Bachelor of Science in Networks and Communication Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Haythem Bany Salameh",
@@ -258,7 +304,13 @@
    "scopus_auid": "57205146444",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "4YGH0KgAAAAJ"
+   "google_scholar_id": "4YGH0KgAAAAJ",
+   "programs": [
+    "Bachelor of Science in Networks and Communication Engineering",
+    "Master of Science in Artificial Intelligence",
+    "Master of Science in Software Systems Engineering"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Mohammad AlHassan",
@@ -283,7 +335,11 @@
    "scopus_auid": "16549090800",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "4uCR4AIAAAAJ"
+   "google_scholar_id": "4uCR4AIAAAAJ",
+   "programs": [
+    "Bachelor of Science in Civil Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Hussam Abdel-Karim Al-Rabai'ah",
@@ -309,7 +365,12 @@
    "scopus_auid": "57195346626",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "avzNse0AAAAJ"
+   "google_scholar_id": "avzNse0AAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Software Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mousa Bani Baker",
@@ -335,7 +396,11 @@
    "scopus_auid": "57203210357",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "x33qpQMAAAAJ"
+   "google_scholar_id": "x33qpQMAAAAJ",
+   "programs": [
+    "Bachelor of Science in Civil Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Layla Khalil Amaireh",
@@ -361,7 +426,11 @@
    "scopus_auid": "57203765026",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "I_MuoBkAAAAJ"
+   "google_scholar_id": "I_MuoBkAAAAJ",
+   "programs": [
+    "Bachelor of Science in Civil Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Issam Al-Azzoni",
@@ -386,7 +455,13 @@
    "scopus_auid": "25225108500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "SMiPOBoAAAAJ"
+   "google_scholar_id": "SMiPOBoAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Software Engineering",
+    "Master of Science in Artificial Intelligence"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Mohammad Sh. Daoud",
@@ -412,7 +487,12 @@
    "scopus_auid": "55539511200",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "WZCkBkMAAAAJ"
+   "google_scholar_id": "WZCkBkMAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Master of Science in Software Systems Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Muath Jodei Al Hasan",
@@ -437,7 +517,11 @@
    "scopus_auid": "35145370900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "-YBjZPcAAAAJ"
+   "google_scholar_id": "-YBjZPcAAAAJ",
+   "programs": [
+    "Bachelor of Science in Networks and Communication Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Khubaib Amjad Alam",
@@ -463,7 +547,11 @@
    "scopus_auid": "56504833200",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "s_BMc5YAAAAJ"
+   "google_scholar_id": "s_BMc5YAAAAJ",
+   "programs": [
+    "Bachelor of Science in Software Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Nuha Hamed Hamada",
@@ -489,7 +577,11 @@
    "scopus_auid": "56604692200",
    "auid_tier": "manual:high:first-last",
    "auid_candidates": [],
-   "google_scholar_id": "VXDlEyYAAAAJ"
+   "google_scholar_id": "VXDlEyYAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Ubaid Ullah",
@@ -514,7 +606,11 @@
    "scopus_auid": "57210185494",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "gPJaPK0AAAAJ"
+   "google_scholar_id": "gPJaPK0AAAAJ",
+   "programs": [
+    "Bachelor of Science in Networks and Communication Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Noor Aldeen Alawad",
@@ -540,7 +636,12 @@
    "scopus_auid": "57190494811",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "IPTnKWYAAAAJ"
+   "google_scholar_id": "IPTnKWYAAAAJ",
+   "programs": [
+    "Bachelor of Science in Artificial Intelligence and Robotics",
+    "Master of Science in Artificial Intelligence"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Armagan Elibol",
@@ -565,7 +666,12 @@
    "scopus_auid": "24733903500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "0K866ugAAAAJ"
+   "google_scholar_id": "0K866ugAAAAJ",
+   "programs": [
+    "Bachelor of Science in Artificial Intelligence and Robotics",
+    "Master of Science in Artificial Intelligence"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Salah Taamneh",
@@ -589,7 +695,9 @@
    ],
    "scopus_auid": "57189440588",
    "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Mohammad Khaled Al-Hattab",
@@ -615,7 +723,11 @@
    "scopus_auid": "24823991700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "XRk871UAAAAJ"
+   "google_scholar_id": "XRk871UAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Tarik Elamsy",
@@ -640,7 +752,11 @@
    "scopus_auid": "20433783900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "G67OoAgAAAAJ"
+   "google_scholar_id": "G67OoAgAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Tareq Mohamed Oshan",
@@ -666,7 +782,11 @@
    "scopus_auid": "58368817700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "gSeG_V8AAAAJ"
+   "google_scholar_id": "gSeG_V8AAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Omar Fawwaz Najm",
@@ -692,7 +812,11 @@
    "scopus_auid": "57189215293",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "5AZQhF8AAAAJ"
+   "google_scholar_id": "5AZQhF8AAAAJ",
+   "programs": [
+    "Bachelor of Science in Civil Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Muhammad Ilyas",
@@ -717,7 +841,11 @@
    "scopus_auid": "57203258353",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "io_LywsAAAAJ"
+   "google_scholar_id": "io_LywsAAAAJ",
+   "programs": [
+    "Bachelor of Science in Cybersecurity"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Haroon Mahmood",
@@ -742,7 +870,11 @@
    "scopus_auid": "57210927054",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "TJv3l2QAAAAJ"
+   "google_scholar_id": "TJv3l2QAAAAJ",
+   "programs": [
+    "Bachelor of Science in Cybersecurity"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Mahmoud Sharkawi",
@@ -767,7 +899,11 @@
    "scopus_auid": "57226579956",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "TnwW9mwAAAAJ"
+   "google_scholar_id": "TnwW9mwAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Suhib Bani Melhem",
@@ -793,7 +929,11 @@
    "scopus_auid": "56786127900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "GkB4a7QAAAAJ"
+   "google_scholar_id": "GkB4a7QAAAAJ",
+   "programs": [
+    "Bachelor of Science in Cybersecurity"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Huda Yousef Mohammad Alsheyab",
@@ -819,7 +959,9 @@
    "scopus_auid": "57210170292",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "VlE6G1YAAAAJ"
+   "google_scholar_id": "VlE6G1YAAAAJ",
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Mohammad Okour",
@@ -843,7 +985,9 @@
    ],
    "scopus_auid": "58204141100",
    "auid_tier": "manual:manual",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Ayman Hussien Odeh",
@@ -869,7 +1013,12 @@
    "scopus_auid": "57198420445",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "OJ1AodEAAAAJ"
+   "google_scholar_id": "OJ1AodEAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Software Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Musab Mustafa Hijazi",
@@ -895,7 +1044,12 @@
    "scopus_auid": "57222079373",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "TI5I1AYAAAAJ"
+   "google_scholar_id": "TI5I1AYAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Software Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Yazan Nawaf Al-Ahmed",
@@ -921,7 +1075,11 @@
    "scopus_auid": "58850551300",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "kIHpiFcAAAAJ"
+   "google_scholar_id": "kIHpiFcAAAAJ",
+   "programs": [
+    "Bachelor of Science in Computer Science"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Esra'a Sami Ahmad Hijah",
@@ -947,7 +1105,11 @@
    "scopus_auid": "58517120800",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "5dx7h7sAAAAJ"
+   "google_scholar_id": "5dx7h7sAAAAJ",
+   "programs": [
+    "Bachelor of Science in Civil Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Nura shifa musa",
@@ -973,7 +1135,9 @@
    "scopus_auid": "58078101700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "D8ehQDEAAAAJ"
+   "google_scholar_id": "D8ehQDEAAAAJ",
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Huda Alheeh",
@@ -997,7 +1161,12 @@
    ],
    "scopus_auid": "57929716900",
    "auid_tier": "high:aau-directory",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor of Science in Computer Engineering",
+    "Bachelor of Science in Networks and Communication Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Sawsan AlAwad",
@@ -1021,7 +1190,11 @@
    ],
    "scopus_auid": "60745295900",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor of Science in Computer Engineering"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Tamer Saleh",
@@ -1045,7 +1218,9 @@
    ],
    "scopus_auid": "60035417900",
    "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Mhd Akram Nazar",
@@ -1070,7 +1245,9 @@
    ],
    "scopus_auid": "60775098400",
    "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Esra Jamil Hasan Al-Nashash",
@@ -1096,7 +1273,12 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [
+    "Bachelor of Science in Computer Science",
+    "Bachelor of Science in Software Engineering"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Ayesha Siddique",
@@ -1120,7 +1302,9 @@
    ],
    "scopus_auid": "60775215000",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Yara Rashwan",
@@ -1145,7 +1329,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Yaman Sufian Albadawi",
@@ -1170,7 +1356,9 @@
    ],
    "scopus_auid": "57193070058",
    "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Fawzi Mohammed",
@@ -1204,7 +1392,9 @@
      "papers": 1
     }
    ],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Kenan Ismail Hassan",
@@ -1229,7 +1419,9 @@
    ],
    "scopus_auid": "60102726600",
    "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Dalia Rami Darweesh",
@@ -1255,7 +1447,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Zaid Hadya",
@@ -1280,7 +1474,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Nuha Hakim",
@@ -1305,7 +1501,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Lina Nahil Chehayber",
@@ -1331,7 +1529,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Shamma Husain Alblooshi",
@@ -1366,7 +1566,9 @@
      "papers": 1
     }
    ],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Mohammad Ahmad Ghattas",
@@ -1392,7 +1594,12 @@
    "scopus_auid": "36463516700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Lhpg7dsAAAAJ"
+   "google_scholar_id": "Lhpg7dsAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mosab Arafat",
@@ -1417,7 +1624,12 @@
    "scopus_auid": "56380109600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "qHOjk0gAAAAJ"
+   "google_scholar_id": "qHOjk0gAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Faris El-Dahiyat",
@@ -1442,7 +1654,13 @@
    "scopus_auid": "36005436900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "VKxLTKoAAAAJ"
+   "google_scholar_id": "VKxLTKoAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Clinical Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Mohammad Bostanudin",
@@ -1467,7 +1685,12 @@
    "scopus_auid": "57214623127",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "-0nwuwgAAAAJ"
+   "google_scholar_id": "-0nwuwgAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mahmoud Abu-Ghoush",
@@ -1492,7 +1715,11 @@
    "scopus_auid": "58641585300",
    "auid_tier": "manual:manual",
    "auid_candidates": [],
-   "google_scholar_id": "i18R0x4AAAAJ"
+   "google_scholar_id": "i18R0x4AAAAJ",
+   "programs": [
+    "Bachelor of Science in Nutrition and Dietetics"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Sehar Iqbal",
@@ -1517,7 +1744,11 @@
    "scopus_auid": "58987438800",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "gTmLXfwAAAAJ"
+   "google_scholar_id": "gTmLXfwAAAAJ",
+   "programs": [
+    "Bachelor of Science in Nutrition and Dietetics"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Rose Ghemrawi",
@@ -1542,7 +1773,12 @@
    "scopus_auid": "55643594600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "J5DQvlIAAAAJ"
+   "google_scholar_id": "J5DQvlIAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Khairi Mustafa Salem",
@@ -1568,7 +1804,12 @@
    "scopus_auid": "57209829585",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "KmLTQXkAAAAJ"
+   "google_scholar_id": "KmLTQXkAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Arshad Mahmood",
@@ -1593,7 +1834,12 @@
    "scopus_auid": "56706906200",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "qqisYJYAAAAJ"
+   "google_scholar_id": "qqisYJYAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohammad Majed Al Ahmad",
@@ -1618,7 +1864,12 @@
    "scopus_auid": "57216648477",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "IgH1h_EAAAAJ"
+   "google_scholar_id": "IgH1h_EAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Clinical Pharmacy"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Amira Shaaban Ahmed",
@@ -1644,7 +1895,12 @@
    "scopus_auid": "55331656100",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "ZyifriYAAAAJ"
+   "google_scholar_id": "ZyifriYAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Clinical Pharmacy"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Muhammad Sarfraz",
@@ -1669,7 +1925,12 @@
    "scopus_auid": "36775730700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "2CyowfIAAAAJ"
+   "google_scholar_id": "2CyowfIAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Nadia Hussain",
@@ -1694,7 +1955,12 @@
    "scopus_auid": "57898788600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "MvPrkI8AAAAJ"
+   "google_scholar_id": "MvPrkI8AAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Nezar Al Bataineh",
@@ -1719,7 +1985,12 @@
    "scopus_auid": "36766892200",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "4r73J4UAAAAJ"
+   "google_scholar_id": "4r73J4UAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Asim Ahmed Elnour Ahmed",
@@ -1745,7 +2016,12 @@
    "scopus_auid": "23004340700",
    "auid_tier": "manual:manual",
    "auid_candidates": [],
-   "google_scholar_id": "9B-hEpwAAAAJ"
+   "google_scholar_id": "9B-hEpwAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Clinical Pharmacy"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Azza Galal Ramadan",
@@ -1775,7 +2051,13 @@
    "scopus_auid": "57221312212",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "2_DvGj8AAAAJ"
+   "google_scholar_id": "2_DvGj8AAAAJ",
+   "programs": [
+    "Bachelor of Science in Nursing",
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Narmeen El Awwad",
@@ -1800,7 +2082,11 @@
    "scopus_auid": "14321071700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "m6fOkeYAAAAJ"
+   "google_scholar_id": "m6fOkeYAAAAJ",
+   "programs": [
+    "Bachelor of Science in Nutrition and Dietetics"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Razan Almomani",
@@ -1825,7 +2111,9 @@
    "scopus_auid": "58541873100",
    "auid_tier": "manual:medium:transliteration",
    "auid_candidates": [],
-   "google_scholar_id": "9vDjNiwAAAAJ"
+   "google_scholar_id": "9vDjNiwAAAAJ",
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Yazan K. Ranneh",
@@ -1851,7 +2139,11 @@
    "scopus_auid": "55771711000",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "19GrEAkAAAAJ"
+   "google_scholar_id": "19GrEAkAAAAJ",
+   "programs": [
+    "Bachelor of Science in Nutrition and Dietetics"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Taima Zakaria Alqudah",
@@ -1877,7 +2169,12 @@
    "scopus_auid": "55856345500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "-BcwNT8AAAAJ"
+   "google_scholar_id": "-BcwNT8AAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Saad Touqeer",
@@ -1902,7 +2199,12 @@
    "scopus_auid": "56237819700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "wh1l_FEAAAAJ"
+   "google_scholar_id": "wh1l_FEAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Awfa Alazzeh",
@@ -1927,7 +2229,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Ahmed Eissa",
@@ -1952,7 +2256,12 @@
    "scopus_auid": "57136518500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "l2i1OAsAAAAJ"
+   "google_scholar_id": "l2i1OAsAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Kareem Abdou",
@@ -1977,7 +2286,12 @@
    "scopus_auid": "57203212201",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "skY5178AAAAJ"
+   "google_scholar_id": "skY5178AAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy",
+    "Master of Science in Pharmaceutical Sciences"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Jumana Yousef Almegdadi",
@@ -2003,7 +2317,11 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [
+    "Bachelor of Science in Pharmacy"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Zakieh Abuelkhair",
@@ -2028,7 +2346,11 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [
+    "Bachelor of Science in Pharmacy"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Kawthar Mohammad Kayed",
@@ -2054,7 +2376,11 @@
    "scopus_auid": "57203727811",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Gti9xNIAAAAJ"
+   "google_scholar_id": "Gti9xNIAAAAJ",
+   "programs": [
+    "Bachelor of Science in Pharmacy"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Imranul Haq",
@@ -2078,7 +2404,9 @@
    ],
    "scopus_auid": "57213986306",
    "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Rami Abu Jarad",
@@ -2104,7 +2432,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Dana Obaid",
@@ -2129,7 +2459,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Shaima Emad Ahmad Hasan",
@@ -2180,7 +2512,9 @@
      "papers": 1
     }
    ],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Ahmad Ziad Al Meslamani",
@@ -2222,7 +2556,9 @@
      "papers": 2
     }
    ],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Lana Bustanji",
@@ -2246,7 +2582,9 @@
    ],
    "scopus_auid": "60232747200",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Nasrin Akther Rima",
@@ -2272,7 +2610,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Nour Dabbagh",
@@ -2296,7 +2636,9 @@
    ],
    "scopus_auid": "60694077400",
    "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Abdelrahman H. Abdeen",
@@ -2322,7 +2664,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Mohd Molham Sakkal",
@@ -2389,7 +2733,9 @@
      "papers": 1
     }
    ],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Khawla AbouHait",
@@ -2413,7 +2759,9 @@
    ],
    "scopus_auid": "60611061600",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Rahma Elsherif",
@@ -2437,7 +2785,9 @@
    ],
    "scopus_auid": "60414310300",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Pretty Jane",
@@ -2462,7 +2812,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Reem Abdalla Ali",
@@ -2487,7 +2839,9 @@
    ],
    "scopus_auid": "57211501723",
    "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Haya Yasser AlDakheel",
@@ -2513,7 +2867,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Vinnah Jenn Ibarrola",
@@ -2539,7 +2895,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Verna Princess Jimenez",
@@ -2564,7 +2922,9 @@
    ],
    "scopus_auid": "58773294700",
    "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Shambhavi Joshi",
@@ -2589,7 +2949,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Moustafa Kandeel",
@@ -2614,7 +2976,12 @@
    "scopus_auid": "57219603105",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "EQEQGyUAAAAJ"
+   "google_scholar_id": "EQEQGyUAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Private Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Ramzi Ahmad Madi",
@@ -2640,7 +3007,12 @@
    "scopus_auid": "36008823000",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Clq9wn8AAAAJ"
+   "google_scholar_id": "Clq9wn8AAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Private Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Ahmed Fekry Taha Moussa",
@@ -2665,7 +3037,13 @@
    ],
    "scopus_auid": "57232817000",
    "auid_tier": "high:aau-directory",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor of Law",
+    "Master of Criminal Science",
+    "Master of Public Law"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Ali Hadi Alwan Elobaidi",
@@ -2691,7 +3069,12 @@
    "scopus_auid": "57226685678",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "GwL1ssUAAAAJ"
+   "google_scholar_id": "GwL1ssUAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Private Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Tayil Mohmoud Sheyab",
@@ -2717,7 +3100,13 @@
    "scopus_auid": "57217286955",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "FgatXWkAAAAJ"
+   "google_scholar_id": "FgatXWkAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Criminal Science",
+    "Master of Public Law"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Tariq Abdel Rahman Kameel",
@@ -2743,7 +3132,12 @@
    "scopus_auid": "57212559077",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "-IHrIwQAAAAJ"
+   "google_scholar_id": "-IHrIwQAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Private Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Ibrahim Suleiman Alqatawneh",
@@ -2769,7 +3163,13 @@
    "scopus_auid": "57223391279",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "eRFGEMYAAAAJ"
+   "google_scholar_id": "eRFGEMYAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Criminal Science",
+    "Master of Public Law"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Ziad kh. Alenizi",
@@ -2795,7 +3195,12 @@
    "scopus_auid": "57210587518",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "rCnY57oAAAAJ"
+   "google_scholar_id": "rCnY57oAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Private Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Faisal Abdelhafez Shawabkeh",
@@ -2821,7 +3226,12 @@
    "scopus_auid": "57215425146",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "TB_EBcsAAAAJ"
+   "google_scholar_id": "TB_EBcsAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Public Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Fayez Mohammad Al Nusair",
@@ -2846,7 +3256,12 @@
    "scopus_auid": "57891349600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "0PFeN3EAAAAJ"
+   "google_scholar_id": "0PFeN3EAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Private Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Suhaib Walid Sharaiyra",
@@ -2872,7 +3287,12 @@
    "scopus_auid": "57208001697",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "mwNgf8YAAAAJ"
+   "google_scholar_id": "mwNgf8YAAAAJ",
+   "programs": [
+    "Bachelor of Law",
+    "Master of Private Law"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Amal Aboeida",
@@ -2897,7 +3317,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Wafa Al Zayyat",
@@ -2922,7 +3344,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Emad Mohammad Alghazo",
@@ -2948,7 +3372,12 @@
    "scopus_auid": "14324208400",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "k800oB0AAAAJ"
+   "google_scholar_id": "k800oB0AAAAJ",
+   "programs": [
+    "Bachelor of Education in Special Education",
+    "Master in Gifted and Talented Education"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Hanene Lahiani",
@@ -2973,7 +3402,12 @@
    "scopus_auid": "57211925114",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "7F-nimgAAAAJ"
+   "google_scholar_id": "7F-nimgAAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Bachelor of Education - English Language Teacher Education"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mona Kamal Ibrahim",
@@ -2999,7 +3433,12 @@
    "scopus_auid": "57193867771",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "RNFCJFcAAAAJ"
+   "google_scholar_id": "RNFCJFcAAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Suad Abdel Karim Alwaely",
@@ -3025,7 +3464,14 @@
    "scopus_auid": "57214223477",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "4bWq7Y8AAAAJ"
+   "google_scholar_id": "4bWq7Y8AAAAJ",
+   "programs": [
+    "Doctor of Philosophy in Education - Arabic Language Curricula and Teaching Methods",
+    "Master of Education in Arabic Language Curricula and Instruction",
+    "Master of Education in Islamic Education Curricula and Instruction",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Khawlah Mitib Al-Takhayneh",
@@ -3051,7 +3497,12 @@
    "scopus_auid": "57205494668",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "hwmWR8gAAAAJ"
+   "google_scholar_id": "hwmWR8gAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Sociology",
+    "Master of Arts in Applied Sociology"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Khaled Khamis Nser",
@@ -3077,7 +3528,12 @@
    "scopus_auid": "57211635227",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "aEgvb_sAAAAJ"
+   "google_scholar_id": "aEgvb_sAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Sociology",
+    "Master of Arts in Applied Sociology"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Samir Jabra Dukmak",
@@ -3103,7 +3559,13 @@
    "scopus_auid": "24400893500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "N48HmXUAAAAJ"
+   "google_scholar_id": "N48HmXUAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Psychology",
+    "Bachelor of Education in Special Education",
+    "Master in Gifted and Talented Education"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Samer Adnan Abdel-Hadi",
@@ -3129,7 +3591,13 @@
    "scopus_auid": "57200498605",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "fS_uDpgAAAAJ"
+   "google_scholar_id": "fS_uDpgAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Psychology",
+    "Master in Gifted and Talented Education",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Mohammad Husien Faqeeh",
@@ -3155,7 +3623,12 @@
    "scopus_auid": "57200332286",
    "auid_tier": "manual:high:exact-name",
    "auid_candidates": [],
-   "google_scholar_id": "-uuy_uUAAAAJ"
+   "google_scholar_id": "-uuy_uUAAAAJ",
+   "programs": [
+    "Bachelor in Arabic Language and Literature",
+    "Bachelor in Islamic Studies"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohammad Issa Al-Hourani",
@@ -3181,7 +3654,12 @@
    "scopus_auid": "57215611725",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "iEqDDBUAAAAJ"
+   "google_scholar_id": "iEqDDBUAAAAJ",
+   "programs": [
+    "Bachelor in Arabic Language and Literature",
+    "Bachelor in Islamic Studies"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Eman Ali Zaitoun",
@@ -3207,7 +3685,12 @@
    "scopus_auid": "57205345987",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "HautztsAAAAJ"
+   "google_scholar_id": "HautztsAAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Early Childhood Education",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Suzan Al Abidi",
@@ -3232,7 +3715,11 @@
    "scopus_auid": "57847529400",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "TMG25RkAAAAJ"
+   "google_scholar_id": "TMG25RkAAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Abdel Ghani Amar Remache",
@@ -3258,7 +3745,12 @@
    "scopus_auid": "56662200500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Jrn_hK0AAAAJ"
+   "google_scholar_id": "Jrn_hK0AAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Bachelor of Education - English Language Teacher Education"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohammad Salman Alkhazaleh",
@@ -3284,7 +3776,12 @@
    "scopus_auid": "57222655314",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "h2gGx08AAAAJ"
+   "google_scholar_id": "h2gGx08AAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Early Childhood Education",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohamed Elsayed Elzeiny",
@@ -3310,7 +3807,14 @@
    "scopus_auid": "58545542900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "w-59gWQAAAAJ"
+   "google_scholar_id": "w-59gWQAAAAJ",
+   "programs": [
+    "Doctor of Philosophy in Education - Arabic Language Curricula and Teaching Methods",
+    "Master of Education in Arabic Language Curricula and Instruction",
+    "Master of Education in Islamic Education Curricula and Instruction",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Ashraf Alazab",
@@ -3335,7 +3839,12 @@
    "scopus_auid": "57223987827",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "AkKvkZgAAAAJ"
+   "google_scholar_id": "AkKvkZgAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Sociology",
+    "Master of Arts in Applied Sociology"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Salwa Abdallah Al-Majali",
@@ -3361,7 +3870,13 @@
    "scopus_auid": "57203149400",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "5fu_3gkAAAAJ"
+   "google_scholar_id": "5fu_3gkAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Psychology",
+    "Bachelor of Education in Special Education",
+    "Master in Gifted and Talented Education"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Omran Ahmad Musleh",
@@ -3387,7 +3902,14 @@
    "scopus_auid": "57218879552",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "8mo_El4AAAAJ"
+   "google_scholar_id": "8mo_El4AAAAJ",
+   "programs": [
+    "Doctor of Philosophy in Education - Arabic Language Curricula and Teaching Methods",
+    "Master of Education in Arabic Language Curricula and Instruction",
+    "Master of Education in Islamic Education Curricula and Instruction",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Hussein Khazer Saleh Almajali",
@@ -3413,7 +3935,11 @@
    "scopus_auid": "57222368483",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "9JHxS6UAAAAJ"
+   "google_scholar_id": "9JHxS6UAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Psychology"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Imad Ibraheem KH.Mostafa",
@@ -3439,7 +3965,12 @@
    "scopus_auid": "57225930384",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "zHUJKD0AAAAJ"
+   "google_scholar_id": "zHUJKD0AAAAJ",
+   "programs": [
+    "Bachelor in Islamic Studies",
+    "Master of Education in Islamic Education Curricula and Instruction"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Hatem Ahmed Suleiman Al-qudah",
@@ -3465,7 +3996,14 @@
    "scopus_auid": "57221477618",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "hAhH6CwAAAAJ"
+   "google_scholar_id": "hAhH6CwAAAAJ",
+   "programs": [
+    "Doctor of Philosophy in Education - Arabic Language Curricula and Teaching Methods",
+    "Master of Education in Arabic Language Curricula and Instruction",
+    "Master of Education in Islamic Education Curricula and Instruction",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Enas Said Abulibdeh",
@@ -3491,7 +4029,11 @@
    "scopus_auid": "54395007700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "wcxqxtgAAAAJ"
+   "google_scholar_id": "wcxqxtgAAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Wafa' Abdemahdi Hazaymeh",
@@ -3517,7 +4059,13 @@
    "scopus_auid": "57211599555",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "qX3pTRgAAAAJ"
+   "google_scholar_id": "qX3pTRgAAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Postgraduate Professional Diploma in Early Childhood Education",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Razan Numan AlKhatib",
@@ -3543,7 +4091,12 @@
    "scopus_auid": "57213257593",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Ag1tcVkAAAAJ"
+   "google_scholar_id": "Ag1tcVkAAAAJ",
+   "programs": [
+    "Bachelor of Education in Special Education",
+    "Master in Gifted and Talented Education"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Rakan Alhrahsheh",
@@ -3567,7 +4120,12 @@
    ],
    "scopus_auid": "57201617442",
    "auid_tier": "high:aau-directory",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor of Arts in Applied Sociology",
+    "Master of Arts in Applied Sociology"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Nahla Alshalabi",
@@ -3592,7 +4150,11 @@
    "scopus_auid": "59963490300",
    "auid_tier": "manual:high:exact-name",
    "auid_candidates": [],
-   "google_scholar_id": "JH7asoIAAAAJ"
+   "google_scholar_id": "JH7asoIAAAAJ",
+   "programs": [
+    "Bachelor in Arabic Language and Literature"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Hussein Al Sarhan",
@@ -3616,7 +4178,12 @@
    ],
    "scopus_auid": "57210948993",
    "auid_tier": "high:aau-directory",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor of Arts in Applied Sociology",
+    "Master of Arts in Applied Sociology"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Abdoulaye Kaba",
@@ -3641,7 +4208,11 @@
    "scopus_auid": "36951393200",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "WEN9a-QAAAAJ"
+   "google_scholar_id": "WEN9a-QAAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Salem Khalil Al Aqtash",
@@ -3665,7 +4236,11 @@
    ],
    "scopus_auid": "57191485851",
    "auid_tier": "high:aau-directory",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor in Arabic Language and Literature"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Shirin Saleh Al-Odwan",
@@ -3691,7 +4266,12 @@
    "scopus_auid": "57215874181",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "ShuZaAsAAAAJ"
+   "google_scholar_id": "ShuZaAsAAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Sociology",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Dina Naser Tahat",
@@ -3717,7 +4297,12 @@
    "scopus_auid": "57210446636",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "sy6px5wAA"
+   "google_scholar_id": "sy6px5wAA",
+   "programs": [
+    "Bachelor of Arts in Applied Sociology",
+    "Master of Arts in Applied Sociology"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohannad Salameh Alkhalaileh",
@@ -3743,7 +4328,11 @@
    "scopus_auid": "55545318300",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "6yclcP8AAAAJ"
+   "google_scholar_id": "6yclcP8AAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Sura Qiqieh",
@@ -3768,7 +4357,13 @@
    "scopus_auid": "58538321700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "-V-Nz74AAAAJ"
+   "google_scholar_id": "-V-Nz74AAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Postgraduate Professional Diploma in Early Childhood Education",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Shirin Abdallah AlAmoor",
@@ -3794,7 +4389,11 @@
    "scopus_auid": "58612046300",
    "auid_tier": "manual:manual",
    "auid_candidates": [],
-   "google_scholar_id": "ApYtSM4AAAAJ"
+   "google_scholar_id": "ApYtSM4AAAAJ",
+   "programs": [
+    "Bachelor of Arts in Applied Psychology"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Maram Salah Jaradat",
@@ -3820,7 +4419,11 @@
    "scopus_auid": "57201584144",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "SeDEI34AAAAJ"
+   "google_scholar_id": "SeDEI34AAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Abdeldjalil Bouzenoun",
@@ -3845,7 +4448,13 @@
    "scopus_auid": "58712340900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "6E9yYvUAAAAJ"
+   "google_scholar_id": "6E9yYvUAAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Postgraduate Professional Diploma in Early Childhood Education",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Jihan Yousef",
@@ -3870,7 +4479,11 @@
    "scopus_auid": "58290704200",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "1LbDtTwAAAAJ"
+   "google_scholar_id": "1LbDtTwAAAAJ",
+   "programs": [
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Dima Farhat",
@@ -3895,7 +4508,12 @@
    "scopus_auid": "59390231700",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "5GXlrS4AAAAJ"
+   "google_scholar_id": "5GXlrS4AAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Postgraduate Professional Diploma in Teaching"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Amjad Alhenawi",
@@ -3920,7 +4538,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Amjad Kamal Owais",
@@ -3946,7 +4566,12 @@
    "scopus_auid": "57216809009",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "nZc9rVoAAAAJ"
+   "google_scholar_id": "nZc9rVoAAAAJ",
+   "programs": [
+    "Bachelor of Arts in English Language and Translation",
+    "Bachelor of Education - English Language Teacher Education"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Moath Kalef Al Omery",
@@ -3971,7 +4596,11 @@
    "scopus_auid": "57215814165",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "kl7Yd98AAAAJ"
+   "google_scholar_id": "kl7Yd98AAAAJ",
+   "programs": [
+    "Bachelor in Islamic Studies"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Reem Hamad Sala",
@@ -3996,7 +4625,9 @@
    ],
    "scopus_auid": "60685057700",
    "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Randa Radwan Abu Eida",
@@ -4022,7 +4653,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Mariam Alnaqbi",
@@ -4046,7 +4679,9 @@
    ],
    "scopus_auid": "60705794500",
    "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Zafar Husain",
@@ -4071,7 +4706,15 @@
    "scopus_auid": "8304977600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "wQj96lkAAAAJ"
+   "google_scholar_id": "wQj96lkAAAAJ",
+   "programs": [
+    "BBA in Business Analytics",
+    "BBA in Human Resource Management",
+    "BBA in Management",
+    "Doctor of Business Administration (DBA)",
+    "Master of Business Administration"
+   ],
+   "n_programs": 5
   },
   {
    "name": "Iffat Sabir",
@@ -4096,7 +4739,14 @@
    "scopus_auid": "57195561731",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "2ohepA4AAAAJ"
+   "google_scholar_id": "2ohepA4AAAAJ",
+   "programs": [
+    "BBA in Human Resource Management",
+    "BBA in Management",
+    "Doctor of Business Administration (DBA)",
+    "Master of Business Administration"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Jamil Razmak",
@@ -4121,7 +4771,14 @@
    "scopus_auid": "55820308400",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "hznXeRUAAAAJ"
+   "google_scholar_id": "hznXeRUAAAAJ",
+   "programs": [
+    "BBA in Business Analytics",
+    "BBA in Management",
+    "Master of Business Administration",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Riham Suleiman Muqattash",
@@ -4147,7 +4804,12 @@
    "scopus_auid": "57194492587",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "1-WnBnYAAAAJ"
+   "google_scholar_id": "1-WnBnYAAAAJ",
+   "programs": [
+    "BBA in Accounting",
+    "Master of Business Administration"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohammad Ahmad Al Omari",
@@ -4172,7 +4834,13 @@
    "scopus_auid": "55331479200",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "byGK83cAAAAJ"
+   "google_scholar_id": "byGK83cAAAAJ",
+   "programs": [
+    "BBA in Human Resource Management",
+    "BBA in Management",
+    "Master of Business Administration"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Abdelhafid Belarbi",
@@ -4197,7 +4865,13 @@
    "scopus_auid": "57193390999",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "6Pz9jXgAAAAJ"
+   "google_scholar_id": "6Pz9jXgAAAAJ",
+   "programs": [
+    "BBA in Finance and Banking",
+    "Master of Business Administration",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Habib Chabchoub",
@@ -4222,7 +4896,13 @@
    "scopus_auid": "56007650900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "0TnenGsAAAAJ"
+   "google_scholar_id": "0TnenGsAAAAJ",
+   "programs": [
+    "BBA in Management",
+    "Doctor of Business Administration (DBA)",
+    "Master of Business Administration"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Mohammed Nuseir",
@@ -4247,7 +4927,11 @@
    "scopus_auid": "26638922500",
    "auid_tier": "manual:high:exact-name",
    "auid_candidates": [],
-   "google_scholar_id": "CG0t050AAAAJ"
+   "google_scholar_id": "CG0t050AAAAJ",
+   "programs": [
+    "Master of Business Administration"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Amer Mohammad Jaser Qasem",
@@ -4273,7 +4957,13 @@
    "scopus_auid": "36155955800",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Ubf4X1kAAAAJ"
+   "google_scholar_id": "Ubf4X1kAAAAJ",
+   "programs": [
+    "BBA in Accounting",
+    "BBA in Finance and Banking",
+    "Master of Business Administration"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Belkacem Athamena",
@@ -4298,7 +4988,14 @@
    "scopus_auid": "6507855990",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "N0ePhIwAAAAJ"
+   "google_scholar_id": "N0ePhIwAAAAJ",
+   "programs": [
+    "BBA in Business Analytics",
+    "BBA in Management Information Systems",
+    "Master of Business Administration",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Mohanad Ali Halaweh",
@@ -4324,7 +5021,13 @@
    "scopus_auid": "25960639300",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "94i_H0AAAAAJ"
+   "google_scholar_id": "94i_H0AAAAAJ",
+   "programs": [
+    "BBA in Business Analytics",
+    "BBA in Management Information Systems",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Rania Badreldin Mostafa",
@@ -4350,7 +5053,12 @@
    "scopus_auid": "56829186600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "w8Z_T0oAAAAJ"
+   "google_scholar_id": "w8Z_T0oAAAAJ",
+   "programs": [
+    "BBA in Marketing",
+    "Master of Business Administration"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Shorouq F. Eletter",
@@ -4376,7 +5084,15 @@
    "scopus_auid": "55539589600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "pkeDpYEAAAAJ"
+   "google_scholar_id": "pkeDpYEAAAAJ",
+   "programs": [
+    "BBA in Business Analytics",
+    "BBA in Management",
+    "Doctor of Business Administration (DBA)",
+    "Master of Business Administration",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 5
   },
   {
    "name": "Ibrahim Niankara",
@@ -4401,7 +5117,14 @@
    "scopus_auid": "57200579496",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Wy1OKMUAAAAJ"
+   "google_scholar_id": "Wy1OKMUAAAAJ",
+   "programs": [
+    "BBA in Business Analytics",
+    "BBA in Finance and Banking",
+    "Master of Business Administration",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Mosab Tabash",
@@ -4426,7 +5149,12 @@
    "scopus_auid": "57194232562",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "r7aMwuMAAAAJ"
+   "google_scholar_id": "r7aMwuMAAAAJ",
+   "programs": [
+    "BBA in Finance and Banking",
+    "Master of Business Administration"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mariam Farooq",
@@ -4451,7 +5179,12 @@
    "scopus_auid": "56045457600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "ajPWBboAAAAJAAJ"
+   "google_scholar_id": "ajPWBboAAAAJAAJ",
+   "programs": [
+    "BBA in Human Resource Management",
+    "Master of Business Administration"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Kholoud Al Qeisi",
@@ -4476,7 +5209,12 @@
    "scopus_auid": "57222239635",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "zEhM-asAAAAJ"
+   "google_scholar_id": "zEhM-asAAAAJ",
+   "programs": [
+    "BBA in Marketing",
+    "Master of Business Administration"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Tahira Yasmin",
@@ -4501,7 +5239,12 @@
    "scopus_auid": "56406291900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "kmjluTgAAAAJ"
+   "google_scholar_id": "kmjluTgAAAAJ",
+   "programs": [
+    "BBA in Management",
+    "Master of Business Administration"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Wejdan Farhan",
@@ -4526,7 +5269,14 @@
    "scopus_auid": "57204125292",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "F3qMxeQAAAAJ"
+   "google_scholar_id": "F3qMxeQAAAAJ",
+   "programs": [
+    "BBA in Business Analytics",
+    "BBA in Management Information Systems",
+    "Master of Business Administration",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 4
   },
   {
    "name": "Mohamed Elmaghrabi",
@@ -4551,7 +5301,13 @@
    "scopus_auid": "57218997711",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "0OEoSnIAAAAJ"
+   "google_scholar_id": "0OEoSnIAAAAJ",
+   "programs": [
+    "BBA in Accounting",
+    "BBA in Finance and Banking",
+    "Master of Business Administration"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Mohammad Sharairi",
@@ -4576,7 +5332,12 @@
    "scopus_auid": "57213149438",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "bi-n4Q0AAAAJ"
+   "google_scholar_id": "bi-n4Q0AAAAJ",
+   "programs": [
+    "BBA in Accounting",
+    "Master of Business Administration"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Maha Nayef Rahrouh",
@@ -4602,7 +5363,13 @@
    "scopus_auid": "6504655800",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "hV4ME8EAAAAJ"
+   "google_scholar_id": "hV4ME8EAAAAJ",
+   "programs": [
+    "BBA in Finance and Banking",
+    "Master of Business Administration",
+    "Master of Science in Business Data Analytics"
+   ],
+   "n_programs": 3
   },
   {
    "name": "Yasin Khalil Karsoo",
@@ -4628,7 +5395,12 @@
    "scopus_auid": "58965168900",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Z1OtNH4AAAAJ"
+   "google_scholar_id": "Z1OtNH4AAAAJ",
+   "programs": [
+    "BBA in Human Resource Management",
+    "BBA in Management"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohamed Ahmed Shaker Ahmed",
@@ -4654,7 +5426,12 @@
    "scopus_auid": "57217167465",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "rMVAnQYAAAAJ"
+   "google_scholar_id": "rMVAnQYAAAAJ",
+   "programs": [
+    "BBA in Accounting",
+    "BBA in Finance and Banking"
+   ],
+   "n_programs": 2
   },
   {
    "name": "Mohsin Murtaza",
@@ -4679,7 +5456,9 @@
    "scopus_auid": "57660474800",
    "auid_tier": "manual:manual",
    "auid_candidates": [],
-   "google_scholar_id": "lLDYpPoAAAAJ"
+   "google_scholar_id": "lLDYpPoAAAAJ",
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Sajjad Ahamed",
@@ -4713,7 +5492,9 @@
      "papers": 2
     }
    ],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Manar Hamed",
@@ -4737,7 +5518,9 @@
    ],
    "scopus_auid": "26026940800",
    "auid_tier": "manual:high:surname-initial",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Amal Mohamed Almessabi",
@@ -4763,7 +5546,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Fidha Parvin",
@@ -4788,7 +5573,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Malak Hidq",
@@ -4813,7 +5600,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Rahima Aissani",
@@ -4838,7 +5627,17 @@
    "scopus_auid": "57201681276",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Pc37sxAAAAAJ"
+   "google_scholar_id": "Pc37sxAAAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Mohammed Taher Nuseir",
@@ -4864,7 +5663,16 @@
    "scopus_auid": "26638922500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "CG0t050AAAAJ"
+   "google_scholar_id": "CG0t050AAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 6
   },
   {
    "name": "Rania Abdallah",
@@ -4889,7 +5697,17 @@
    "scopus_auid": "58516968500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "WgyCSzcAAAAJ"
+   "google_scholar_id": "WgyCSzcAAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Muhammad noor aladwan",
@@ -4915,7 +5733,17 @@
    "scopus_auid": "57212214124",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "GGaP2bcAAAAJ"
+   "google_scholar_id": "GGaP2bcAAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Reneh Abokhoza",
@@ -4939,7 +5767,17 @@
    ],
    "scopus_auid": "57217288397",
    "auid_tier": "high:aau-directory",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Nahida Makhadmeh",
@@ -4964,7 +5802,17 @@
    "scopus_auid": "56223821600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "Y08Re8QAAAAJ"
+   "google_scholar_id": "Y08Re8QAAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Ahmad AlJumah",
@@ -4989,7 +5837,17 @@
    "scopus_auid": "57200986764",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "ldgPnGkAAAAJ"
+   "google_scholar_id": "ldgPnGkAAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Sawsan Taha",
@@ -5014,7 +5872,17 @@
    "scopus_auid": "58079096600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "xiRQosMAAAAJ"
+   "google_scholar_id": "xiRQosMAAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Amer Khaled Ahmed",
@@ -5040,7 +5908,17 @@
    "scopus_auid": "57821359000",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "lCYPI5QAAAAJ"
+   "google_scholar_id": "lCYPI5QAAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations",
+    "MA in Digital Media and Public Relations",
+    "Master of Arts in Digital Media and Public Relations"
+   ],
+   "n_programs": 7
   },
   {
    "name": "Ala'aldin Zahra",
@@ -5064,7 +5942,15 @@
    ],
    "scopus_auid": "58105071500",
    "auid_tier": "high:aau-directory",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations"
+   ],
+   "n_programs": 5
   },
   {
    "name": "Farah Saboune",
@@ -5089,7 +5975,15 @@
    "scopus_auid": "58244574400",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "vcBSbS8AAAAJ"
+   "google_scholar_id": "vcBSbS8AAAAJ",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations"
+   ],
+   "n_programs": 5
   },
   {
    "name": "Haneen Shabaneh",
@@ -5114,7 +6008,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Reem Mohamed Shehada",
@@ -5140,7 +6036,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Tasnim Koufi",
@@ -5164,7 +6062,9 @@
    ],
    "scopus_auid": "60572178700",
    "auid_tier": "manual:high:exact-name",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Geron Galela Ronquillo",
@@ -5190,7 +6090,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Firas Abedal-Rahman Alquran",
@@ -5216,7 +6118,11 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [
+    "Bachelor of Dental Surgery"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Sabrin Azim",
@@ -5241,7 +6147,11 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [
+    "Bachelor of Dental Surgery"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Niazur Rahman",
@@ -5266,7 +6176,11 @@
    "scopus_auid": "14825540600",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "YGrUVM4AAAAJ"
+   "google_scholar_id": "YGrUVM4AAAAJ",
+   "programs": [
+    "Bachelor of Dental Surgery"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Sara Gad",
@@ -5291,7 +6205,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Tala Alaa Altamimi",
@@ -5317,7 +6233,9 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Lo'ai AbuSharour",
@@ -5342,7 +6260,11 @@
    "scopus_auid": "57192697518",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "google_scholar_id": "2cj2BWwAAAAJ"
+   "google_scholar_id": "2cj2BWwAAAAJ",
+   "programs": [
+    "Bachelor of Science in Nursing"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Nadeen Alshakhshir",
@@ -5367,7 +6289,11 @@
    "scopus_auid": "",
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
-   "profile_checked": true
+   "profile_checked": true,
+   "programs": [
+    "Bachelor of Science in Nursing"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Alaa Masoud",
@@ -5391,7 +6317,9 @@
    ],
    "scopus_auid": "56121354400",
    "auid_tier": "manual:medium:transliteration",
-   "auid_candidates": []
+   "auid_candidates": [],
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Anan S. Jarab",
@@ -5408,7 +6336,9 @@
    "scopus_auid": "",
    "auid_tier": "",
    "auid_candidates": [],
-   "added_from_page": true
+   "added_from_page": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Eid Abo Hamza",
@@ -5425,7 +6355,9 @@
    "scopus_auid": "",
    "auid_tier": "",
    "auid_candidates": [],
-   "added_from_page": true
+   "added_from_page": true,
+   "programs": [],
+   "n_programs": 0
   },
   {
    "name": "Majdi Sawalha",
@@ -5442,8 +6374,75 @@
    "scopus_auid": "",
    "auid_tier": "",
    "auid_candidates": [],
-   "added_from_page": true
+   "added_from_page": true,
+   "programs": [],
+   "n_programs": 0
+  },
+  {
+   "name": "Abdullah Abdullatif",
+   "raw_name": "Abdullah Abdullatif, Ph.D",
+   "college": "College of Law",
+   "colleges": [
+    "College of Law"
+   ],
+   "title": "",
+   "department": "",
+   "email": "",
+   "email_kind": "",
+   "profile_url": "",
+   "staff_type": "academic",
+   "is_academic": true,
+   "scopus_auid": "",
+   "google_scholar_id": "",
+   "auid_tier": "none:no-scopus-record",
+   "auid_candidates": [],
+   "name_key": "abdallah abdullatif",
+   "initial_keys": [
+    "abdallah abdullatif|a",
+    "abdallah|a",
+    "abdullatif|a"
+   ],
+   "added_from": "aau directory",
+   "programs": [
+    "Bachelor of Law"
+   ],
+   "n_programs": 1
+  },
+  {
+   "name": "Ala’aldin Zahra",
+   "raw_name": "Ala’aldin Zahra, PhD",
+   "college": "College of Communication and Media",
+   "colleges": [
+    "College of Communication and Media"
+   ],
+   "title": "",
+   "department": "",
+   "email": "",
+   "email_kind": "",
+   "profile_url": "",
+   "staff_type": "academic",
+   "is_academic": true,
+   "scopus_auid": "58105071500",
+   "google_scholar_id": "KDyXst8AAAAJ",
+   "auid_tier": "high:aau-directory",
+   "auid_candidates": [],
+   "name_key": "ala aldin zahra",
+   "initial_keys": [
+    "ala aldin zahra|a",
+    "ala aldin|z",
+    "zahra|a"
+   ],
+   "added_from": "aau directory",
+   "programs": [
+    "Bachelor of Advertising and Digital Marketing",
+    "Bachelor of Communication and Crisis",
+    "Bachelor of Digital Media",
+    "Bachelor of Mass Communication and Media",
+    "Bachelor of Public Relations"
+   ],
+   "n_programs": 5
   }
  ],
- "id_source": "Scopus author ids as Al Ain University publishes them on its own directory cards, verified to resolve to a real author before being stored."
+ "id_source": "Scopus author ids as Al Ain University publishes them on its own directory cards, verified to resolve to a real author before being stored.",
+ "programme_source": "Programmes as AAU lists them: its directory read with a browser (the filter does not work over HTTP) unioned with each college subsite's own filter. Verified pair by pair against the CSVs."
 }

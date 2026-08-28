@@ -1038,7 +1038,22 @@ ROUND2 = [
      "      papersWhy: a.papers ? (a.papers + ' papers in this window')\n"
      "        : (a.why_no_papers || 'no papers in this window'),\n"
      "      flag: a.no_scopus ? 'no Scopus record' : '',\n"
-     "      flagShow: a.no_scopus ? 'inline-block' : 'none',\n    }));"),
+     "      flagShow: a.no_scopus ? 'inline-block' : 'none',\n"
+     # The programme is what the roster is filed BY, and it was nowhere on the
+     # screen that lists the roster.
+     "      progs: (a.programs && a.programs.length)\n"
+     "        ? a.programs.join(' \\u00b7 ')\n"
+     "        : 'AAU lists no programme for them',\n"
+     "      progsColor: (a.programs && a.programs.length) ? '#63736A' : '#B0B9B4',\n"
+     "    }));"),
+
+    ("roster: each person shows the programme they are filed under",
+     '<div style="font-size:13px;color:#3A4A41">{{ a.title }}</div>',
+     '<div><div style="font-size:13px;color:#3A4A41">{{ a.title }}</div>\n'
+     '            <div title="{{ a.progs }}" style="font-size:11.5px;'
+     'color:{{ a.progsColor }};margin-top:3px;line-height:1.35;'
+     'overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
+     '{{ a.progs }}</div></div>'),
 
     ("roster: and marks anyone AAU publishes no Scopus record for",
      '<button type="button" sc-camel-on-click="{{ a.open }}" style="text-align:left;'

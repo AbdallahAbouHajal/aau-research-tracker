@@ -318,6 +318,12 @@ def build(roster_people=None, run_id=None):
             "auid": auid,
             "tag": "Faculty" if hit else "Student / external",
             "slug": _slug(rec.get("directory_url"), name),
+            # From the roster record this author already matched, by the same
+            # transliteration that got them their college. Keying on the name
+            # or the slug instead loses everyone whose census spelling differs
+            # -- "Khawlah M. AL-Tkhayneh" never meets "Khawlah Mitib
+            # Al-Takhayneh", and she has two programmes.
+            "programs": list((hit or {}).get("programs") or []),
             # Not on the roster, but publishing like senior staff. The rule
             # says they are "outside faculty" and that stands -- but Ghaleb El
             # Refae (AAU's chancellor, 50 papers) reading as a student is how
@@ -359,6 +365,7 @@ def build(roster_people=None, run_id=None):
             "tag": "Faculty",
             "slug": _slug(r.get("profile_url"), r.get("name") or ""),
             "suggest": False,
+            "programs": list(r.get("programs") or []),
         })
         seen_auid[auid] = authors[-1]
         papers_map[k] = rows[:50]
@@ -389,6 +396,7 @@ def build(roster_people=None, run_id=None):
             "tag": "Faculty",
             "slug": _slug(r.get("profile_url"), r.get("name") or ""),
             "suggest": False,
+            "programs": list(r.get("programs") or []),
             "scholar": d_.get("google_scholar_id") or "",
             "listed_by_aau": bool(d_),
             "no_scopus": not aid,
@@ -476,9 +484,26 @@ def build(roster_people=None, run_id=None):
     prog_blob = PROG.load() or {}
     by_slug = {k.lower(): v for k, v in (prog_blob.get("by_slug") or {}).items()}
     campus = {k.lower(): v for k, v in (prog_blob.get("campus") or {}).items()}
+    # The roster now carries each person's programmes itself, written from
+    # AAU's own directory and verified pair by pair. Read them from there
+    # first: joining on the profile slug reached only 119 of 556 authors,
+    # because a slug is missing wherever the census knows a person the
+    # directory scrape did not.
+    ros_progs = {}
+    for r in roster:
+        if not r.get("programs"):
+            continue
+        ros_progs[X.name_key(r.get("name") or "")] = r["programs"]
+        u = r.get("profile_url") or ""
+        if "/staff/" in u:
+            ros_progs[u.rstrip("/").rsplit("/", 1)[-1].lower()] = r["programs"]
     for a in authors:
-        a["programs"] = by_slug.get((a.get("slug") or "").lower(), [])
-        a["campus"] = campus.get((a.get("slug") or "").lower(), [])
+        sl = (a.get("slug") or "").lower()
+        a["programs"] = (a.get("programs")
+                         or ros_progs.get(sl)
+                         or ros_progs.get(X.name_key(a.get("name") or ""))
+                         or by_slug.get(sl, []))
+        a["campus"] = campus.get(sl, [])
 
     programs = []
     a_by_slug = {}

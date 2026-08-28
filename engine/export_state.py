@@ -201,6 +201,24 @@ def main():
     # time it is opened and not before.
     try:
         rb = RUNS.load(blob.get("run")) or {}
+        # Which Al Ain people are on each paper, and from which college. The
+        # run already knows: every author row carries the eid, the name and --
+        # for anyone matched to the roster -- their college. Collected per
+        # paper so the list can name them instead of only counting them.
+        who = {}
+        for sl in (rb.get("slots") or []):
+            eid = sl.get("eid")
+            if not eid or sl.get("role") != "Faculty":
+                continue
+            nm = (sl.get("author_name") or "").strip()
+            if not nm:
+                continue
+            col = (sl.get("college") or "").replace("College of ", "").strip()
+            seen = who.setdefault(eid, [])
+            if not any(x[0] == nm for x in seen):
+                seen.append([nm, col])
+        for v in who.values():
+            v.sort(key=lambda x: x[0])
         rows = []
         for eid, p_ in (rb.get("papers") or {}).items():
             rows.append([
@@ -212,13 +230,15 @@ def main():
                 (p_.get("doi") or "").strip(),
                 eid,
                 1 if p_.get("found_via") == "faculty_sweep" else 0,
+                who.get(eid) or [],
             ])
         rows.sort(key=lambda r: (-r[2], -r[3]))
         pp = os.path.join(os.path.dirname(out), "papers.json")
         with open(pp, "w", encoding="utf-8") as fh:
             json.dump({"generated": blob["generated"], "run": blob.get("run"),
                        "columns": ["title", "journal", "year", "cited_by",
-                                   "type", "doi", "eid", "found_by_sweep"],
+                                   "type", "doi", "eid", "found_by_sweep",
+                                   "aau_authors"],
                        "papers": rows},
                       fh, ensure_ascii=False, separators=(",", ":"))
         print("  papers    %s (%d papers, %.0f KB)"
