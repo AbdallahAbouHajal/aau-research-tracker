@@ -11,7 +11,7 @@ It needs only what stage 5 wrote out -- which papers already carry their
 authors' printed addresses, which AAU colleges are on each paper, and each
 paper's Scopus id -- plus the published network.json to rebuild.
 
-    python3 fill_institutions.py --handoff .handoff.json --out ../docs/data
+    python3 fill_institutions.py --handoff handoff.json --out ../docs/data
 """
 import argparse
 import json
@@ -29,7 +29,7 @@ import network as NET       # noqa: E402
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--handoff", default=os.path.join(ROOT, ".handoff.json"))
+    ap.add_argument("--handoff", default=os.path.join(ROOT, "handoff.json"))
     ap.add_argument("--out", default=os.path.join(ROOT, "..", "docs", "data"))
     ap.add_argument("--budget", type=int, default=3000)
     a = ap.parse_args()

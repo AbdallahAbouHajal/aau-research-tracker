@@ -199,7 +199,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: handoff
-          path: engine/.handoff.json
+          path: engine/handoff.json
           if-no-files-found: ignore
           retention-days: 1
 
@@ -295,15 +295,15 @@ jobs:
           AAU_CACHE: ${{ github.workspace }}/engine/.cache
           SCOPUS_KEYS_FILE: ${{ github.workspace }}/engine/config/scopus_keys.json
         run: |
-          if [ ! -f .handoff.json ]; then
+          if [ ! -f handoff.json ]; then
             echo "no hand-off from the census run; nothing to do"; exit 0
           fi
-          python fill_institutions.py --handoff .handoff.json \
+          python fill_institutions.py --handoff handoff.json \
             --out "$GITHUB_WORKSPACE/docs/data" --budget 3000
 
       - name: Publish the collaboration data
         run: |
-          rm -f engine/config/scopus_keys.json engine/.handoff.json
+          rm -f engine/config/scopus_keys.json engine/handoff.json
           if git diff --quiet -- docs/data/network.json; then
             echo "the collaboration data did not change"; exit 0
           fi

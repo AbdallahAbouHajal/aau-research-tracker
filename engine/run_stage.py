@@ -182,7 +182,11 @@ def main():
             hand = {"run": b["run"], "printed": have, "colleges": cols,
                     "papers": {e: {"sid": str(p_.get("scopus_id") or "")}
                                for e, p_ in b["papers"].items()}}
-            hp = os.environ.get("AAU_HANDOFF") or os.path.join(ROOT, ".handoff.json")
+            # NOT a dotfile: actions/upload-artifact excludes hidden files
+            # by default, so ".handoff.json" was written, reported, and
+            # then silently not uploaded -- the institutions job found
+            # nothing and "succeeded" in nine seconds.
+            hp = os.environ.get("AAU_HANDOFF") or os.path.join(ROOT, "handoff.json")
             with open(hp, "w", encoding="utf-8") as fh:
                 json.dump(hand, fh, separators=(",", ":"))
             log("%d papers already carry their authors' addresses; %d wait on "

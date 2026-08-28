@@ -9,3 +9,4 @@ engine/data/runs/
 worker/.wrangler/
 .wrangler/
 engine/data/directory_programs.json
+engine/handoff.json
