@@ -41,6 +41,12 @@ DATA = os.path.join(ROOT, "data")
 ROSTER = os.path.join(DATA, "roster.json")
 PEOPLE_CSV = os.path.join(DATA, "directory_people.csv")
 PROG_CSV = os.path.join(DATA, "programme_membership.csv")
+# The screenshots Abdallah took of every college x programme, with the
+# staff each one lists, exported alongside them. This is the directory
+# read by a person rather than inferred, so it is THE answer for
+# programme membership and it is used exclusively -- not unioned with
+# anything, because a union would put back the very rows it corrects.
+INDEX_CSV = os.path.join(DATA, "programme_index.csv")
 PROGRAMS = os.path.join(DATA, "programs.json")
 
 _DEGREE = re.compile(r"\s*,?\s*\b(Ph\.?\s?D|M\.?\s?Sc|MBA|MD|DDS|MA|M\.A)\.?\s*$", re.I)
@@ -58,7 +64,13 @@ COLLEGE = {
 
 
 def clean(n):
-    return _DEGREE.sub("", (n or "").strip()).strip()
+    """Strip a degree suffix and collapse whitespace.
+
+    "Salem Khalil  Al Aqtash" carries a double space in the directory and a
+    single one on the roster; without collapsing it the two never met and his
+    programme was the one pair out of 355 that failed to land.
+    """
+    return re.sub(r"\s+", " ", _DEGREE.sub("", (n or "").strip())).strip()
 
 
 def prog_key(name):
@@ -80,6 +92,31 @@ def finder(people):
                 return q
         return None
     return find
+
+
+def read_index():
+    """-> {cleaned name: [programme, ...]} from the screenshot index."""
+    if not os.path.exists(INDEX_CSV):
+        return None
+    want = {}
+    with open(INDEX_CSV, newline="", encoding="utf-8-sig") as fh:
+        for r in csv.DictReader(fh):
+            prog = (r.get("Program") or "").strip()
+            if not prog:
+                continue
+            for nm in (r.get("Staff names") or "").split(";"):
+                nm = clean(nm)
+                if nm:
+                    want.setdefault(nm, []).append(prog)
+    for nm in want:
+        seen, out = set(), []
+        for pr in want[nm]:
+            k = prog_key(pr)
+            if k not in seen:
+                seen.add(k)
+                out.append(pr)
+        want[nm] = sorted(out)
+    return want
 
 
 def read_csv_programmes():
@@ -116,8 +153,14 @@ def main():
     people = blob["people"]
     find = finder(people)
 
-    want = read_csv_programmes()
-    print("%d people carry a programme in the CSV files" % len(want))
+    want = read_index()
+    exclusive = want is not None
+    if exclusive:
+        print("%d people carry a programme in the screenshot index "
+              "(used exclusively)" % len(want))
+    else:
+        want = read_csv_programmes()
+        print("%d people carry a programme in the CSV files" % len(want))
 
     # the college subsites, unioned in
     subs = {}
@@ -201,19 +244,33 @@ def main():
                 p["auid_candidates"] = []
                 adopted["scopus"] += 1
 
+        # Walk the INDEX and find each person, rather than looking the index
+        # up under the roster's spelling of their name -- the two differ often
+        # enough that the second direction silently drops people.
         for p in people:
-            got, seen = [], set()
-            for src in (want.get(clean(p.get("name"))) or [],
-                        subs.get(slug(p.get("profile_url"))) or []):
-                for pr in src:
-                    k = prog_key(pr)
-                    if k not in seen:
-                        seen.add(k)
-                        got.append(pr)
+            p["programs"] = []
+            p["n_programs"] = 0
+        for nm, progs in want.items():
+            p = find(nm)
+            if not p:
+                continue
+            seen, got = set(), list(p.get("programs") or [])
+            for pr in got:
+                seen.add(prog_key(pr))
+            for pr in progs:
+                k = prog_key(pr)
+                if k not in seen:
+                    seen.add(k)
+                    got.append(pr)
             p["programs"] = sorted(got)
             p["n_programs"] = len(got)
-            if got:
-                wrote += 1
+        if not exclusive:
+            for p in people:
+                for pr in (subs.get(slug(p.get("profile_url"))) or []):
+                    if prog_key(pr) not in {prog_key(x) for x in p["programs"]}:
+                        p["programs"] = sorted(p["programs"] + [pr])
+                        p["n_programs"] = len(p["programs"])
+        wrote = sum(1 for p in people if p.get("programs"))
         # A person AAU's directory lists who is not on the roster is a person
         # the roster is missing -- the directory is the university's own
         # statement of who works there. The verify loop below is what found
@@ -290,6 +347,51 @@ def main():
         print("wrote programmes onto %d of %d roster people "
               "(%d added from the directory, %d matched nobody)"
               % (wrote, len(people), len(added_people), unmatched))
+
+    # The programme chips and their staff counts are drawn from
+    # programs.json, so it has to be rebuilt from the same index -- otherwise
+    # the chip says "4 staff" from one source while the list under it shows
+    # whoever the other source happened to place, which is exactly the
+    # disagreement Abdallah found on Nutrition and Dietetics.
+    if not check_only and exclusive and os.path.exists(PROGRAMS):
+        pj = json.load(open(PROGRAMS, encoding="utf-8"))
+        by_prog = {}
+        with open(INDEX_CSV, newline="", encoding="utf-8-sig") as fh:
+            for r in csv.DictReader(fh):
+                names_ = [clean(x) for x in (r.get("Staff names") or "").split(";")]
+                by_prog[prog_key(r.get("Program") or "")] = [x for x in names_ if x]
+        slug_of = {}
+        for p_ in people:
+            u = p_.get("profile_url") or ""
+            if "/staff/" in u:
+                slug_of[X.name_key(p_.get("name") or "")] = \
+                    u.rstrip("/").rsplit("/", 1)[-1]
+        placed = 0
+        for rec in pj.get("programs") or []:
+            names_ = by_prog.get(prog_key(rec.get("name") or ""))
+            if names_ is None:
+                continue
+            slugs = []
+            for nm in names_:
+                q = find(nm)
+                if not q:
+                    continue
+                sl = slug_of.get(X.name_key(q.get("name") or ""))
+                if sl and sl not in slugs:
+                    slugs.append(sl)
+            rec["staff"] = slugs
+            rec["from_index"] = True
+            rec.pop("assumed", None)
+            placed += len(slugs)
+        by_slug = {}
+        for rec in pj.get("programs") or []:
+            for sl in rec.get("staff") or []:
+                by_slug.setdefault(sl.lower(), []).append(rec["name"])
+        pj["by_slug"] = by_slug
+        json.dump(pj, open(PROGRAMS, "w", encoding="utf-8"),
+                  ensure_ascii=False, separators=(",", ":"))
+        print("rebuilt programs.json from the index: %d placements over "
+              "%d people" % (placed, len(by_slug)))
 
     # ---- verify: every CSV pair must be readable back off the roster -------
     blob = json.load(open(ROSTER, encoding="utf-8"))

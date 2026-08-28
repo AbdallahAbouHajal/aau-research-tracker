@@ -508,6 +508,13 @@ VALS = r"""
             title: r[0] || '(untitled)', journal: r[1] || '', year: r[2],
             cited: (r[3] || 0).toLocaleString(),
             kind: r[4] || '', sweep: r[7] ? 'found by author' : '',
+            aau: (r[8] && r[8].length)
+              ? r[8].map(x => x[1] ? (x[0] + ' (' + x[1] + ')') : x[0]).join(', ')
+              : '\u2014',
+            aauTitle: (r[8] && r[8].length)
+              ? ('Al Ain authors on this paper: '
+                 + r[8].map(x => x[1] ? (x[0] + ' \u2014 ' + x[1]) : x[0]).join('; '))
+              : 'No Al Ain author on this paper was matched to the roster.',
             sweepShow: r[7] ? 'inline-block' : 'none',
             url: r[5] ? 'https://doi.org/' + r[5] : '',
             urlShow: r[5] ? 'inline' : 'none',
@@ -1282,18 +1289,18 @@ ROUND2 = [
      'font-family:Archivo,sans-serif;font-size:13.5px;color:#1A1A1A" />\n'
      '    </div>\n'
      '    <div data-rise style="animation-delay:.05s;background:#ffffff;border-radius:8px;padding:20px 22px">\n'
-     '      <div style="display:grid;grid-template-columns:1fr 300px 62px 74px '
-     '92px;gap:14px;font-size:11.5px;font-weight:700;letter-spacing:.06em;'
-     'text-transform:uppercase;color:#63736A;padding-bottom:10px;'
-     'border-bottom:1px solid #E4EAE6">\n'
-     '        <div>Title</div><div>Journal</div>'
+     '      <div style="display:grid;grid-template-columns:1.35fr 1fr 230px '
+     '58px 66px;gap:14px;font-size:11.5px;font-weight:700;'
+     'letter-spacing:.06em;text-transform:uppercase;color:#63736A;'
+     'padding-bottom:10px;border-bottom:1px solid #E4EAE6">\n'
+     '        <div>Title</div><div>Al Ain authors</div><div>Journal</div>'
      '<div style="text-align:right">Year</div>'
-     '<div style="text-align:right">Cited</div><div>Type</div>\n'
+     '<div style="text-align:right">Cited</div>\n'
      '      </div>\n'
      '      <sc-for list="{{ corpusRows }}" as="r" hint-placeholder-count="12">\n'
-     '        <div style="display:grid;grid-template-columns:1fr 300px 62px '
-     '74px 92px;gap:14px;align-items:center;padding:9px 0;'
-     'border-bottom:1px solid #F0F3F1">\n'
+     '        <div title="{{ r.kind }}" style="display:grid;'
+     'grid-template-columns:1.35fr 1fr 230px 58px 66px;gap:14px;'
+     'align-items:start;padding:9px 0;border-bottom:1px solid #F0F3F1">\n'
      '          <div style="font-size:13.5px;color:#1A1A1A;line-height:1.4">'
      '{{ r.title }}\n'
      '            <a href="{{ r.url }}" target="_blank" rel="noopener" '
@@ -1305,13 +1312,14 @@ ROUND2 = [
      'padding:1px 7px;border:1px solid #C3D6CA;border-radius:9px;'
      'font-size:11px;color:#4E7A5F">{{ r.sweep }}</span>\n'
      '          </div>\n'
+     '          <div title="{{ r.aauTitle }}" style="font-size:12.5px;'
+     'color:#3A4A41;line-height:1.4">{{ r.aau }}</div>\n'
      '          <div style="font-size:12.5px;color:#63736A;overflow:hidden;'
      'text-overflow:ellipsis;white-space:nowrap">{{ r.journal }}</div>\n'
      '          <div style="font-size:13px;text-align:right;'
      'font-variant-numeric:tabular-nums">{{ r.year }}</div>\n'
      '          <div style="font-size:13px;text-align:right;'
      'font-variant-numeric:tabular-nums">{{ r.cited }}</div>\n'
-     '          <div style="font-size:12px;color:#63736A">{{ r.kind }}</div>\n'
      '        </div>\n'
      '      </sc-for>\n'
      '      <div style="padding-top:14px;text-align:center">\n'

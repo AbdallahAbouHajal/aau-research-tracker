@@ -2053,7 +2053,7 @@
    "auid_candidates": [],
    "google_scholar_id": "2_DvGj8AAAAJ",
    "programs": [
-    "Bachelor of Science in Nursing",
+    "ALL PROGRAMS (whole college)",
     "Bachelor of Science in Pharmacy",
     "Master of Science in Pharmaceutical Sciences"
    ],
@@ -5635,10 +5635,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Mohammed Taher Nuseir",
@@ -5705,10 +5704,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Muhammad noor aladwan",
@@ -5741,10 +5739,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Reneh Abokhoza",
@@ -5775,10 +5772,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Nahida Makhadmeh",
@@ -5810,10 +5806,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Ahmad AlJumah",
@@ -5845,10 +5840,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Sawsan Taha",
@@ -5880,10 +5874,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Amer Khaled Ahmed",
@@ -5916,10 +5909,9 @@
     "Bachelor of Digital Media",
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations",
-    "MA in Digital Media and Public Relations",
     "Master of Arts in Digital Media and Public Relations"
    ],
-   "n_programs": 7
+   "n_programs": 6
   },
   {
    "name": "Ala'aldin Zahra",
@@ -5944,14 +5936,8 @@
    "scopus_auid": "58105071500",
    "auid_tier": "high:aau-directory",
    "auid_candidates": [],
-   "programs": [
-    "Bachelor of Advertising and Digital Marketing",
-    "Bachelor of Communication and Crisis",
-    "Bachelor of Digital Media",
-    "Bachelor of Mass Communication and Media",
-    "Bachelor of Public Relations"
-   ],
-   "n_programs": 5,
+   "programs": [],
+   "n_programs": 0,
    "not_in_directory": true
   },
   {
@@ -6122,7 +6108,7 @@
    "auid_candidates": [],
    "profile_checked": true,
    "programs": [
-    "Bachelor of Dental Surgery"
+    "ALL PROGRAMS (whole college)"
    ],
    "n_programs": 1
   },
@@ -6151,7 +6137,7 @@
    "auid_candidates": [],
    "profile_checked": true,
    "programs": [
-    "Bachelor of Dental Surgery"
+    "ALL PROGRAMS (whole college)"
    ],
    "n_programs": 1
   },
@@ -6180,7 +6166,7 @@
    "auid_candidates": [],
    "google_scholar_id": "YGrUVM4AAAAJ",
    "programs": [
-    "Bachelor of Dental Surgery"
+    "ALL PROGRAMS (whole college)"
    ],
    "n_programs": 1
   },
@@ -6208,8 +6194,10 @@
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
    "profile_checked": true,
-   "programs": [],
-   "n_programs": 0
+   "programs": [
+    "ALL PROGRAMS (whole college)"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Tala Alaa Altamimi",
@@ -6236,8 +6224,10 @@
    "auid_tier": "none:no-papers",
    "auid_candidates": [],
    "profile_checked": true,
-   "programs": [],
-   "n_programs": 0
+   "programs": [
+    "ALL PROGRAMS (whole college)"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Lo'ai AbuSharour",
@@ -6264,7 +6254,7 @@
    "auid_candidates": [],
    "google_scholar_id": "2cj2BWwAAAAJ",
    "programs": [
-    "Bachelor of Science in Nursing"
+    "ALL PROGRAMS (whole college)"
    ],
    "n_programs": 1
   },
@@ -6293,7 +6283,7 @@
    "auid_candidates": [],
    "profile_checked": true,
    "programs": [
-    "Bachelor of Science in Nursing"
+    "ALL PROGRAMS (whole college)"
    ],
    "n_programs": 1
   },
@@ -6320,8 +6310,10 @@
    "scopus_auid": "56121354400",
    "auid_tier": "manual:medium:transliteration",
    "auid_candidates": [],
-   "programs": [],
-   "n_programs": 0
+   "programs": [
+    "ALL PROGRAMS (whole college)"
+   ],
+   "n_programs": 1
   },
   {
    "name": "Anan S. Jarab",
