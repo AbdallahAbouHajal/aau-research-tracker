@@ -176,6 +176,25 @@ def main():
     out = os.path.abspath(a.out)
     os.makedirs(os.path.dirname(out), exist_ok=True)
 
+    # Who AAU publishes with. Its own file for the same reason as the papers:
+    # the Networking screen fetches it when opened and the dashboard needs only
+    # the top ten, which ride along in state.json.
+    try:
+        import network as NET
+        _rb = RUNS.load(blob.get("run")) or {}
+        net = NET.build(_rb, blob.get("authors") or [])
+        np_ = os.path.join(os.path.dirname(out), "network.json")
+        with open(np_, "w", encoding="utf-8") as fh:
+            json.dump(dict(net, generated=blob["generated"], run=blob.get("run")),
+                      fh, ensure_ascii=False, separators=(",", ":"))
+        blob["network"] = {"coverage": net["coverage"],
+                           "top": net["top"][:10]}
+        print("  network   %s (%d partners, %.0f KB)"
+              % (os.path.basename(np_), len(net["top"]),
+                 os.path.getsize(np_) / 1024))
+    except Exception as exc:
+        print("  network file failed: %s" % exc)
+
     # Every paper in the run, as its own file. The dashboard says 4,245 and
     # until now there was nowhere to go and look at them. It is ~500KB, which
     # has no business in state.json -- the Papers screen fetches it the first
