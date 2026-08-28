@@ -84,7 +84,17 @@ def institution(raw):
     Ain University's three largest partners. Countries are counted, on their
     own card, from the part of the address that actually is one.
     """
+    # A department belongs to an institution and is not one, so try the
+    # address again without the parts that name one. "Department of Computer
+    # Science, School Education Department, Government of Punjab" resolved to
+    # the department and put it in the College of Engineering's top three.
     inst, country = CO.split_affiliation(raw)
+    if inst and "department" in inst.lower():
+        trimmed = ", ".join(t for t in raw.split(",")
+                            if "department" not in t.lower())
+        alt, _ = CO.split_affiliation(trimmed)
+        if alt and "department" not in alt.lower():
+            inst = alt
     if not inst:
         return "", country
     if not _ORG_WORD.search(inst):

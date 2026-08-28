@@ -34,7 +34,8 @@ import census as X                                      # noqa: E402
 # Yarmouk University and not to the department.
 _ORG_RANK = ("universit", "institut", "polytechn", "academy", "hospital",
              "college", "school", "centre", "center", "laborator",
-             "foundation", "ministry", "authority", "clinic", "corporation")
+             "foundation", "ministry", "government", "authority", "clinic",
+             "corporation")
 _ORG = re.compile("|".join(_ORG_RANK), re.I)
 
 # Anything this short is a state or a postcode fragment, not an institution.

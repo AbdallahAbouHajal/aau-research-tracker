@@ -36,6 +36,17 @@ window.__aauApply = function (d) {
   }
 };
 
+// The two lazy files land here, each replacing its constant in place so the
+// screen re-renders against real data without the page reloading.
+window.__aauNetwork = function (d) {
+  Object.keys(NETWORK).forEach(function (k) { delete NETWORK[k]; });
+  Object.assign(NETWORK, d || {});
+};
+window.__aauCorpus = function (d) {
+  CORPUS.length = 0;
+  ((d && d.papers) || []).forEach(function (r) { CORPUS.push(r); });
+};
+
 """
 
 MOUNT = r"""
@@ -368,6 +379,63 @@ VALS = r"""
       csvHelp: () => window.__AAU && window.__AAU.csvHelp(),
       showPapers: () => window.__AAU && window.__AAU.showPapers(this),
       exportCollege: () => window.__AAU && window.__AAU.exportCollege(this),
+      // ---- Networking and Collaboration ----------------------------------
+      netReady: !!(NETWORK && NETWORK.top && NETWORK.top.length),
+      netNote: (() => {
+        const c = NETWORK.coverage;
+        if (!c) return 'Loading\u2026';
+        return 'Built from the ' + c.printed.toLocaleString() + ' papers of '
+          + c.papers.toLocaleString() + ' whose Scopus record prints every '
+          + 'author\u2019s address. Those papers are all 2025 and 2026, so '
+          + 'nothing here is a trend.';
+      })(),
+      netQuar: (() => {
+        const c = NETWORK.coverage;
+        if (!c) return '';
+        const pc = Math.round(100 * c.mega_pairs / Math.max(1, c.pairs));
+        return c.mega + ' consortium papers are set aside. Each lists more than '
+          + c.threshold + ' institutions, and between them they carry ' + pc
+          + '% of every institution mentioned anywhere \u2014 left in, they '
+          + 'decide every ranking below. The largest ordinary paper lists '
+          + c.largest_ordinary + ' institutions; the smallest consortium one '
+          + c.smallest_mega + '.';
+      })(),
+      netPartners: (() => {
+        const rows = (NETWORK.top || []).slice(0, 12);
+        const max = rows.length ? rows[0].papers : 1;
+        return rows.map((r, i) => ({
+          rank: i + 1, name: r.name, papers: r.papers.toLocaleString(),
+          barW: Math.max(3, Math.round(300 * r.papers / max)) + 'px',
+          creditW: Math.max(2, Math.round(300 * r.credit / max)) + 'px',
+          led: r.aau_led,
+          cols: r.colleges.length,
+          title: r.name + ' \u2014 ' + r.papers + ' joint papers. Fractional '
+            + 'credit ' + r.credit + ', which shares each paper out among the '
+            + 'institutions on it. An Al Ain author led or corresponded on '
+            + r.aau_led + '. Worked with by ' + r.colleges.length
+            + ' AAU colleges.',
+        }));
+      })(),
+      netColleges: Object.keys(NETWORK.by_college || {}).sort().map(c => ({
+        name: c.replace('College of ', ''),
+        rows: (NETWORK.by_college[c] || []).slice(0, 5).map(r => ({
+          name: r.name, papers: r.papers,
+          barW: Math.max(4, Math.round(140 * r.papers
+            / ((NETWORK.by_college[c][0] || {}).papers || 1))) + 'px',
+        })),
+      })),
+      netCountries: (NETWORK.countries || []).slice(0, 14).map(r => ({
+        name: r.name, papers: r.papers.toLocaleString(),
+        barW: Math.max(3, Math.round(290 * r.papers
+          / (((NETWORK.countries || [])[0] || {}).papers || 1))) + 'px',
+      })),
+      netJoint: (NETWORK.joint || []).slice(0, 10).map(r => ({
+        pair: r.a.replace('College of ', '') + '  \u00b7  '
+          + r.b.replace('College of ', ''),
+        papers: r.papers,
+        barW: Math.max(4, Math.round(250 * r.papers
+          / (((NETWORK.joint || [])[0] || {}).papers || 1))) + 'px',
+      })),
       reviewLabel: (S_ ? (S_.review === 1 ? '1 needs a decision'
                           : S_.review + ' need a decision')
                        : '8 need a decision'),
@@ -440,6 +508,8 @@ ROUND2 = [
      "      ['dash', 'Dashboard', null],\n"
      "      ['roster', 'Roster', null],\n"
      "      ['author', 'Authors', null],\n"
+     "      ['papers', 'Papers', null],\n"
+     "      ['net', 'Networking', null],\n"
      "      ['export', 'Exports', null],\n"
      "      ['sched', 'Schedule', null],\n"
      "    ];"),
@@ -953,6 +1023,142 @@ ROUND2 = [
      '    </div>\n  </div>\n  </sc-if>\n\n'
      '  <!-- ============ REVIEW QUEUE ============ -->'),
 
+    # ---- two more screens: the corpus, and who AAU publishes with ---------
+    ("screens: papers and networking exist",
+     "      onSchedule: S === 'sched', onFlow: S === 'flow',",
+     "      onSchedule: S === 'sched', onFlow: S === 'flow',\n"
+     "      onPapers: S === 'papers', onNet: S === 'net',"),
+
+    # ---- the Networking screen -------------------------------------------
+    # Bars are div widths, not SVG: the runtime does not interpolate text
+    # nodes inside an svg, and every label here is text.
+    ("networking: the screen",
+     '<!-- ============ WORKFLOW ============ -->',
+     '<sc-if value="{{ onNet }}" hint-placeholder-val="{{ false }}">\n'
+     '  <div style="padding:24px 26px 30px">\n'
+     '    <div data-rise style="margin-bottom:6px">\n'
+     '      <div style="font-size:22px;font-weight:700;color:#1A1A1A">'
+     'Networking and Collaboration</div>\n'
+     '      <div style="font-size:13.5px;color:#63736A;margin-top:5px;'
+     'max-width:900px;line-height:1.5">{{ netNote }}</div>\n'
+     '      <div style="font-size:12.5px;color:#8C9A92;margin-top:7px;'
+     'max-width:900px;line-height:1.5">{{ netQuar }}</div>\n'
+     '    </div>\n'
+     '    <sc-if value="{{ netReady }}" hint-placeholder-val="{{ true }}">\n'
+     '    <div data-rise style="animation-delay:.05s;background:#ffffff;border-radius:8px;padding:20px 22px;margin-bottom:16px">\n'
+     '      <div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#63736A">Who Al Ain University publishes with'
+     '</div>\n'
+     '      <div style="font-size:12.5px;color:#63736A;margin:6px 0 14px">'
+     'The pale bar is the joint paper count; the solid one is the same work '
+     'shared out among every institution on each paper.</div>\n'
+     '      <sc-for list="{{ netPartners }}" as="r" hint-placeholder-count="8">\n'
+     '        <div title="{{ r.title }}" style="display:grid;'
+     'grid-template-columns:26px 300px 320px 1fr;gap:12px;align-items:center;'
+     'padding:7px 0;border-bottom:1px solid #F0F3F1">\n'
+     '          <div style="font-size:12px;color:#8C9A92;'
+     'font-variant-numeric:tabular-nums">{{ r.rank }}</div>\n'
+     '          <div style="font-size:14px;color:#1A1A1A;overflow:hidden;'
+     'text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</div>\n'
+     '          <div style="position:relative;height:16px">\n'
+     '            <div style="position:absolute;left:0;top:3px;'
+     'width:{{ r.barW }};height:10px;border-radius:3px;background:#CDE6D8">'
+     '</div>\n'
+     '            <div style="position:absolute;left:0;top:3px;'
+     'width:{{ r.creditW }};height:10px;border-radius:3px;background:'
+     '{{ accent }}"></div>\n'
+     '          </div>\n'
+     '          <div style="font-size:12.5px;color:#63736A;'
+     'font-variant-numeric:tabular-nums">{{ r.papers }} papers \u00b7 '
+     '{{ r.cols }} colleges \u00b7 AAU led {{ r.led }}</div>\n'
+     '        </div>\n'
+     '      </sc-for>\n'
+     '    </div>\n'
+     '    <div data-rise style="animation-delay:.1s;background:#ffffff;border-radius:8px;padding:20px 22px;margin-bottom:16px">\n'
+     '      <div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#63736A">Each college and its five biggest '
+     'partners</div>\n'
+     '      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;'
+     'margin-top:14px">\n'
+     '        <sc-for list="{{ netColleges }}" as="c" hint-placeholder-count="6">\n'
+     '          <div>\n'
+     '            <div style="font-size:13.5px;font-weight:700;color:#1A1A1A;'
+     'margin-bottom:7px">{{ c.name }}</div>\n'
+     '            <sc-for list="{{ c.rows }}" as="r" hint-placeholder-count="5">\n'
+     '              <div style="display:grid;grid-template-columns:1fr 140px '
+     '38px;gap:10px;align-items:center;padding:4px 0">\n'
+     '                <div style="font-size:12.5px;color:#3A4A41;'
+     'overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
+     '{{ r.name }}</div>\n'
+     '                <div style="height:8px;border-radius:3px;'
+     'background:#EDF1EE"><div style="width:{{ r.barW }};height:8px;'
+     'border-radius:3px;background:{{ accent }}"></div></div>\n'
+     '                <div style="font-size:12px;color:#63736A;text-align:right;'
+     'font-variant-numeric:tabular-nums">{{ r.papers }}</div>\n'
+     '              </div>\n'
+     '            </sc-for>\n'
+     '          </div>\n'
+     '        </sc-for>\n'
+     '      </div>\n'
+     '    </div>\n'
+     '    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">\n'
+     '      <div data-rise style="animation-delay:.15s;background:#ffffff;border-radius:8px;padding:20px 22px;margin-bottom:16px">\n'
+     '        <div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#63736A">Where the partners are</div>\n'
+     '        <div style="font-size:12.5px;color:#63736A;margin:6px 0 12px">'
+     'Countries as the addresses print them, one count per paper.</div>\n'
+     '        <sc-for list="{{ netCountries }}" as="r" hint-placeholder-count="10">\n'
+     '          <div style="display:grid;grid-template-columns:1fr 290px 54px;'
+     'gap:10px;align-items:center;padding:4px 0">\n'
+     '            <div style="font-size:13px;color:#3A4A41">{{ r.name }}</div>\n'
+     '            <div style="height:9px;border-radius:3px;background:#EDF1EE">'
+     '<div style="width:{{ r.barW }};height:9px;border-radius:3px;'
+     'background:#4E9E74"></div></div>\n'
+     '            <div style="font-size:12px;color:#63736A;text-align:right;'
+     'font-variant-numeric:tabular-nums">{{ r.papers }}</div>\n'
+     '          </div>\n'
+     '        </sc-for>\n'
+     '      </div>\n'
+     '      <div data-rise style="animation-delay:.2s;background:#ffffff;border-radius:8px;padding:20px 22px;margin-bottom:16px">\n'
+     '        <div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#63736A">Inside AAU: who works across college '
+     'lines</div>\n'
+     '        <div style="font-size:12.5px;color:#63736A;margin:6px 0 12px">'
+     'Papers carrying authors from two different colleges.</div>\n'
+     '        <sc-for list="{{ netJoint }}" as="r" hint-placeholder-count="8">\n'
+     '          <div style="display:grid;grid-template-columns:1fr 250px 44px;'
+     'gap:10px;align-items:center;padding:4px 0">\n'
+     '            <div style="font-size:13px;color:#3A4A41;overflow:hidden;'
+     'text-overflow:ellipsis;white-space:nowrap">{{ r.pair }}</div>\n'
+     '            <div style="height:9px;border-radius:3px;background:#EDF1EE">'
+     '<div style="width:{{ r.barW }};height:9px;border-radius:3px;'
+     'background:#7BB894"></div></div>\n'
+     '            <div style="font-size:12px;color:#63736A;text-align:right;'
+     'font-variant-numeric:tabular-nums">{{ r.papers }}</div>\n'
+     '          </div>\n'
+     '        </sc-for>\n'
+     '      </div>\n'
+     '    </div>\n'
+     '    </sc-if>\n'
+     '  </div>\n'
+     '</sc-if>\n\n'
+     '<!-- ============ WORKFLOW ============ -->'),
+
+    ("screens: opening a lazy screen asks for its data",
+     "  go(s) { return () => this.setState({ screen: s, college: null, review: false }); }",
+     "  go(s) {\n"
+     "    return () => {\n"
+     "      // The corpus and the collaboration file are fetched on the way in,\n"
+     "      // once each, so the payload every visitor pays for stays small.\n"
+     "      if (window.__AAU) {\n"
+     "        if (s === 'net' && window.__AAU.needNetwork) {\n"
+     "          window.__AAU.needNetwork(this);\n"
+     "        }\n"
+     "        if (s === 'papers' && window.__AAU.needCorpus) {\n"
+     "          window.__AAU.needCorpus(this);\n"
+     "        }\n"
+     "      }\n"
+     "      this.setState({ screen: s, college: null, review: false,\n"
+     "                      program: null, q: '', author: null });\n"
+     "    };\n"
+     "  }"),
+
     ("roster: the college subtitle names the programme when one is chosen",
      '<div style="font-size:13.5px;color:#63736A;margin-top:3px">{{ colMeta }}'
      '</div>',
@@ -971,6 +1177,14 @@ ROUND2 = [
      "// an invented Muhammad Ilyas and seven names that do not exist -- and\n"
      "// the buttons acted on them.\n"
      "const REVIEW = [];\n\nconst PAPERS = {"),
+
+    ("papers and network: constants the bridge fills",
+     "const REVIEW = [];\n\nconst PAPERS = {",
+     "const REVIEW = [];\n\n"
+     "// Fetched only when their screen is first opened: the corpus is ~950KB\n"
+     "// and the collaboration file 21KB, and neither belongs in the payload\n"
+     "// every visitor pays for.\n"
+     "const CORPUS = [];\nconst NETWORK = {};\n\nconst PAPERS = {"),
 
     # ---- the review screen shows real people ------------------------------
     ("review: the candidate card is the real ambiguous person",

@@ -1211,6 +1211,45 @@
   }
   window.__AAU.exportCollege = exportCollege;
 
+  /* ------------------------------------------- the two lazy screens' data */
+  /* The corpus is ~950KB and the collaboration file 21KB. Neither is in the
+     payload every visitor pays for, so they are fetched the first time their
+     screen is opened -- and only once, whatever happens after. */
+  var lazy = {};
+  function lazyLoad(name, file, apply, component) {
+    if (lazy[name]) return lazy[name];
+    lazy[name] = fetch('data/' + file, { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error(file + ' -> HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (d) {
+        apply(d);
+        if (component) component.forceUpdate();
+        return d;
+      })
+      .catch(function (e) {
+        lazy[name] = null;                       // a failure may be retried
+        badge('could not load ' + file, RED);
+        throw e;
+      });
+    return lazy[name];
+  }
+  window.__AAU.lazyLoad = lazyLoad;
+
+  window.__AAU.needNetwork = function (component) {
+    if (!window.__AAU.live) return;              // sample data: leave it alone
+    lazyLoad('net', 'network.json', function (d) {
+      if (window.__aauNetwork) window.__aauNetwork(d);
+    }, component).catch(function () {});
+  };
+  window.__AAU.needCorpus = function (component) {
+    if (!window.__AAU.live) return;
+    lazyLoad('corpus', 'papers.json', function (d) {
+      if (window.__aauCorpus) window.__aauCorpus(d);
+    }, component).catch(function () {});
+  };
+
   /* ---------------------------------------------------------- import a CSV */
   function importCsv(component) {
     var f = document.createElement('input');
