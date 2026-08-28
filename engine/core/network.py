@@ -106,6 +106,61 @@ def institution(raw):
     return inst, country
 
 
+def backfill_affiliations(papers, have_printed, log=print, budget_s=2400):
+    """Ask Scopus for the institutions on papers whose authors' addresses we
+    do not hold.
+
+    The Search API reports ONE affiliation per paper -- measured over eight
+    papers it said 1, 1, 1, 1, 1, 1, 1, 1 where the truth was 4, 1, 1, 5, 3,
+    4, 1 and 14. That single number is why the collaboration screen could only
+    speak for the third of the corpus covered by the census export.
+
+    The abstract endpoint at view=META carries the full affiliation array, one
+    request per paper, about a second each. It is not free, so: only papers
+    that need it are asked for, the answers are cached durably -- a published
+    paper's institution list does not change -- and the whole pass stops at a
+    time budget and reports how far it got rather than running a job for an
+    hour. Coverage is published either way, so a partial backfill is visible
+    as a partial backfill.
+    """
+    import time
+    todo = [e for e in papers if e not in have_printed
+            and not papers[e].get("meta_affils")]
+    if not todo:
+        return 0
+    log("  filling in institutions for %d papers the export does not cover"
+        % len(todo))
+    t0, done, failed = time.time(), 0, 0
+    for i, eid in enumerate(todo, 1):
+        if time.time() - t0 > budget_s:
+            log("  stopped at the %d-minute budget: %d of %d filled in"
+                % (budget_s // 60, done, len(todo)))
+            break
+        sid = str(papers[eid].get("scopus_id") or "").strip()
+        if not sid:
+            continue
+        try:
+            d = X.scopus_get("/content/abstract/scopus_id/" + sid,
+                             {"view": "META"})
+        except Exception:
+            failed += 1
+            continue
+        core = (d or {}).get("abstracts-retrieval-response") or {}
+        aff = core.get("affiliation")
+        aff = aff if isinstance(aff, list) else ([aff] if aff else [])
+        papers[eid]["meta_affils"] = [
+            {"name": a.get("affilname") or "",
+             "country": a.get("affiliation-country") or ""}
+            for a in aff if a and a.get("affilname")]
+        done += 1
+        if i % 200 == 0:
+            log("    %d/%d (%.0f%% of the way, %.0fs elapsed)"
+                % (i, len(todo), 100.0 * i / len(todo), time.time() - t0))
+    log("  institutions filled in for %d papers (%d could not be fetched)"
+        % (done, failed))
+    return done
+
+
 def build(run_blob, authors, log=print):
     """-> the whole Networking view-model, or None when there is nothing to say."""
     slots = (run_blob or {}).get("slots") or []
@@ -141,6 +196,23 @@ def build(run_blob, authors, log=print):
             per_paper[eid].setdefault(canon(name), name)
         if country and len(country) > 3:
             countries[eid].setdefault(canon(country), country)
+
+    # Papers the export does not reach: their institution list came from the
+    # abstract endpoint, so they count exactly like the rest. Without this the
+    # screen spoke for a third of the corpus.
+    for eid, p in (papers or {}).items():
+        if eid in printed:
+            continue
+        for a in (p.get("meta_affils") or []):
+            nm = a.get("name") or ""
+            if not nm or CO.is_aau(nm):
+                continue
+            per_paper[eid].setdefault(canon(nm), nm)
+            c = a.get("country") or ""
+            if c:
+                countries[eid].setdefault(canon(c), c)
+        if p.get("meta_affils"):
+            printed.add(eid)
 
     sizes = {e: len(m) for e, m in per_paper.items()}
     mega = {e for e, n in sizes.items() if n > MEGA}

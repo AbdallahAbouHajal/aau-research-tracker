@@ -163,6 +163,21 @@ def main():
 
     elif n == 5:
         slots = RUNS.build_slots(b["papers"], log=log)
+        # Who each paper's institutions are, for the papers the census export
+        # does not cover. One request each, cached durably because a published
+        # paper's institution list does not change, and bounded so a run can
+        # never hang on it. Without this the collaboration screen could only
+        # speak for the papers the export reached.
+        if os.environ.get("AAU_FULL_AFFILS", "1") not in ("0", "false", ""):
+            try:
+                import network as NET
+                have = {s_["eid"] for s_ in slots
+                        if (s_.get("raw_affiliation") or "").strip()}
+                NET.backfill_affiliations(b["papers"], have, log=log,
+                                          budget_s=int(os.environ.get(
+                                              "AAU_AFFIL_BUDGET", "2400")))
+            except Exception as exc:
+                log("could not fill in institutions: %s" % str(exc)[:70])
         cl = CLS.classify(slots, b["people"], list_version=b.get("version", ""))
         b["slots"] = slots
         b["cl"] = cl

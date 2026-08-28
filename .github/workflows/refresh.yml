@@ -27,6 +27,10 @@ on:
         description: "…to (YYYY-MM-DD)"
         required: false
         default: ""
+      full_affiliations:
+        description: "Fetch every paper's institutions (slow the first time on a new window, cached after)"
+        type: boolean
+        default: true
       refresh_directory:
         description: "Re-read the Scopus author ids from AAU's directory"
         type: boolean
@@ -55,6 +59,10 @@ env:
   # injection happens.
   YEARS: ${{ github.event.inputs.years }}
   SCOPE: ${{ github.event.inputs.scope }}
+  # Fetching each paper's full institution list is about a second per
+  # paper the census export does not cover, and the answers are cached
+  # durably, so it is paid once per window. Set to 0 to skip it.
+  AAU_FULL_AFFILS: ${{ github.event.inputs.full_affiliations == 'false' && '0' || '1' }}
   DATE_FROM: ${{ github.event.inputs.date_from }}
   DATE_TO: ${{ github.event.inputs.date_to }}
 

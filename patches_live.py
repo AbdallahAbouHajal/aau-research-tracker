@@ -572,7 +572,7 @@ ROUND2 = [
      "      ['roster', 'Roster', null],\n"
      "      ['author', 'Authors', null],\n"
      "      ['papers', 'Papers', null],\n"
-     "      ['net', 'Networking', null],\n"
+     "      ['net', 'Collaboration and Network', null],\n"
      "      ['export', 'Exports', null],\n"
      "      ['sched', 'Schedule', null],\n"
      "    ];"),
