@@ -436,6 +436,69 @@ VALS = r"""
         barW: Math.max(4, Math.round(250 * r.papers
           / (((NETWORK.joint || [])[0] || {}).papers || 1))) + 'px',
       })),
+      // ---- the dashboard's top collaborators -----------------------------
+      // Fed from the summary that rides along in state.json, so the card is
+      // there on arrival without fetching the 21KB collaboration file.
+      dashCollab: (() => {
+        const st = (window.__AAU && window.__AAU.state) || {};
+        const rows = ((st.network || {}).top || []).slice(0, 6);
+        if (!rows.length) return [];
+        const max = rows[0].papers;
+        return rows.map(r => ({
+          name: r.name.replace(/^The /, ''),
+          papers: r.papers,
+          barW: Math.max(4, Math.round(190 * r.papers / max)) + 'px',
+          creditW: Math.max(2, Math.round(190 * r.credit / max)) + 'px',
+          title: r.name + ' \u2014 ' + r.papers + ' joint papers, and '
+            + r.credit + ' once each paper is shared out among the '
+            + 'institutions on it.',
+        }));
+      })(),
+      dashCollabShow: (() => {
+        const st = (window.__AAU && window.__AAU.state) || {};
+        return ((st.network || {}).top || []).length ? 'block' : 'none';
+      })(),
+      goNet: () => { if (window.__AAU && window.__AAU.needNetwork) {
+        window.__AAU.needNetwork(this); } this.setState({ screen: 'net' }); },
+      // ---- the corpus ----------------------------------------------------
+      corpusReady: CORPUS.length > 0,
+      corpusNote: (() => {
+        if (!CORPUS.length) return 'Loading the paper list\u2026';
+        const q = (this.state.pq || '').trim().toLowerCase();
+        const n = q ? CORPUS.filter(r => (r[0] + ' ' + r[1]).toLowerCase()
+          .indexOf(q) >= 0).length : CORPUS.length;
+        return q
+          ? n.toLocaleString() + ' of ' + CORPUS.length.toLocaleString()
+            + ' papers match \u201c' + q + '\u201d'
+          : 'Every paper in the current window, newest first.';
+      })(),
+      onPaperSearch: (e) => this.setState({ pq: e.target.value, pn: 60 }),
+      pq: this.state.pq || '',
+      corpusRows: (() => {
+        const q = (this.state.pq || '').trim().toLowerCase();
+        const lim = this.state.pn || 60;
+        const out = [];
+        for (let i = 0; i < CORPUS.length && out.length < lim; i++) {
+          const r = CORPUS[i];
+          if (q && (r[0] + ' ' + r[1]).toLowerCase().indexOf(q) < 0) continue;
+          out.push({
+            title: r[0] || '(untitled)', journal: r[1] || '', year: r[2],
+            cited: (r[3] || 0).toLocaleString(),
+            kind: r[4] || '', sweep: r[7] ? 'found by author' : '',
+            sweepShow: r[7] ? 'inline-block' : 'none',
+            url: r[5] ? 'https://doi.org/' + r[5] : '',
+            urlShow: r[5] ? 'inline' : 'none',
+          });
+        }
+        return out;
+      })(),
+      moreCorpus: () => this.setState({ pn: (this.state.pn || 60) + 120 }),
+      moreCorpusShow: (() => {
+        const q = (this.state.pq || '').trim().toLowerCase();
+        const n = q ? CORPUS.filter(r => (r[0] + ' ' + r[1]).toLowerCase()
+          .indexOf(q) >= 0).length : CORPUS.length;
+        return (this.state.pn || 60) < n ? 'inline-block' : 'none';
+      })(),
       reviewLabel: (S_ ? (S_.review === 1 ? '1 needs a decision'
                           : S_.review + ' need a decision')
                        : '8 need a decision'),
@@ -1158,6 +1221,109 @@ ROUND2 = [
      "                      program: null, q: '', author: null });\n"
      "    };\n"
      "  }"),
+
+    ("papers: the screen",
+     '<!-- ============ WORKFLOW ============ -->',
+     '<sc-if value="{{ onPapers }}" hint-placeholder-val="{{ false }}">\n'
+     '  <div style="padding:24px 26px 30px">\n'
+     '    <div data-rise style="display:flex;align-items:flex-end;gap:16px;'
+     'margin-bottom:14px">\n'
+     '      <div style="flex:1">\n'
+     '        <div style="font-size:22px;font-weight:700;color:#1A1A1A">'
+     'Papers in this run</div>\n'
+     '        <div style="font-size:13.5px;color:#63736A;margin-top:5px">'
+     '{{ corpusNote }}</div>\n'
+     '      </div>\n'
+     '      <input type="text" value="{{ pq }}" sc-camel-on-input="{{ onPaperSearch }}" '
+     'placeholder="Search a title or a journal" style="width:320px;'
+     'border:1px solid #D5DED8;border-radius:6px;padding:9px 12px;'
+     'font-family:Archivo,sans-serif;font-size:13.5px;color:#1A1A1A" />\n'
+     '    </div>\n'
+     '    <div data-rise style="animation-delay:.05s;background:#ffffff;border-radius:8px;padding:20px 22px">\n'
+     '      <div style="display:grid;grid-template-columns:1fr 300px 62px 74px '
+     '92px;gap:14px;font-size:11.5px;font-weight:700;letter-spacing:.06em;'
+     'text-transform:uppercase;color:#63736A;padding-bottom:10px;'
+     'border-bottom:1px solid #E4EAE6">\n'
+     '        <div>Title</div><div>Journal</div>'
+     '<div style="text-align:right">Year</div>'
+     '<div style="text-align:right">Cited</div><div>Type</div>\n'
+     '      </div>\n'
+     '      <sc-for list="{{ corpusRows }}" as="r" hint-placeholder-count="12">\n'
+     '        <div style="display:grid;grid-template-columns:1fr 300px 62px '
+     '74px 92px;gap:14px;align-items:center;padding:9px 0;'
+     'border-bottom:1px solid #F0F3F1">\n'
+     '          <div style="font-size:13.5px;color:#1A1A1A;line-height:1.4">'
+     '{{ r.title }}\n'
+     '            <a href="{{ r.url }}" target="_blank" rel="noopener" '
+     'style="display:{{ r.urlShow }};margin-left:7px;font-size:12px;'
+     'text-decoration:none;color:{{ accent }}">doi \u2197</a>\n'
+     '            <span title="This paper was not under the university tag; it '
+     'came up under a faculty member\u2019s Scopus record and prints an AAU '
+     'address." style="display:{{ r.sweepShow }};margin-left:7px;'
+     'padding:1px 7px;border:1px solid #C3D6CA;border-radius:9px;'
+     'font-size:11px;color:#4E7A5F">{{ r.sweep }}</span>\n'
+     '          </div>\n'
+     '          <div style="font-size:12.5px;color:#63736A;overflow:hidden;'
+     'text-overflow:ellipsis;white-space:nowrap">{{ r.journal }}</div>\n'
+     '          <div style="font-size:13px;text-align:right;'
+     'font-variant-numeric:tabular-nums">{{ r.year }}</div>\n'
+     '          <div style="font-size:13px;text-align:right;'
+     'font-variant-numeric:tabular-nums">{{ r.cited }}</div>\n'
+     '          <div style="font-size:12px;color:#63736A">{{ r.kind }}</div>\n'
+     '        </div>\n'
+     '      </sc-for>\n'
+     '      <div style="padding-top:14px;text-align:center">\n'
+     '        <button type="button" sc-camel-on-click="{{ moreCorpus }}" '
+     'style="display:{{ moreCorpusShow }};background:#ffffff;color:{{ accent }};'
+     'border:1px solid #C3D6CA;border-radius:5px;padding:9px 18px;'
+     'font-family:Archivo,sans-serif;font-size:13px;font-weight:600;'
+     'cursor:pointer">Show more</button>\n'
+     '      </div>\n'
+     '    </div>\n'
+     '  </div>\n'
+     '</sc-if>\n\n'
+     '<!-- ============ WORKFLOW ============ -->'),
+
+    ("dashboard: top collaborators, under the donut",
+     'A paper written across two colleges is credited to both, so the credits '
+     'add up to more than the paper count.</div>\n        </div>',
+     'A paper written across two colleges is credited to both, so the credits '
+     'add up to more than the paper count.</div>\n        </div>\n\n'
+     '        <div data-rise style="animation-delay:.125s;display:'
+     '{{ dashCollabShow }};background:#ffffff;border-radius:8px;'
+     'padding:20px 22px">\n'
+     '          <div style="display:flex;align-items:baseline;gap:8px">\n'
+     '            <div style="font-size:12px;font-weight:700;letter-spacing:'
+     '.1em;text-transform:uppercase;color:{{ accent }};flex:1">'
+     'Top collaborators</div>\n'
+     '            <button type="button" sc-camel-on-click="{{ goNet }}" '
+     'style="background:none;border:0;padding:0;font-family:Archivo,sans-serif;'
+     'font-size:12.5px;font-weight:600;color:{{ accent }};cursor:pointer">'
+     'All of them \u2192</button>\n'
+     '          </div>\n'
+     '          <sc-for list="{{ dashCollab }}" as="r" hint-placeholder-count="6">\n'
+     '            <div title="{{ r.title }}" style="display:grid;'
+     'grid-template-columns:1fr 190px 34px;gap:10px;align-items:center;'
+     'padding:6px 0">\n'
+     '              <div style="font-size:12.5px;color:#3A4A41;'
+     'overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
+     '{{ r.name }}</div>\n'
+     '              <div style="position:relative;height:14px">\n'
+     '                <div style="position:absolute;left:0;top:3px;'
+     'width:{{ r.barW }};height:9px;border-radius:3px;background:#CDE6D8">'
+     '</div>\n'
+     '                <div style="position:absolute;left:0;top:3px;'
+     'width:{{ r.creditW }};height:9px;border-radius:3px;background:'
+     '{{ accent }}"></div>\n'
+     '              </div>\n'
+     '              <div style="font-size:12px;color:#63736A;text-align:right;'
+     'font-variant-numeric:tabular-nums">{{ r.papers }}</div>\n'
+     '            </div>\n'
+     '          </sc-for>\n'
+     '          <div style="font-size:11.5px;color:#8C9A92;margin-top:8px;'
+     'line-height:1.45">Pale is joint papers; solid is the same work shared '
+     'out among every institution on each paper.</div>\n'
+     '        </div>'),
 
     ("roster: the college subtitle names the programme when one is chosen",
      '<div style="font-size:13.5px;color:#63736A;margin-top:3px">{{ colMeta }}'
