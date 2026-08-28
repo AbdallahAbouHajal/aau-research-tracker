@@ -384,10 +384,33 @@ VALS = r"""
       netNote: (() => {
         const c = NETWORK.coverage;
         if (!c) return 'Loading\u2026';
-        return 'Built from the ' + c.printed.toLocaleString() + ' papers of '
-          + c.papers.toLocaleString() + ' whose Scopus record prints every '
-          + 'author\u2019s address. Those papers are all 2025 and 2026, so '
-          + 'nothing here is a trend.';
+        // Floor, not round: 3,203 of 3,204 is not 100%, and a page that
+        // rounds its way to a completeness it does not have is the small
+        // dishonesty this whole screen is built to avoid.
+        const pct = Math.floor(100 * c.printed / Math.max(1, c.papers));
+        return 'Built from ' + c.printed.toLocaleString() + ' of the '
+          + c.papers.toLocaleString() + ' papers in this window \u2014 '
+          + pct + '% \u2014 by reading the institutions printed on each one.';
+      })(),
+      // The institution list is fetched one paper at a time on a window that
+      // has not been asked for before, so a run can land with the screen
+      // still partly filled. Say so, with how long it takes, rather than
+      // letting a reader take a partial answer for the whole one.
+      netPendingShow: (() => {
+        const c = NETWORK.coverage;
+        if (!c || !c.papers) return 'none';
+        return (c.papers - c.printed) > c.papers * 0.02 ? 'block' : 'none';
+      })(),
+      netPending: (() => {
+        const c = NETWORK.coverage;
+        if (!c) return '';
+        const left = c.papers - c.printed;
+        return 'Still reading the institutions on ' + left.toLocaleString()
+          + ' more papers. That takes about 25 to 30 minutes the first time a '
+          + 'window is asked for, and is instant afterwards \u2014 the answers '
+          + 'are kept. Everything below is real, but it is those '
+          + c.printed.toLocaleString() + ' papers only, so the counts will '
+          + 'grow. Come back in half an hour for the full picture.';
       })(),
       netQuar: (() => {
         const c = NETWORK.coverage;
@@ -1106,6 +1129,10 @@ ROUND2 = [
      'max-width:900px;line-height:1.5">{{ netNote }}</div>\n'
      '      <div style="font-size:12.5px;color:#8C9A92;margin-top:7px;'
      'max-width:900px;line-height:1.5">{{ netQuar }}</div>\n'
+     '      <div style="display:{{ netPendingShow }};margin-top:11px;'
+     'max-width:900px;background:#FBF6E9;border:1px solid #E8DCC0;'
+     'border-radius:7px;padding:11px 14px;font-size:12.5px;color:#7A6320;'
+     'line-height:1.55">{{ netPending }}</div>\n'
      '    </div>\n'
      '    <sc-if value="{{ netReady }}" hint-placeholder-val="{{ true }}">\n'
      '    <div data-rise style="animation-delay:.05s;background:#ffffff;border-radius:8px;padding:20px 22px;margin-bottom:16px">\n'
