@@ -94,13 +94,17 @@ MOBILE_CSS = r'''
    True at every width, desktop included. */
 [style*="display: grid"] > *, [style*="display:grid"] > * { min-width: 0; }
 
-@media (max-width: 1280px) {
+@media (max-width: 1279.98px) {
   /* The 1180px floor on the shell is what forces the sideways scroll. */
   [style*="min-width: 1180px"], [style*="min-width:1180px"] {
     min-width: 0 !important; }
+  /* viewport-fit=cover lets the page reach under the notch, so the side
+     padding becomes the safe-area inset rather than nothing. */
   [style*="min-height: 100vh"][style*="overflow-x: auto"],
   [style*="min-height:100vh"][style*="overflow-x:auto"] {
-    padding: 0 !important; }
+    padding: 0 env(safe-area-inset-right, 0px)
+             env(safe-area-inset-bottom, 0px)
+             env(safe-area-inset-left, 0px) !important; }
 
   /* Seven tabs and two chips in a fixed 64px row. Let it grow. */
   [style*="height: 64px"], [style*="height:64px"] {
@@ -116,6 +120,12 @@ MOBILE_CSS = r'''
     padding: 15px 14px !important; }
   [style*="padding: 80px 96px"], [style*="padding:80px 96px"] {
     padding: 56px 20px !important; }
+
+  /* Making the header height:auto took the tabs' height with it: the buttons
+     are padding:0 17px and had no height of their own. Give them one, at the
+     44px Apple asks for. */
+  [style*="padding: 0px 17px"], [style*="padding:0 17px"] {
+    min-height: 44px !important; padding: 0 13px !important; }
 
   /* The tab row is a nested flex that does not wrap. Measured at 833px, so
      below that width the last tabs are simply clipped and unreachable --
@@ -162,6 +172,29 @@ MOBILE_CSS = r'''
 }
 
 @media (max-width: 834px) {
+  /* The six run stages: 28px + 150px + gaps = 202px before the label gets
+     anything, and the label is the part you read. */
+  [style*="grid-template-columns: 28px 1fr 150px"] {
+    grid-template-columns: 28px 1fr !important; row-gap: 3px !important; }
+  [style*="grid-template-columns: 28px 1fr 150px"] > *:nth-child(3) {
+    grid-column: 2 !important; text-align: left !important; }
+
+  /* The donut is 176px and its legend shares a non-wrapping row, which leaves
+     the legend about 100px -- narrower than "Education, Humanities and Social
+     Sciences". They stack. */
+  [style*="display: flex"][style*="align-items: center"][style*="gap: 18px"] {
+    flex-direction: column !important; align-items: flex-start !important; }
+
+  /* Type below 12px is not readable on a phone, and the table headers and the
+     smallest captions are exactly where a reader needs help. */
+  [style*="font-size: 11px"], [style*="font-size: 11.5px"] {
+    font-size: 12px !important; }
+
+  /* Programme chips and the remove-author x are 27px and about 15px tall. */
+  [style*="border-radius: 14px"][style*="padding: 5px 12px"] {
+    min-height: 36px !important; display: inline-flex !important;
+    align-items: center !important; }
+
   [style*="grid-template-columns: 1fr 1fr"] {
     grid-template-columns: 1fr !important; }
 
@@ -192,7 +225,11 @@ MOBILE_CSS = r'''
   [style*="position: fixed"][style*="bottom: 14px"],
   [style*="position:fixed"][style*="bottom:14px"] {
     bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
-    max-width: calc(100vw - 24px) !important; }
+    max-width: calc(100vw - 24px) !important;
+    /* It writes its size with the `font:` shorthand, so the font-size rule
+       above does not see it -- it was the last thing on the page under the
+       12px floor. */
+    font-size: 12px !important; }
 }
 
 @media (max-width: 640px) {
@@ -229,6 +266,11 @@ MOBILE_CSS = r'''
   [style*="width:640px;height:420px"] {
     transform: scale(.58) !important; transform-origin: top left !important;
     margin-bottom: -176px !important; }
+
+  /* The run wizard's two month pickers sit in a row; a native month control
+     will not shrink below its own text. */
+  [style*="display: flex"][style*="gap: 14px"][style*="align-items: flex-end"] {
+    flex-direction: column !important; align-items: stretch !important; }
 
   [style*="width: 520px"], [style*="width: 760px"], [style*="width: 420px"],
   [style*="width: 900px"], [style*="max-width: 900px"] {
