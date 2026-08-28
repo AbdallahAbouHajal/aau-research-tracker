@@ -476,6 +476,10 @@ def build(roster_people=None, run_id=None):
                 and _slug(r.get("profile_url"), "").lower() in by_slug),
             "programs_assumed": sum(1 for r in (prog_blob.get("programs") or [])
                                     if r.get("assumed")),
+            # People AAU itself files under no programme, confirmed by walking
+            # its directory filter rather than inferred from a gap in ours.
+            "programs_unplaced_confirmed":
+                len(prog_blob.get("unplaced_confirmed") or []),
             "academics_listed": sum(
                 1 for r in roster
                 if str(r.get("staff_type") or "").lower().startswith("acad")),

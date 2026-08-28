@@ -142,6 +142,11 @@ def harvest(log=print, pause=0.4):
             log("      %-58s %d" % (name[:58], len(slugs)))
             time.sleep(pause)
     _fill_single_programme_colleges(out, log)
+    try:
+        import faculty as _FAC
+        out = _merge_csv(out, (_FAC.load() or {}).get("people") or [], log)
+    except Exception as exc:
+        log("  browser pass not merged: %s" % str(exc)[:70])
     return out
 
 
@@ -177,6 +182,108 @@ def _fill_single_programme_colleges(out, log=print):
             out["by_slug"].setdefault(sl, []).append(rec["name"])
         log("      %-58s %d (assumed: one programme, none tagged)"
             % (rec["name"][:58], len(listed)))
+
+
+# The central directory filters by programme only in a browser -- see the note
+# in core/directory.py -- so that pass was done with a browser and its result
+# is committed here. It reaches 208 people against the subsites' 153, and the
+# two agree on 115 of the 146 they share; nearly all the rest is one page
+# writing "Master of Business Administration" and the other "(MBA)". Neither
+# is wrong, so they are unioned, and Azza Ramadan keeps both the Nursing and
+# the Pharmacy programmes she is genuinely cross-listed on.
+_CSV = os.path.join(ROOT, "data", "programme_membership.csv")
+
+_CSV_COLLEGE = {
+    "Business": "College of Business",
+    "Engineering": "College of Engineering",
+    "Law": "College of Law",
+    "Pharmacy": "College of Pharmacy",
+    "Education/Humanities":
+        "College of Education, Humanities and Social Sciences",
+    "Communication": "College of Communication and Media",
+    "Dentistry": "College of Dentistry",
+    "Nursing": "College of Nursing",
+}
+
+_DEGREE = re.compile(r"\s*,?\s*\b(Ph\.?\s?D|M\.?\s?Sc|MBA|MD|DDS|MA|M\.A)\.?\s*$", re.I)
+
+
+def prog_key(name):
+    """Fold "…Administration" and "…Administration (MBA)" into one programme."""
+    n = re.sub(r"\([^)]*\)", " ", (name or "").lower())
+    n = re.sub(r"[^a-z0-9 ]", " ", n)
+    return re.sub(r"\s+", " ", n).strip()
+
+
+def _merge_csv(out, roster, log=print):
+    """Union the browser pass into the subsite harvest, matched by name."""
+    if not (os.path.exists(_CSV) and roster):
+        return out
+    import csv as _csv
+    import translit as _TL
+    by_name = {X.name_key(p.get("name", "")): p for p in roster}
+
+    def _find(n):
+        p = by_name.get(X.name_key(n))
+        if p:
+            return p
+        for q in roster:
+            if _TL.compatible(q.get("name", ""), n) or _TL.compatible(n, q.get("name", "")):
+                return q
+        return None
+
+    rec_by_key = {}
+    for r in out["programs"]:
+        rec_by_key.setdefault((r["college"], prog_key(r["name"])), r)
+
+    added = placed = 0
+    with open(_CSV, newline="", encoding="utf-8-sig") as fh:
+        for row in _csv.DictReader(fh):
+            prog = (row.get("programme") or "").strip()
+            college = _CSV_COLLEGE.get((row.get("college") or "").strip())
+            if not prog or not college or prog.lower() == "none":
+                continue
+            person = _find(_DEGREE.sub("", (row.get("name") or "").strip()).strip())
+            if not person:
+                continue
+            u = person.get("profile_url") or ""
+            if "/staff/" not in u:
+                continue
+            sl = u.rstrip("/").rsplit("/", 1)[-1]
+            key = (college, prog_key(prog))
+            rec = rec_by_key.get(key)
+            if rec is None:
+                rec = {"id": "", "name": prog, "college": college, "staff": [],
+                       "from_browser": True}
+                out["programs"].append(rec)
+                rec_by_key[key] = rec
+                out.setdefault("colleges", {}).setdefault(
+                    college, {"programs": [], "staff": []})["programs"].append(prog)
+                added += 1
+            if sl not in rec["staff"]:
+                rec["staff"].append(sl)
+                placed += 1
+            names = out["by_slug"].setdefault(sl.lower(), [])
+            if rec["name"] not in names:
+                names.append(rec["name"])
+    # A person the browser saw and could place under NO programme is a gap in
+    # AAU's data, not in ours, and the difference matters on screen. The
+    # browser pass recorded 60 such people; among them the eight academics
+    # this project had been unable to place, every one confirmed untagged.
+    confirmed = []
+    with open(_CSV, newline="", encoding="utf-8-sig") as fh:
+        for row in _csv.DictReader(fh):
+            if (row.get("programme") or "").strip().lower() != "none":
+                continue
+            person = _find(_DEGREE.sub("", (row.get("name") or "").strip()).strip())
+            u = (person or {}).get("profile_url") or ""
+            if "/staff/" in u:
+                confirmed.append(u.rstrip("/").rsplit("/", 1)[-1])
+    out["unplaced_confirmed"] = sorted(set(confirmed))
+    log("  browser pass: %d programmes the subsites did not list, %d placements "
+        "added, %d people AAU itself files under no programme"
+        % (added, placed, len(out["unplaced_confirmed"])))
+    return out
 
 
 def load():
