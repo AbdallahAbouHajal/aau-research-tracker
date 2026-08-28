@@ -64,6 +64,189 @@ MOUNT = r"""
   }
 """
 
+MOBILE_CSS = r'''
+/* Mobile. Read this first, it will save you the afternoon it cost me.
+
+   THE SELECTORS HERE MATCH THE DOM'S SPELLING, NOT THE SOURCE'S. Every style
+   in this page is an inline attribute, and the runtime re-serialises those
+   attributes when it hydrates: `min-width:1180px` in patches_live.py becomes
+   `min-width: 1180px` in the live DOM, `0` becomes `0px`, and
+   `repeat(3,minmax(0,1fr))` becomes `repeat(3, minmax(0px, 1fr))`. A selector
+   written the way the source spells it matches NOTHING. Both spellings are
+   listed below so this cannot silently rot again; verify any new rule against
+   the real DOM, never against patches_live.py.
+
+   Overriding an inline style needs !important. That is not laziness; it is the
+   only lever an inline style leaves.
+
+   Nothing sits outside a media query. Desktop at 1281px and up is untouched.
+
+   The viewport is width=device-width. It was width=1180, which made a phone
+   fit the whole desktop page and scale it to 33%: 13px body text rendered at
+   4.3px. Everything was visible and nothing was readable.
+
+   NEVER add min-height to the shell div. Every data-rise child then sticks at
+   its animation's opacity:0 start frame and the app renders blank.
+*/
+
+/* An fr column keeps an automatic minimum of its own content, so one long word
+   pushes its track past its share and a row stops lining up with its header.
+   True at every width, desktop included. */
+[style*="display: grid"] > *, [style*="display:grid"] > * { min-width: 0; }
+
+@media (max-width: 1280px) {
+  /* The 1180px floor on the shell is what forces the sideways scroll. */
+  [style*="min-width: 1180px"], [style*="min-width:1180px"] {
+    min-width: 0 !important; }
+  [style*="min-height: 100vh"][style*="overflow-x: auto"],
+  [style*="min-height:100vh"][style*="overflow-x:auto"] {
+    padding: 0 !important; }
+
+  /* Seven tabs and two chips in a fixed 64px row. Let it grow. */
+  [style*="height: 64px"], [style*="height:64px"] {
+    height: auto !important; min-height: 56px !important;
+    flex-wrap: wrap !important; padding: 8px 14px !important;
+    row-gap: 6px !important; }
+
+  [style*="padding: 24px 26px 30px"], [style*="padding:24px 26px 30px"],
+  [style*="padding: 26px 26px 34px"], [style*="padding:26px 26px 34px"] {
+    padding: 16px 14px 24px !important; }
+  [style*="padding: 20px 22px"], [style*="padding:20px 22px"],
+  [style*="padding: 22px 24px"], [style*="padding:22px 24px"] {
+    padding: 15px 14px !important; }
+  [style*="padding: 80px 96px"], [style*="padding:80px 96px"] {
+    padding: 56px 20px !important; }
+
+  /* The tab row is a nested flex that does not wrap. Measured at 833px, so
+     below that width the last tabs are simply clipped and unreachable --
+     wrapping the header is not enough. It scrolls sideways instead, which
+     keeps every tab tappable and costs the layout nothing. */
+  [style*="align-items: stretch"][style*="gap: 2px"],
+  [style*="align-items:stretch;gap:2px"] {
+    overflow-x: auto !important; flex-wrap: nowrap !important;
+    max-width: 100% !important; -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important; }
+  [style*="align-items: stretch"][style*="gap: 2px"] > *,
+  [style*="align-items:stretch;gap:2px"] > * { flex: 0 0 auto !important; }
+  [style*="align-items: stretch"][style*="gap: 2px"]::-webkit-scrollbar {
+    display: none !important; }
+
+  [style*="grid-template-columns: 1.5fr 1fr"],
+  [style*="grid-template-columns: 1.25fr 1fr"],
+  [style*="grid-template-columns: 1.4fr 1fr"],
+  [style*="grid-template-columns: 330px 1fr"] {
+    grid-template-columns: 1fr !important; }
+
+  /* Stacked, the Authors rail must not be tall enough to hide the person it
+     selects. */
+  [style*="grid-template-columns: 330px 1fr"] > *:first-child {
+    max-height: 300px !important; overflow-y: auto !important; }
+}
+
+@media (max-width: 1024px) {
+  [style*="repeat(3, minmax(0px, 1fr))"],
+  [style*="repeat(4, minmax(0px, 1fr))"],
+  [style*="repeat(5, minmax(0px, 1fr))"] {
+    grid-template-columns: repeat(2, minmax(0px, 1fr)) !important; }
+
+  /* Collaboration partner rows: a 300px name and a 320px bar do not fit; the
+     bar and its caption drop under the name. */
+  [style*="grid-template-columns: 26px 300px 320px 1fr"] {
+    grid-template-columns: 22px 1fr !important; row-gap: 3px !important; }
+  [style*="grid-template-columns: 26px 300px 320px 1fr"] > *:nth-child(3),
+  [style*="grid-template-columns: 26px 300px 320px 1fr"] > *:nth-child(4) {
+    grid-column: 2 !important; }
+
+  [style*="grid-template-columns: 1fr 1fr"][style*="gap: 22px"] {
+    grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 834px) {
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important; }
+
+  /* Bar rows: let the bar take what is left rather than set the row's width. */
+  [style*="grid-template-columns: 1fr 290px 54px"],
+  [style*="grid-template-columns: 1fr 250px 44px"],
+  [style*="grid-template-columns: 1fr 190px 34px"],
+  [style*="grid-template-columns: 1fr 140px 38px"] {
+    grid-template-columns: 1fr 84px 42px !important; }
+
+  /* The Workflow diagram is a fixed 1308x450 canvas of absolutely-positioned
+     nodes. It cannot reflow, so the whole thing scales: transform keeps every
+     node with its label, which re-laying-out would not. The negative margin
+     reclaims the height the untransformed box still reserves. */
+  [style*="width: 1308px"], [style*="width:1308px"] {
+    transform: scale(.56) !important; transform-origin: top left !important;
+    margin-bottom: -198px !important; }
+
+  /* iOS zooms the page when a focused input's text is under 16px, and every
+     input here was 13.5 or 14.5. The zoom is not undone on blur, so tapping
+     the passphrase box leaves you pinching back out. 16px is the floor. */
+  input, select, textarea { font-size: 16px !important; }
+
+  /* Apple's touch-target floor is 44px; these were padded to about 32. */
+  button { min-height: 40px !important; }
+
+  /* The status badge is fixed where the iOS toolbar sits. */
+  [style*="position: fixed"][style*="bottom: 14px"],
+  [style*="position:fixed"][style*="bottom:14px"] {
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+    max-width: calc(100vw - 24px) !important; }
+}
+
+@media (max-width: 640px) {
+  /* The roster people table: six columns, four fixed, summing with the gaps to
+     448px before the name and title get anything. One card per person. */
+  [style*="grid-template-columns: 1.7fr 1.1fr 90px 78px 90px 120px"] {
+    grid-template-columns: 1fr auto !important; row-gap: 5px !important;
+    padding: 13px 0 !important; }
+  [style*="grid-template-columns: 1.7fr 1.1fr 90px 78px 90px 120px"] > *:nth-child(2) {
+    grid-column: 1 / -1 !important; }
+  [style*="grid-template-columns: 1.7fr 1.1fr 90px 78px 90px 120px"] > *:nth-child(n+3) {
+    text-align: left !important; }
+
+  /* Papers: five columns, 354px of them fixed. Title and the Al Ain authors
+     take a line each; journal, year and citations share the next. */
+  [style*="grid-template-columns: 1.35fr 1fr 230px 58px 66px"] {
+    grid-template-columns: 1fr auto auto !important; row-gap: 4px !important;
+    padding: 13px 0 !important; }
+  [style*="grid-template-columns: 1.35fr 1fr 230px 58px 66px"] > *:nth-child(1),
+  [style*="grid-template-columns: 1.35fr 1fr 230px 58px 66px"] > *:nth-child(2) {
+    grid-column: 1 / -1 !important; }
+  [style*="grid-template-columns: 1.35fr 1fr 230px 58px 66px"] > *:nth-child(3) {
+    white-space: normal !important; }
+
+  [style*="grid-template-columns: 1fr 68px 64px 80px"],
+  [style*="grid-template-columns: 1fr 120px 92px 104px"],
+  [style*="grid-template-columns: 1fr 110px 22px"] {
+    grid-template-columns: 1fr auto !important; row-gap: 4px !important; }
+
+  /* The co-author wheel is a 640x420 SVG with HTML labels laid on top at
+     computed pixel offsets. Scaling the SVG alone would strand the labels, so
+     the composite scales as one. */
+  [style*="width: 640px"][style*="height: 420px"],
+  [style*="width:640px;height:420px"] {
+    transform: scale(.58) !important; transform-origin: top left !important;
+    margin-bottom: -176px !important; }
+
+  [style*="width: 520px"], [style*="width: 760px"], [style*="width: 420px"],
+  [style*="width: 900px"], [style*="max-width: 900px"] {
+    width: auto !important; max-width: calc(100vw - 26px) !important; }
+}
+
+@media (max-width: 430px) {
+
+  [style*="display: flex"][style*="gap: 4px"] > button {
+    padding: 9px 3px !important; font-size: 12px !important; }
+
+  [style*="repeat(3, minmax(0px, 1fr))"],
+  [style*="repeat(4, minmax(0px, 1fr))"],
+  [style*="repeat(5, minmax(0px, 1fr))"] {
+    grid-template-columns: 1fr !important; }
+}
+'''
+
 PATCHES = [
 
     # ---- the run button now asks what kind of run this is ------------------
@@ -1532,31 +1715,16 @@ ROUND2 = [
     # complete, pannable and pinch-zoomable, and every control reachable. That
     # is the honest fix for a fixed-width design -- a true mobile layout would
     # mean re-drawing seven screens, which is a different job.
-    ("head: declare the width this layout actually needs",
+    ("head: the viewport is the device, and the layout reflows to it",
      '<meta name="viewport" content="width=device-width, initial-scale=1">',
-     '<meta name="viewport" content="width=1180">'),
+     '<meta name="viewport" content="width=device-width, initial-scale=1, '
+     'viewport-fit=cover">'),
 
     # Tablets get real breathing room: the two-column screens stack rather
     # than crushing a 330px sidebar against a 1fr pane that has nothing left.
-    ("head: a few rules for narrow screens",
+    ("head: the page reflows to the device",
      "</helmet>",
-     "<style>\n"
-     "@media (max-width: 1180px) {\n"
-     "  /* the author list beside its detail pane */\n"
-     "  [style*=\"grid-template-columns:330px 1fr\"] {\n"
-     "    grid-template-columns: 1fr !important; }\n"
-     "  /* schedule: the day picker and the time box */\n"
-     "  [style*=\"grid-template-columns:1.25fr 1fr\"],\n"
-     "  [style*=\"grid-template-columns:1.4fr 1fr\"] {\n"
-     "    grid-template-columns: 1fr !important; }\n"
-     "  /* seven day buttons in a 58px cell overran their card */\n"
-     "  [style*=\"display:flex;gap:4px\"] > button { min-width: 0 !important; }\n"
-     "}\n"
-     "@media (max-width: 860px) {\n"
-     "  [style*=\"grid-template-columns:1fr 1fr\"] {\n"
-     "    grid-template-columns: 1fr !important; }\n"
-     "}\n"
-     "</style>\n</helmet>"),
+     "<style>" + MOBILE_CSS + "</style>\n</helmet>"),
 
     # ---- the author panel must not invent a selection ---------------------
     # With nobody picked -- the state on arrival, and again after a run drops
