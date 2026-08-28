@@ -8,3 +8,4 @@ engine/data/runs/
 # wrangler caches the Cloudflare account id and account email here.
 worker/.wrangler/
 .wrangler/
+engine/data/directory_programs.json

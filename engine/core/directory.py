@@ -87,6 +87,64 @@ def _people(html, college):
     return out
 
 
+_PROG_SELECT = re.compile(r'<select[^>]*name="program"[^>]*>(.*?)</select>', re.S)
+_OPTION = re.compile(r'<option[^>]*value="(\d+)"[^>]*>\s*([^<]+?)\s*</option>')
+
+
+def programs_on(code, html=None, log=print):
+    """[(id, name)] -- the programme filter the directory renders for a college."""
+    if html is None:
+        html = _get("%s?keyword=&campus=3&list=%s" % (BASE, code))
+    m = _PROG_SELECT.search(html or "")
+    if not m:
+        return []
+    return [(v, t) for v, t in _OPTION.findall(m.group(1))
+            if v != "0" and t.strip().lower() != "program"]
+
+
+def harvest_programs(log=print):
+    """Which programme each person is filed under, from the DIRECTORY.
+
+    DO NOT USE for programme membership. Kept only so nobody re-walks this.
+
+    The directory's Program dropdown does not filter server-side. Measured:
+    `?list=4&program=47` and `?list=4&program=5` come back SIX BYTES apart --
+    the difference is which <option> carries `selected` -- and both list all
+    43 Pharmacy staff in the same order. Across the six colleges running more
+    than one programme, every programme returns an identical set. The
+    filtering a browser shows is done by the page's own JavaScript after it
+    loads; the cards carry no programme attribute for a fetch to read,
+    /en/api/getProgram answers [], and the filter form is a plain GET with no
+    action.
+
+    core/programs.py harvests the COLLEGE SUBSITES instead, whose
+    `staff_program=` filter is genuinely server-side: Pharmacy comes back as
+    21 / 4 / 4 / 15 for its four programmes, and its Nutrition and Dietetics
+    four are exactly the people the directory shows a human. That is the
+    source of programme membership, and this function is not.
+    """
+    out = {"colleges": {}, "programs": [], "by_slug": {}}
+    for code, college in COLLEGES:
+        page = _get("%s?keyword=&campus=3&list=%s" % (BASE, code))
+        progs = programs_on(code, page, log)
+        if not progs:
+            log("  %-52s no programme filter" % college)
+            continue
+        out["colleges"][college] = {"code": code,
+                                    "programs": [t for _, t in progs]}
+        log("  %-52s %d programmes" % (college, len(progs)))
+        for pid, name in progs:
+            ph = _get("%s?keyword=&campus=3&list=%s&program=%s"
+                      % (BASE, code, pid))
+            slugs = sorted({m.group(1) for m in _STAFF.finditer(ph or "")})
+            out["programs"].append({"id": pid, "name": name,
+                                    "college": college, "staff": slugs})
+            for sl in slugs:
+                out["by_slug"].setdefault(sl.lower(), []).append(name)
+            log("      %-56s %d" % (name[:56], len(slugs)))
+    return out
+
+
 def verify(rows, log=print):
     """Check each published id actually resolves, and record what it holds.
 
@@ -166,6 +224,17 @@ def main():
         print("%d people, %d with a Scopus id"
               % (len(b), sum(1 for r in b.values() if r.get("scopus_auid"))))
         return
+    if "--programs" in sys.argv:
+        import time as _t
+        blob = harvest_programs()
+        blob["generated"] = _t.strftime("%Y-%m-%dT%H:%M:%SZ", _t.gmtime())
+        path = os.path.join(ROOT, "data", "directory_programs.json")
+        json.dump(blob, open(path, "w", encoding="utf-8"),
+                  ensure_ascii=False, separators=(",", ":"))
+        print("wrote %s: %d programmes, %d people placed"
+              % (path, len(blob["programs"]), len(blob["by_slug"])))
+        return
+
     rows = harvest()
     if "--no-verify" not in sys.argv:
         rows = verify(rows)
