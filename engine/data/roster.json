@@ -1,5 +1,5 @@
 {
- "version": "2026-08-28-programmes",
+ "version": "2026-08-28-directory-adopted",
  "captured": "2026-08-27",
  "source": "claude-chrome",
  "note": "fixed resolver",
@@ -2025,7 +2025,7 @@
   },
   {
    "name": "Azza Galal Ramadan",
-   "college": "College of Pharmacy",
+   "college": "College of Nursing",
    "department": "",
    "title": "Associate Professor",
    "email": "azza.ramadan@aau.ac.ae",
@@ -2042,8 +2042,8 @@
    "is_academic": true,
    "email_kind": "personal",
    "colleges": [
-    "College of Pharmacy",
-    "College of Nursing"
+    "College of Nursing",
+    "College of Pharmacy"
    ],
    "also_listed_in": [
     "College of Nursing"
@@ -4386,8 +4386,8 @@
    "colleges": [
     "College of Education, Humanities and Social Sciences"
    ],
-   "scopus_auid": "58612046300",
-   "auid_tier": "manual:manual",
+   "scopus_auid": "5861206300",
+   "auid_tier": "high:aau-directory",
    "auid_candidates": [],
    "google_scholar_id": "ApYtSM4AAAAJ",
    "programs": [
@@ -5548,7 +5548,8 @@
    "auid_candidates": [],
    "profile_checked": true,
    "programs": [],
-   "n_programs": 0
+   "n_programs": 0,
+   "not_in_directory": true
   },
   {
    "name": "Fidha Parvin",
@@ -5950,7 +5951,8 @@
     "Bachelor of Mass Communication and Media",
     "Bachelor of Public Relations"
    ],
-   "n_programs": 5
+   "n_programs": 5,
+   "not_in_directory": true
   },
   {
    "name": "Farah Saboune",
@@ -6338,7 +6340,8 @@
    "auid_candidates": [],
    "added_from_page": true,
    "programs": [],
-   "n_programs": 0
+   "n_programs": 0,
+   "not_in_directory": true
   },
   {
    "name": "Eid Abo Hamza",
@@ -6357,7 +6360,8 @@
    "auid_candidates": [],
    "added_from_page": true,
    "programs": [],
-   "n_programs": 0
+   "n_programs": 0,
+   "not_in_directory": true
   },
   {
    "name": "Majdi Sawalha",
@@ -6376,7 +6380,8 @@
    "auid_candidates": [],
    "added_from_page": true,
    "programs": [],
-   "n_programs": 0
+   "n_programs": 0,
+   "not_in_directory": true
   },
   {
    "name": "Abdullah Abdullatif",
