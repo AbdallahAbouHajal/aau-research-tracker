@@ -163,21 +163,33 @@ def main():
 
     elif n == 5:
         slots = RUNS.build_slots(b["papers"], log=log)
-        # Who each paper's institutions are, for the papers the census export
-        # does not cover. One request each, cached durably because a published
-        # paper's institution list does not change, and bounded so a run can
-        # never hang on it. Without this the collaboration screen could only
-        # speak for the papers the export reached.
-        if os.environ.get("AAU_FULL_AFFILS", "1") not in ("0", "false", ""):
-            try:
-                import network as NET
-                have = {s_["eid"] for s_ in slots
-                        if (s_.get("raw_affiliation") or "").strip()}
-                NET.backfill_affiliations(b["papers"], have, log=log,
-                                          budget_s=int(os.environ.get(
-                                              "AAU_AFFIL_BUDGET", "2400")))
-            except Exception as exc:
-                log("could not fill in institutions: %s" % str(exc)[:70])
+        # Reading every paper's institutions takes about a second per paper,
+        # and doing it here held the whole run -- and therefore the whole
+        # dashboard -- for thirteen minutes. It is a separate job now, so the
+        # figures publish at once and the collaboration screen fills in behind
+        # them. What that job needs is written out here: which papers still
+        # want institutions, and which AAU colleges are on each.
+        try:
+            import network as NET
+            have = sorted({s_["eid"] for s_ in slots
+                           if (s_.get("raw_affiliation") or "").strip()})
+            cols = {}
+            for s_ in slots:
+                if s_.get("eid") and s_.get("college"):
+                    cols.setdefault(s_["eid"], [])
+                    if s_["college"] not in cols[s_["eid"]]:
+                        cols[s_["eid"]].append(s_["college"])
+            hand = {"run": b["run"], "printed": have, "colleges": cols,
+                    "papers": {e: {"sid": str(p_.get("scopus_id") or "")}
+                               for e, p_ in b["papers"].items()}}
+            hp = os.environ.get("AAU_HANDOFF") or os.path.join(ROOT, ".handoff.json")
+            with open(hp, "w", encoding="utf-8") as fh:
+                json.dump(hand, fh, separators=(",", ":"))
+            log("%d papers already carry their authors' addresses; %d wait on "
+                "the institutions job"
+                % (len(have), len(b["papers"]) - len(have)))
+        except Exception as exc:
+            log("could not write the hand-off: %s" % str(exc)[:70])
         cl = CLS.classify(slots, b["people"], list_version=b.get("version", ""))
         b["slots"] = slots
         b["cl"] = cl
