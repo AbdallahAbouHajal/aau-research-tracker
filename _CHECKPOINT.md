@@ -1,4 +1,4 @@
-# AAU Research Tracker — checkpoint, 28 Aug 2026
+# AAU Research Tracker — checkpoint, 29 Aug 2026
 
     page   https://abdallahabouhajal.github.io/aau-research-tracker/
     repo   https://github.com/AbdallahAbouHajal/aau-research-tracker
@@ -8,38 +8,55 @@
 
 Everything below is SHIPPED AND LIVE unless it says otherwise.
 
-## The one thing in flight
+## Nothing is in flight
 
-**Mobile.** Abdallah asked for the site to be genuinely usable on a phone. He
-does NOT want a third-party library vendored into the page — he wants the
-technique researched online first, learned, then applied by hand. That
-distinction matters to him; do not vendor a framework.
+Mobile is done — reflow by hand, no library vendored (Abdallah asked for the
+technique to be researched and applied, not for a framework to be dropped in;
+that distinction matters to him). Verified at 500 / 834 / 1440: no horizontal
+scroll, no tap target under 36px, no text under 11px, on all nine screens.
 
-A Workflow was auditing all nine screens when the session ended:
-`wf_4eb1fee8-46e`, script at
-`~/.claude/projects/-Users-abdallahabouhajal-Downloads-AAU-Tracker-Site/b6efd401-.../workflows/scripts/aau-mobile-audit-wf_4eb1fee8-46e.js`
-Five auditors (tables, fixed canvases, chrome, viewport decision, dashboard+net)
-each returning exact inline-style substrings and the media-query rule that
-fixes them, then one agent synthesising a single stylesheet. Resume with
-`Workflow({scriptPath: ..., resumeFromRunId: 'wf_4eb1fee8-46e'})` — completed
-agents replay from cache.
+## The page keeps itself current — and there are TWO publishers
 
-The open decision it was settling: keep `<meta name="viewport" content="width=1180">`
-(everything visible, small, zoomable — what ships today) or move to
-`width=device-width` and reflow properly. Decide on the audit's evidence.
+It no longer needs a reload. `live.js` HEADs `data/state.json` **and**
+`data/network.json` every 60s while the tab is visible, and immediately when
+the tab is re-shown.
 
-Verify any mobile work with headless screenshots at 390 / 430 / 834 / 1440.
-Desktop at 1280+ must not change.
+Why both: the census job writes state/papers/network together, then the
+institutions job writes **`network.json` alone** for ~20 minutes, never
+touching state.json. Watching only state.json misses every collaboration
+checkpoint. Confirmed in the history — "Census refresh" touches three files,
+both "Institutions read" commits touch one.
+
+Three things that must stay true:
+
+1. **Decide on `generated`, not the ETag.** The tag is a hint; the stamp is
+   what stops the page mistaking its own refresh for a run. An earlier draft
+   re-baselined the tag after each refresh and silently lost any run landing
+   in the gap.
+2. **Drop the lazy cache when the data moves.** `papers.json`/`network.json`
+   are held for the life of the page. Nothing cleared them, so after a
+   2025-26 run the Papers screen still showed the previous window's 4,285
+   rows next to a Dashboard reading 522.
+3. **Cache-bust each file with ITS OWN publisher's stamp.** Pages sends
+   `max-age=600`; stamping network.json with the census stamp gave two
+   different files one URL.
+
+The reader is never moved — figures change underneath them and the badge says
+why. Only a run started in that tab switches screens.
 
 ## What the app now is
 
-Seven screens plus two added today: **Papers** (every paper in the run, its own
-~950KB file fetched on open) and **Collaboration and Network** (who AAU
-publishes with). Each researcher's page carries a **co-author wheel** built
-from our own papers.
+Nine screens. **Papers** (every paper in the run, its own file fetched on
+open) and **Collaboration and Network** (who AAU publishes with); each
+researcher's page carries a **co-author wheel** built from our own papers.
 
-Live figures on the 2021-2026 window: 4,285 papers, 556 authors, 213 roster
-people, 8 colleges, 51 programmes.
+The **Dashboard is three levels** — eight college cards, then that college's
+programmes, then one programme — with the **run panel BELOW the figures** and
+a prompt pointing down at it. The **Roster is a joined list**, deliberately
+unlike the Dashboard's grid: its rail is vertical where the Dashboard's is
+horizontal, its hero number is people where the Dashboard's is papers, and its
+eight bars grow in unison where the Dashboard's cards cascade. Each college
+carries an emoji mark, defined once in `live.js` (`collegeIcon`).
 
 ## Facts that must not regress
 
@@ -66,6 +83,18 @@ people, 8 colleges, 51 programmes.
   81% of all institution pairs; left in they decide every ranking.
 - **AAU has EIGHT colleges.** Count from the roster, never from who has papers.
 
+## Numbers that must never be printed
+
+- **`staff`** is the sum of per-programme tag counts, so a person on three
+  programmes is counted three times — it reads **83 for a college of 44
+  people**. Papers-per-person divides by `people`.
+- **Never roll programme figures up to a college by summing them**: 51
+  programmes sum to 6,904 papers against the 3,606 the eight colleges hold.
+- The two dashboard levels divide by different populations — a college by its
+  roster, a programme by the staff AAU tags to it — so each ratio carries its
+  denominator on hover. A programme reading 115 papers/person is usually
+  right (3 tagged people, all career h-index > 30), not a fault.
+
 ## The traps this project keeps re-hitting
 
 1. Re-encode the bundle exactly: `json.dumps(t, ensure_ascii=False).replace("</", "<\\u002F")`.
@@ -84,6 +113,21 @@ people, 8 colleges, 51 programmes.
 7. `actions/upload-artifact` silently skips hidden files. The census/institutions
    hand-off is `engine/handoff.json`, not `.handoff.json`, for exactly this.
 
+### Two more, learned 29-Aug
+
+- **An element already carrying one bare `data-` attribute silently loses a
+  second.** `<div data-rise data-run-panel …>` arrives as `data-rise` alone:
+  the patch applies, matches once, and the CSS rule matches nothing. Hook a
+  sibling instead. (Two bare attributes on a `<button>` do survive — probe
+  the DOM, don't assume either way.)
+- **`VALS` is one flat object literal, so a repeated key silently wins.** It
+  has cost twice: `progNote` broke the Roster's caption, and a second
+  `backToColleges` killed the Roster's back button while looking correct.
+  `grep -c "yourKey:" patches_live.py` before adding one.
+- **`animation-fill-mode: both` freezes `transform`** and outranks both the
+  rule and the inline style, so any `:hover { transform }` dies silently.
+  Card animations use `backwards`.
+
 ## How a run works now
 
 Two jobs. **refresh** publishes the whole census in ~50s. **institutions** then
@@ -98,7 +142,6 @@ hand-off wrote `sid` where the reader wanted `scopus_id`.
 
 ## Still open
 
-- Mobile (above).
 - The proxy still holds Abdallah's `gh` CLI OAuth token, which reaches all his
   repos. Swap it for a fine-grained PAT scoped to `aau-research-tracker` with
   Actions: Read and write. He has been told.
