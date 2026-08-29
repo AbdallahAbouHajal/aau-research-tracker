@@ -454,7 +454,8 @@ PATCHES = [
      "      color: f.kind === 'bad' ? '#E0303F'\n"
      "        : (f.kind === 'warn' ? '#E8A33D'\n"
      "        : (f.kind === 'info' ? '#8C9A92' : accent)),\n"
-     "    })) : running ? ["),
+     "    })).filter((f, i) => i === 0 || this.state.findMore)\n"
+     "      : running ? ["),
 
     ("dashboard: a finding can explain itself on hover",
      '<div style="font-size:14px;color:#2A3A31;line-height:1.45">{{ f.text }}</div>',
@@ -626,6 +627,182 @@ VALS = r"""
       csvHelp: () => window.__AAU && window.__AAU.csvHelp(),
       showPapers: () => window.__AAU && window.__AAU.showPapers(this),
       exportCollege: () => window.__AAU && window.__AAU.exportCollege(this),
+      // ---- the dashboard is a card per programme -------------------------
+      // PROGRAMS is already filled from state.programs by the bridge, so this
+      // needs no new plumbing. Every number here is the window the last run
+      // covered, except avg h, which Scopus defines over a whole career and
+      // which is labelled as such wherever it appears.
+      progNote: (() => {
+        const st = (window.__AAU && window.__AAU.state) || {};
+        const n = PROGRAMS.length;
+        const w = (st.stats && st.stats.papers) ? st.stats.papers.toLocaleString() : '\u2014';
+        return 'Everything below covers the window the last run asked for \u2014 '
+          + w + ' papers across ' + n + ' programmes. To see another period, '
+          + 'press Run now above.';
+      })(),
+      progList: !this.state.prog,
+      progDetail: !!this.state.prog,
+      // Grouped under their college, in the app's own college order, so the
+      // eight colours mean the same thing here as everywhere else.
+      progGroups: (() => {
+        const order = COLLEGE_DATA.map(c => c.name);
+        const colour = {}; COLLEGE_DATA.forEach(c => { colour[c.name] = c.color; });
+        const best = Math.max(1, ...PROGRAMS.map(p => p.papers || 0));
+        // The degree has to survive the shortening. Dropping it collapsed
+        // "Bachelor of Arts in Applied Sociology" and "Master of Arts in
+        // Applied Sociology" into two cards both reading "Applied Sociology",
+        // side by side, with different numbers.
+        const shortP = (n) => {
+          const s0 = String(n);
+          let deg = '';
+          if (/^Bachelor of Science/.test(s0)) deg = 'BSc';
+          else if (/^Master of Science/.test(s0)) deg = 'MSc';
+          else if (/^Bachelor of Arts/.test(s0)) deg = 'BA';
+          else if (/^Master of Arts/.test(s0)) deg = 'MA';
+          else if (/^Doctor of Philosophy/.test(s0)) deg = 'PhD';
+          else if (/^Bachelor of Education/.test(s0)) deg = 'BEd';
+          else if (/^Master of Education/.test(s0)) deg = 'MEd';
+          else if (/^Postgraduate Professional Diploma/.test(s0)) deg = 'Dip';
+          else if (/^BBA/.test(s0)) deg = 'BBA';
+          else if (/^Bachelor/.test(s0)) deg = 'B';
+          else if (/^Master/.test(s0)) deg = 'M';
+          let t = s0
+            .replace(/^(Bachelor|Master|Doctor) of (Science|Arts|Philosophy|Education) in /, '')
+            .replace(/^(Bachelor|Master|Doctor) of (Science|Arts|Philosophy|Education) - /, '')
+            .replace(/^(Bachelor|Master|Doctor) of /, '')
+            .replace(/^(Bachelor|Master) in /, '')
+            .replace(/^Postgraduate Professional Diploma in /, '')
+            .replace(/^BBA in /, '');
+          const room = deg ? 34 : 38;
+          if (t.length > room) {
+            const cut = t.slice(0, room), sp = cut.lastIndexOf(' ');
+            t = (sp > 16 ? cut.slice(0, sp) : cut).replace(/[ ,]+$/, '') + '\u2026';
+          }
+          return deg ? (deg + ' \u00b7 ' + t) : t;
+        };
+        return order.map(col => ({
+          college: col.replace('College of ', ''),
+          color: colour[col] || accent,
+          cards: PROGRAMS.filter(p => p.college === col)
+            .sort((a, b) => (b.papers || 0) - (a.papers || 0))
+            .map(p => {
+              const staff = p.tagged || p.people || 0;
+              const per = staff ? (p.papers || 0) / staff : 0;
+              return {
+                name: shortP(p.name),
+                full: p.name + ' \u2014 ' + col,
+                papers: p.papers ? p.papers.toLocaleString() : '\u2014',
+                cites: p.citations ? p.citations.toLocaleString() : '\u2014',
+                per: staff ? per.toFixed(1) : '\u2014',
+                barW: Math.max(2, Math.round(100 * (p.papers || 0) / best)) + '%',
+                color: colour[col] || accent,
+                quiet: p.papers ? '' : 'No one on this programme has a paper '
+                  + 'in this window.',
+                quietShow: p.papers ? 'none' : 'block',
+                statShow: p.papers ? 'flex' : 'none',
+                pick: () => this.setState({ prog: p.name }),
+              };
+            }),
+        })).filter(g => g.cards.length);
+      })(),
+      backToProgs: () => this.setState({ prog: null }),
+      // Seven lines of run narration, on a screen whose job is now the
+      // programme cards. The one that stays carries the corpus total, because
+      // removing the headline tiles took it off the page. The rest are kept,
+      // not deleted -- the "checked and not counted" line is what proves the
+      // affiliation gate is working, and the co-author line is what stops a
+      // reader over-trusting the author lists -- and open on a click.
+      findMore: !!this.state.findMore,
+      toggleFind: () => this.setState(s => ({ findMore: !s.findMore })),
+      findMoreLabel: this.state.findMore
+        ? 'Hide the rest' : 'What else this run found',
+      findMoreCount: (() => {
+        const st = (window.__AAU && window.__AAU.state) || {};
+        const n = ((window.__AAU && window.__AAU.status
+          && window.__AAU.status.findings) || st.findings || []).length;
+        return n > 1 ? ('  \u00b7  ' + (n - 1) + ' more') : '';
+      })(),
+      // The drill-down. Six metrics, and two comparisons -- the programme's own
+      // people, and the programme against its siblings in the same college with
+      // that college's median marked, because a number without a comparison is
+      // not a finding.
+      progOne: (() => {
+        const p = PROGRAMS.find(x => x.name === this.state.prog);
+        if (!p) return { name: '', college: '', color: accent };
+        const colour = {}; COLLEGE_DATA.forEach(c => { colour[c.name] = c.color; });
+        const staff = p.tagged || p.people || 0;
+        const f = (v) => v ? v.toLocaleString() : '\u2014';
+        const r = (v) => (v || v === 0) ? v.toFixed(1) : '\u2014';
+        return {
+          name: p.name,
+          college: p.college.replace('College of ', ''),
+          color: colour[p.college] || accent,
+          papers: f(p.papers), cites: f(p.citations),
+          perStaff: staff ? r((p.papers || 0) / staff) : '\u2014',
+          // A missing citation count is not a count of zero. Until a run
+          // has been made with an engine that carries it, these read as
+          // unknown rather than as nothing.
+          citesPerStaff: (p.citations && staff) ? r(p.citations / staff) : '\u2014',
+          citesPerPaper: (p.citations && p.papers) ? r(p.citations / p.papers) : '\u2014',
+          avgH: p.avg_h ? r(p.avg_h) : '\u2014',
+          hNote: p.with_h ? ('career h-index, averaged over the ' + p.with_h
+            + ' of ' + staff + ' with one') : 'no career h-index on file',
+          staffLine: staff + (staff === 1 ? ' member of staff AAU lists on this '
+            : ' staff AAU lists on this ') + 'programme, '
+            + (p.people || 0) + ' with a Scopus record',
+          assumedShow: p.assumed ? 'block' : 'none',
+        };
+      })(),
+      progPeople: (() => {
+        const p = PROGRAMS.find(x => x.name === this.state.prog);
+        if (!p) return [];
+        const mine = AUTHORS.filter(a => (a.programs || []).indexOf(p.name) >= 0);
+        const max = Math.max(1, ...mine.map(a => a.papers || 0));
+        return mine.sort((a, b) => (b.papers || 0) - (a.papers || 0)).slice(0, 14)
+          .map(a => ({
+            name: a.name, papers: a.papers || 0,
+            barW: Math.max(2, Math.round(100 * (a.papers || 0) / max)) + '%',
+            title: a.name + ' \u2014 ' + (a.papers || 0) + ' papers in this window, '
+              + 'career h-index ' + (a.h || 0),
+          }));
+      })(),
+      progSiblings: (() => {
+        const p = PROGRAMS.find(x => x.name === this.state.prog);
+        if (!p) return [];
+        const sib = PROGRAMS.filter(x => x.college === p.college);
+        const vals = sib.map(x => (x.tagged || x.people)
+          ? (x.papers || 0) / (x.tagged || x.people) : 0).sort((a, b) => a - b);
+        const med = vals.length ? vals[Math.floor(vals.length / 2)] : 0;
+        const max = Math.max(0.1, ...vals);
+        return sib.sort((a, b) => {
+          const av = (a.tagged || a.people) ? (a.papers || 0) / (a.tagged || a.people) : 0;
+          const bv = (b.tagged || b.people) ? (b.papers || 0) / (b.tagged || b.people) : 0;
+          return bv - av;
+        }).map(x => {
+          const st = x.tagged || x.people || 0;
+          const v = st ? (x.papers || 0) / st : 0;
+          const me = x.name === p.name;
+          return {
+            name: x.name.length > 40 ? x.name.slice(0, 40) + '\u2026' : x.name,
+            v: v.toFixed(1),
+            barW: Math.max(2, Math.round(100 * v / max)) + '%',
+            bg: me ? (COLLEGE_DATA.find(c => c.name === p.college) || {}).color || accent
+                   : '#CDE6D8',
+            weight: me ? 700 : 500,
+            medLeft: Math.round(100 * med / max) + '%',
+          };
+        });
+      })(),
+      progMedNote: (() => {
+        const p = PROGRAMS.find(x => x.name === this.state.prog);
+        if (!p) return '';
+        const sib = PROGRAMS.filter(x => x.college === p.college);
+        const vals = sib.map(x => (x.tagged || x.people)
+          ? (x.papers || 0) / (x.tagged || x.people) : 0).sort((a, b) => a - b);
+        const med = vals.length ? vals[Math.floor(vals.length / 2)] : 0;
+        return 'Papers per member of staff AAU lists. The line is this '
+          + 'college\u2019s median, ' + med.toFixed(1) + '.';
+      })(),
       // ---- Networking and Collaboration ----------------------------------
       netReady: !!(NETWORK && NETWORK.top && NETWORK.top.length),
       netNote: (() => {
@@ -1694,6 +1871,40 @@ ROUND2 = [
      'line-height:1.45">Pale is joint papers; solid is the same work shared '
      'out among every institution on each paper.</div>\n'
      '        </div>'),
+
+    # ---- the Workflow screen ends where the diagram ends ------------------
+    # Three boxes explaining the affiliation gate, why a name can be missed,
+    # and what a healthy run looks like. They were scaffolding for a reader
+    # meeting the tool for the first time; the tool is in daily use now and
+    # they are the last thing on the screen every time.
+    ("workflow: drop the three explanation boxes",
+     '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:22px">\n      <div data-rise="" style="animation-delay:.1s;background:#ffffff;border-radius:8px;padding:18px 20px;border-left:4px solid {{ accent }}">\n        <div style="font-size:14.5px;font-weight:700">Why the gate exists</div>\n        <div style="font-size:13px;color:#63736A;line-height:1.5;margin-top:7px">A sweep by author returns everything that person published anywhere, including work they did at other universities. Without the gate the census re-inflates with papers that were never AAU\'s.</div>\n      </div>\n      <div data-rise="" style="animation-delay:.14s;background:#ffffff;border-radius:8px;padding:18px 20px;border-left:4px solid {{ accent }}">\n        <div style="font-size:14.5px;font-weight:700">Why a name can be missed</div>\n        <div style="font-size:13px;color:#63736A;line-height:1.5;margin-top:7px">The roster writes Al-Takhayneh, Scopus prints Al-Tkhayneh. One vowel apart. Exact matching misses it and a whole career disappears, so near-misses are checked separately before anyone is called new.</div>\n      </div>\n      <div data-rise="" style="animation-delay:.18s;background:#ffffff;border-radius:8px;padding:18px 20px;border-left:4px solid {{ accent }}">\n        <div style="font-size:14.5px;font-weight:700">What a healthy run looks like</div>\n        <div style="font-size:13px;color:#63736A;line-height:1.5;margin-top:7px">Run it twice on unchanged data and the second run reports nothing new. If it invents an addition, the papers are being matched wrongly, and that is a bug rather than a discovery.</div>\n      </div>\n    </div>',
+     ""),
+
+    # ---- the dashboard becomes a card per programme --------------------
+    # It reported the machinery: three headline tiles, a donut, a delta and
+    # seven findings. A research office wants to know how each programme is
+    # doing, so that is what it shows. The run panel stays, because it is how
+    # you change the period every one of these numbers describes.
+    ("dashboard: drop the three headline tiles",
+     '<div data-rise="" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px">\n      <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="3">\n        <div style="background:#ffffff;border-radius:8px;padding:18px 20px;border-top:4px solid {{ t.color }}">\n          <div style="font-size:38px;font-weight:800;letter-spacing:-.025em;line-height:1.02;font-variant-numeric:tabular-nums">{{ t.v }}</div>\n          <div style="font-size:14px;font-weight:600;margin-top:7px">{{ t.l }}</div>\n          <div style="font-size:13px;color:#63736A;margin-top:3px;line-height:1.4">{{ t.sub }}</div>\n        </div>\n      </sc-for>\n    </div>',
+     ""),
+
+    ("dashboard: the run panel takes the full width",
+     'grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px',
+     # The screen's padding wrapper closes right after the tiles -- a quirk
+     # of the original design -- so this grid is its sibling and never had
+     # any. It did not show while a full-width card filled the row; it does
+     # the moment anything sits directly on the page.
+     'grid-template-columns:1fr;gap:16px;margin-top:16px;padding:0 26px 30px'),
+
+    ("dashboard: the donut, the collaborators and the delta give way to the programmes",
+     '<div style="display:flex;flex-direction:column;gap:16px">\n        <div data-rise="" style="animation-delay:.1s;background:#ffffff;border-radius:8px;padding:20px 22px">\n          <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:6px">Share of papers by college</div>\n          <div style="display:flex;align-items:center;gap:18px">\n            <div style="position:relative;flex:0 0 auto;width:176px;height:176px"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center"><div style="font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1;color:#1A1A1A">{{ pieTotal }}</div><div style="font-size:11.5px;font-weight:600;letter-spacing:.06em;margin-top:4px;color:#63736A">CREDITS</div></div><svg width="176" height="176" sc-camel-view-box="0 0 240 240" style="display:block">\n              <circle cx="120" cy="120" r="100" fill="none" stroke="#EDF1EE" stroke-width="42"></circle>\n              <g fill="none" stroke-width="42">\n                <sc-for list="{{ pie }}" as="p" hint-placeholder-count="10">\n                  <circle data-arc="" cx="120" cy="120" r="100" stroke="{{ p.color }}" stroke-dasharray="{{ p.dash }}" stroke-dashoffset="0" transform="{{ p.rot }}" style="--arc:{{ p.arc }};animation-delay:{{ p.delay }}"></circle>\n                </sc-for>\n              </g>\n              \n            </svg></div>\n            <div style="flex:1;min-width:0">\n              <sc-for list="{{ colleges }}" as="c" hint-placeholder-count="10">\n                <div style="display:grid;grid-template-columns:12px 1fr 40px;gap:9px;align-items:center;padding:3px 0">\n                  <span style="width:11px;height:11px;background:{{ c.color }};border-radius:2px"></span>\n                  <span style="font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.name }}</span>\n                  <span style="font-size:12.5px;text-align:right;color:#3A4A41;font-variant-numeric:tabular-nums">{{ c.papers }}</span>\n                </div>\n              </sc-for>\n            </div>\n          </div>\n          <div style="margin-top:14px;padding-top:13px;border-top:1px solid #F0F3F1;font-size:12.5px;color:#63736A;line-height:1.45">A paper written across two colleges is credited to both, so the credits add up to more than the paper count.</div>\n        </div>\n\n        <div data-rise style="animation-delay:.125s;display:{{ dashCollabShow }};background:#ffffff;border-radius:8px;padding:20px 22px">\n          <div style="display:flex;align-items:baseline;gap:8px">\n            <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};flex:1">Top collaborators</div>\n            <button type="button" sc-camel-on-click="{{ goNet }}" style="background:none;border:0;padding:0;font-family:Archivo,sans-serif;font-size:12.5px;font-weight:600;color:{{ accent }};cursor:pointer">All of them →</button>\n          </div>\n          <sc-for list="{{ dashCollab }}" as="r" hint-placeholder-count="6">\n            <div title="{{ r.title }}" style="display:grid;grid-template-columns:1fr 190px 34px;gap:10px;align-items:center;padding:6px 0">\n              <div style="font-size:12.5px;color:#3A4A41;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</div>\n              <div style="position:relative;height:14px">\n                <div style="position:absolute;left:0;top:3px;width:{{ r.barW }};height:9px;border-radius:3px;background:#CDE6D8"></div>\n                <div style="position:absolute;left:0;top:3px;width:{{ r.creditW }};height:9px;border-radius:3px;background:{{ accent }}"></div>\n              </div>\n              <div style="font-size:12px;color:#63736A;text-align:right;font-variant-numeric:tabular-nums">{{ r.papers }}</div>\n            </div>\n          </sc-for>\n          <div style="font-size:11.5px;color:#8C9A92;margin-top:8px;line-height:1.45">Pale is joint papers; solid is the same work shared out among every institution on each paper.</div>\n        </div>\n\n        <div data-rise="" style="animation-delay:.15s;background:#ffffff;border-radius:8px;padding:20px 22px">\n          <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:{{ accent }};margin-bottom:12px">Since the last run</div>\n          <div style="display:flex;align-items:center;gap:12px;padding:10px 0">\n            <span style="width:9px;height:9px;border-radius:50%;background:#9BB0A4;flex:0 0 auto"></span>\n            <div style="font-size:14.5px;color:#3A4A41;line-height:1.45">{{ deltaLine }}</div>\n          </div>\n          <div style="font-size:12.5px;color:#63736A;line-height:1.5;border-top:1px solid #F0F3F1;padding-top:11px">Run it twice on the same data and this stays empty. If it ever reports something new here, the papers are being matched wrongly.</div>\n        </div>\n      </div>',
+     '<sc-if value="{{ progList }}" hint-placeholder-val="{{ true }}">\n      <div data-rise style="animation-delay:.08s">\n        <div style="font-size:13px;color:#63736A;line-height:1.5;max-width:760px;margin-bottom:16px">{{ progNote }}</div>\n        <sc-for list="{{ progGroups }}" as="g" hint-placeholder-count="8">\n          <div style="margin-bottom:22px">\n            <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px">\n              <span style="width:10px;height:10px;border-radius:50%;background:{{ g.color }};flex:0 0 auto"></span>\n              <span style="font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#63736A">{{ g.college }}</span>\n            </div>\n            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">\n              <sc-for list="{{ g.cards }}" as="c" hint-placeholder-count="6">\n                <button type="button" sc-camel-on-click="{{ c.pick }}" title="{{ c.full }}" style="background:#ffffff;border-radius:8px;padding:15px 16px;border-top:3px solid {{ c.color }};cursor:pointer;text-align:left;font-family:Archivo,sans-serif;border-left:0;border-right:0;border-bottom:0;width:100%">\n                  <div style="font-size:13px;font-weight:600;color:#1A1A1A;line-height:1.35;min-height:36px">{{ c.name }}</div>\n                  <div style="display:{{ c.statShow }};align-items:baseline;gap:7px;margin-top:9px">\n                    <span style="font-size:27px;font-weight:700;color:#1A1A1A;font-variant-numeric:tabular-nums;line-height:1">{{ c.papers }}</span>\n                    <span style="font-size:11.5px;color:#63736A">papers</span>\n                  </div>\n                  <div style="display:{{ c.statShow }};gap:14px;margin-top:6px;font-size:11.5px;color:#63736A;font-variant-numeric:tabular-nums">\n                    <span>{{ c.cites }} citations</span>\n                    <span>{{ c.per }} per staff</span>\n                  </div>\n                  <div style="display:{{ c.quietShow }};margin-top:9px;font-size:11.5px;color:#8C9A92;line-height:1.4">{{ c.quiet }}</div>\n                  <div style="height:4px;border-radius:2px;background:#EDF1EE;margin-top:11px"><div style="width:{{ c.barW }};height:4px;border-radius:2px;background:{{ c.color }}"></div></div>\n                </button>\n              </sc-for>\n            </div>\n          </div>\n        </sc-for>\n      </div>\n      </sc-if>\n      <sc-if value="{{ progDetail }}" hint-placeholder-val="{{ false }}">\n      <div data-rise style="animation-delay:.05s">\n        <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px">\n          <button type="button" sc-camel-on-click="{{ backToProgs }}" style="background:#ffffff;border:1px solid #D5DED8;border-radius:6px;padding:9px 14px;font-family:Archivo,sans-serif;font-size:13px;color:#3A4A41;cursor:pointer;white-space:nowrap;flex:0 0 auto">‹ All programmes</button>\n          <div style="flex:1;min-width:0">\n            <div style="font-size:20px;font-weight:700;color:#1A1A1A;line-height:1.3">{{ progOne.name }}</div>\n            <div style="display:flex;align-items:center;gap:8px;margin-top:5px">\n              <span style="width:9px;height:9px;border-radius:50%;background:{{ progOne.color }}"></span>\n              <span style="font-size:13px;color:#63736A">{{ progOne.college }} · {{ progOne.staffLine }}</span>\n            </div>\n            <div style="display:{{ progOne.assumedShow }};margin-top:7px;font-size:12px;color:#8A6D1F;background:#FBF6E9;border:1px solid #E0D5B8;border-radius:7px;padding:8px 11px;line-height:1.45">AAU lists this college’s staff but tags nobody to its one programme, so membership here was assigned rather than published.</div>\n          </div>\n        </div>\n        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">\n          <div style="background:#F4F6F5;border-radius:7px;padding:13px 15px"><div style="font-size:25px;font-weight:700;font-variant-numeric:tabular-nums">{{ progOne.papers }}</div><div style="font-size:11.5px;color:#63736A;margin-top:3px">papers in this window</div></div>\n          <div style="background:#F4F6F5;border-radius:7px;padding:13px 15px"><div style="font-size:25px;font-weight:700;font-variant-numeric:tabular-nums">{{ progOne.cites }}</div><div style="font-size:11.5px;color:#63736A;margin-top:3px">citations to those papers</div></div>\n          <div style="background:#F4F6F5;border-radius:7px;padding:13px 15px"><div style="font-size:25px;font-weight:700;font-variant-numeric:tabular-nums">{{ progOne.perStaff }}</div><div style="font-size:11.5px;color:#63736A;margin-top:3px">papers per member of staff</div></div>\n          <div style="background:#F4F6F5;border-radius:7px;padding:13px 15px"><div style="font-size:25px;font-weight:700;font-variant-numeric:tabular-nums">{{ progOne.citesPerStaff }}</div><div style="font-size:11.5px;color:#63736A;margin-top:3px">citations per member of staff</div></div>\n          <div style="background:#F4F6F5;border-radius:7px;padding:13px 15px"><div style="font-size:25px;font-weight:700;font-variant-numeric:tabular-nums">{{ progOne.citesPerPaper }}</div><div style="font-size:11.5px;color:#63736A;margin-top:3px">citations per paper</div></div>\n          <div title="{{ progOne.hNote }}" style="background:#F4F6F5;border-radius:7px;padding:13px 15px"><div style="font-size:25px;font-weight:700;font-variant-numeric:tabular-nums">{{ progOne.avgH }}</div><div style="font-size:11.5px;color:#63736A;margin-top:3px">average h-index · career</div></div>\n        </div>\n        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">\n          <div style="background:#ffffff;border-radius:8px;padding:18px 20px">\n            <div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#63736A">Who publishes on it</div>\n            <div style="font-size:12px;color:#63736A;margin:6px 0 12px">Papers in this window.</div>\n            <sc-for list="{{ progPeople }}" as="r" hint-placeholder-count="8">\n              <div title="{{ r.title }}" style="display:grid;grid-template-columns:1fr 110px 34px;gap:10px;align-items:center;padding:4px 0">\n                <div style="font-size:12.5px;color:#3A4A41;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</div>\n                <div style="height:8px;border-radius:3px;background:#EDF1EE"><div style="width:{{ r.barW }};height:8px;border-radius:3px;background:{{ progOne.color }}"></div></div>\n                <div style="font-size:12px;color:#63736A;text-align:right;font-variant-numeric:tabular-nums">{{ r.papers }}</div>\n              </div>\n            </sc-for>\n          </div>\n          <div style="background:#ffffff;border-radius:8px;padding:18px 20px">\n            <div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#63736A">Against the rest of the college</div>\n            <div style="font-size:12px;color:#63736A;margin:6px 0 12px">{{ progMedNote }}</div>\n            <sc-for list="{{ progSiblings }}" as="r" hint-placeholder-count="6">\n              <div style="display:grid;grid-template-columns:1fr 110px 34px;gap:10px;align-items:center;padding:4px 0">\n                <div style="font-size:12.5px;color:#3A4A41;font-weight:{{ r.weight }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</div>\n                <div style="position:relative;height:8px;border-radius:3px;background:#EDF1EE"><div style="width:{{ r.barW }};height:8px;border-radius:3px;background:{{ r.bg }}"></div><div style="position:absolute;left:{{ r.medLeft }};top:-2px;width:1px;height:12px;background:#8C9A92"></div></div>\n                <div style="font-size:12px;color:#63736A;text-align:right;font-variant-numeric:tabular-nums">{{ r.v }}</div>\n              </div>\n            </sc-for>\n          </div>\n        </div>\n      </div>\n      </sc-if>'),
+
+    ("dashboard: the other findings open on a click",
+     '              <div title="{{ f.why }}" style="font-size:14px;color:#2A3A31;line-height:1.45">{{ f.text }}</div>\n            </div>\n          </sc-for>',
+     '              <div title="{{ f.why }}" style="font-size:14px;color:#2A3A31;line-height:1.45">{{ f.text }}</div>\n            </div>\n          </sc-for>\n          <button type="button" sc-camel-on-click="{{ toggleFind }}" style="background:none;border:0;padding:6px 0 0;font-family:Archivo,sans-serif;font-size:12.5px;font-weight:600;color:#0A7A3A;cursor:pointer;text-align:left">{{ findMoreLabel }}<span style="color:#8C9A92;font-weight:500">{{ findMoreCount }}</span></button>'),
 
     ("roster: the college subtitle names the programme when one is chosen",
      '<div style="font-size:13.5px;color:#63736A;margin-top:3px">{{ colMeta }}'

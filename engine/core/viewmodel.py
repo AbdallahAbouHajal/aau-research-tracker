@@ -510,6 +510,16 @@ def build(roster_people=None, run_id=None):
     for a in authors:
         if a.get("slug"):
             a_by_slug.setdefault(a["slug"].lower(), a)
+    # Citations of the papers themselves, not of the people. Career citations
+    # across this roster are 113,467 while the window's own papers carry
+    # 43,898 -- a card that mixes the two answers a question nobody asked.
+    # Keyed by EID, so a paper shared inside a programme counts once.
+    cit_by_eid = {}
+    for rows_ in by_auid.values():
+        for r_ in rows_:
+            if len(r_) > 5 and r_[5]:
+                cit_by_eid[r_[5]] = int(r_[3] or 0)
+
     for rec in (prog_blob.get("programs") or []):
         people_here = [a_by_slug[s.lower()] for s in rec.get("staff", [])
                        if s.lower() in a_by_slug]
@@ -521,6 +531,14 @@ def build(roster_people=None, run_id=None):
             "name": rec["name"], "college": rec["college"],
             "people": len(people_here),
             "papers": len(eids),
+            "citations": sum(cit_by_eid.get(e, 0) for e in eids),
+            # h-index is career-defined and cannot be windowed, so it is the
+            # one number on a card that is not this period, and it is labelled
+            # as such. Zeros are excluded: those are people the census never
+            # held, and averaging them in drags a programme toward nothing.
+            "avg_h": (lambda hs: round(sum(hs) / len(hs), 1) if hs else 0)(
+                [a.get("h") or 0 for a in people_here if (a.get("h") or 0) > 0]),
+            "with_h": sum(1 for a in people_here if (a.get("h") or 0) > 0),
             "tagged": len(rec.get("staff") or []),
             # True when the tagging is MINE, not AAU's -- Dentistry and
             # Nursing run one programme each and tag nobody to it, so their
@@ -551,7 +569,30 @@ def build(roster_people=None, run_id=None):
                 continue
             lst = paper_authors.setdefault(eid_, [])
             if not any(x[0] == nm for x in lst):
-                lst.append([nm, col])
+                lst.append([nm, col, "roster"])
+
+    # And anyone whose OWN PRINTED ADDRESS on the paper says Al Ain University,
+    # roster or not. The roster decides who belongs to AAU; it does not get to
+    # decide whose name appears on a paper they wrote. Measured on the current
+    # corpus, this rule alone would name 1,224 papers where the roster rule
+    # names 3,242 -- because Scopus serves per-author affiliations for only
+    # 1,330 of 4,285 papers and refuses them for the rest (view=FULL, REF,
+    # META_ABS, ENTITLED and search view=COMPLETE all 401 on these keys). So
+    # the two are UNIONED, not swapped: 3,477 papers, and 188 name spellings
+    # the roster misses -- Ghaleb ElRefae under a fresh AU-ID, Firas Ayasrah
+    # printed two different ways.
+    run_slots = (RUNS.load(run_id) or {}).get("slots") or [] if run_id else []
+    for s_ in run_slots:
+        if not s_.get("is_aau"):
+            continue
+        nm = (s_.get("author_name") or "").strip()
+        eid_ = s_.get("eid") or ""
+        if not nm or not eid_:
+            continue
+        col = (s_.get("college") or "").replace("College of ", "").strip()
+        lst = paper_authors.setdefault(eid_, [])
+        if not any(x[0] == nm for x in lst):
+            lst.append([nm, col, "printed"])
 
     # Who works with whom, from the papers this run collected. Two people
     # who appear on the same paper have worked together; the count is how many
