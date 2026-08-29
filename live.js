@@ -17,6 +17,13 @@
   var lastBadge = 'live data';
 
   /* ------------------------------------------------------------- transport */
+  // The generated stamp of the data now on screen. Used to bust the CDN on
+  // the lazy files and to notice, from a HEAD, that a run has published.
+  function stamp() {
+    var st = window.__AAU.state;
+    return (st && st.generated) || '0';
+  }
+
   function api(path, body) {
     var opt = { headers: { 'Content-Type': 'application/json' },
                 // A run finishes, the page immediately re-reads
@@ -965,7 +972,19 @@
       window.__AAU.suggestions = d.suggestions || [];
       if (d.stats && d.stats.years) window.__AAU.years = d.stats.years;
       if (window.__aauApply) window.__aauApply(d);
-      component.forceUpdate();
+      if (component && component.forceUpdate) component.forceUpdate();
+      // A new stamp means new files behind the two lazy screens as well.
+      // Drop them, then reload whichever one is open right now so the reader
+      // sees the change instead of a screen that quietly disagrees with the
+      // Dashboard.
+      if (d.generated && d.generated !== lazyStamp) {
+        lazyStamp = d.generated;
+        dropLazy();
+        component = component || window.__AAU.component;
+        var scr = component && component.state && component.state.screen;
+        if (scr === 'papers') window.__AAU.needCorpus(component);
+        if (scr === 'net') window.__AAU.needNetwork(component);
+      }
       var when = d.generated ? d.generated.slice(0, 10) : '';
       lastBadge = (window.__AAU.snapshot ? 'live data · ' + when
                                           : 'connected · ' + when)
@@ -975,6 +994,82 @@
     });
   }
   window.__AAU.refresh = refresh;
+
+  /* ------------------------------------------- noticing a run on its own  */
+  /* Until now the figures moved only when this tab had watched the run it
+   * started. A run begun on a phone, the Monday schedule, or the same run
+   * after the reader had navigated away all left the page sitting on old
+   * numbers until someone thought to hard-reload -- and a plain reload was
+   * not enough, because GitHub Pages sends `max-age=600` and the browser
+   * simply served the copy it already had.
+   *
+   * So the page asks. A HEAD costs headers only, and the ETag changes
+   * exactly when the published file does. It runs only while the tab is
+   * visible -- a backgrounded tab has nobody to tell -- and checks at once
+   * when the reader comes back, which is when they would otherwise have
+   * reached for reload. */
+  var seenTag = null;
+  var watchTimer = null;
+  var headFails = 0;
+
+  function checkForNewData(component, announceIt) {
+    // The run watcher owns the page while a run it started is going; two
+    // refreshes racing would fight over the screen.
+    if (window.__AAU.status && window.__AAU.status.running) return;
+    if (document.hidden) return;
+    component = component || window.__AAU.component;
+    return fetch('data/state.json?v=' + Date.now(),
+                 { method: 'HEAD', cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        headFails = 0;
+        var tag = r.headers.get('etag') || r.headers.get('last-modified') || '';
+        // First call of the session: the file IS what we are displaying.
+        if (seenTag === null && tag) { seenTag = tag; return; }
+        if (tag && tag === seenTag) return;      // nothing moved
+        seenTag = tag;
+        return api('data/state.json').then(function (d) {
+          var showing = (window.__AAU.state || {}).generated;
+          if (!d.generated || d.generated === showing) return;   // our own
+          return refresh(component).then(function () {
+            // Deliberately does NOT move the reader. They may be halfway
+            // through the Roster; the figures update underneath them and the
+            // badge says why. Only a run this tab started earns a screen
+            // change.
+            if (announceIt !== false) {
+              var st = window.__AAU.state || {};
+              badge('new figures published'
+                    + (st.stats ? ' · ' + st.stats.papers.toLocaleString()
+                       + ' papers' : ''), G);
+            }
+          });
+        });
+      })
+      .catch(function () {
+        // A local engine serves /api/state and has no data/state.json to
+        // HEAD. Two failures and this stops asking rather than logging a
+        // 404 every minute for the rest of the session.
+        if (++headFails >= 2 && watchTimer) {
+          clearInterval(watchTimer); watchTimer = null;
+        }
+      });
+  }
+  window.__AAU.checkForNewData = checkForNewData;
+
+  function watchForNewData(component) {
+    window.__AAU.component = component;    // a timer has no `this` to use
+    if (watchTimer) return;
+    watchTimer = setInterval(function () {
+      checkForNewData(component);
+    }, 60000);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) checkForNewData(component);
+    });
+    // Establish the baseline without announcing anything.
+    checkForNewData(component, false);
+  }
+  window.__AAU.watchForNewData = watchForNewData;
+
   window.__AAU.askRun = askRun;
 
   /* ------------------------------------------------- suggested additions   */
@@ -1216,9 +1311,28 @@
      payload every visitor pays for, so they are fetched the first time their
      screen is opened -- and only once, whatever happens after. */
   var lazy = {};
+  // Which stamp the lazy files were read for. `lazy` caches each file for the
+  // life of the page, which is right -- until a run publishes a new one. It
+  // never was cleared, so after a run the Papers screen and the Collaboration
+  // screen went on showing the corpus they had loaded BEFORE it: a 2025-2026
+  // run left Papers reporting 4,285 rows from the six-year window. The
+  // Dashboard moved and those two did not, which reads as the run half
+  // working.
+  var lazyStamp = null;
+  function dropLazy() {
+    lazy = {};
+    window.__AAU.lazyDropped = (window.__AAU.lazyDropped || 0) + 1;
+  }
+  window.__AAU.dropLazy = dropLazy;
   function lazyLoad(name, file, apply, component) {
     if (lazy[name]) return lazy[name];
-    lazy[name] = fetch('data/' + file, { cache: 'no-store' })
+    // GitHub Pages answers with `Cache-Control: max-age=600`, so for ten
+    // minutes after a run the browser and the edge will both hand back the
+    // previous file. `no-store` forces the request but does not stop the CDN
+    // returning a cached object; a stamp in the query string does, and the
+    // stamp is the run's own so it changes exactly when the data does.
+    lazy[name] = fetch('data/' + file + '?v=' + encodeURIComponent(stamp()),
+                       { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error(file + ' -> HTTP ' + r.status);
         return r.json();

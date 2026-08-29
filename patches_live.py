@@ -57,7 +57,12 @@ MOUNT = r"""
     // colleagues without saying they are stale is the worse failure.
     var self = this;
     if (!window.__AAU) return;
-    window.__AAU.refresh(self).catch(function () {
+    window.__AAU.refresh(self).then(function () {
+      // Then keep asking. A run started on a phone, the Monday schedule, or
+      // this reader's own run after they navigated away all used to leave
+      // the page on old numbers with no sign anything had happened.
+      if (window.__AAU.watchForNewData) window.__AAU.watchForNewData(self);
+    }).catch(function () {
       window.__AAU.badge('sample data · engine not running', '#63736A');
       self.setState({ demo: true });
     });
