@@ -1002,6 +1002,7 @@
       if (d.generated && d.generated !== lazyStamp) {
         lazyStamp = d.generated;
         dropLazy();
+        seenNetTag = null;   // a new census supersedes the old backfill
         component = component || window.__AAU.component;
         var scr = component && component.state && component.state.screen;
         if (scr === 'papers') window.__AAU.needCorpus(component);
@@ -1031,8 +1032,35 @@
    * when the reader comes back, which is when they would otherwise have
    * reached for reload. */
   var seenTag = null;
+  var seenNetTag = null;
   var watchTimer = null;
   var headFails = 0;
+
+  /* The collaboration file has its own publisher and its own clock. Reading
+   * every paper's institutions takes about a second each, so it is a second
+   * job that lands its checkpoints for twenty minutes AFTER the run is done
+   * -- and it rewrites network.json ALONE, leaving state.json untouched.
+   * Watching only state.json therefore misses every one of those: the census
+   * would arrive and the collaboration screen would sit on the coverage it
+   * had when the run finished until someone reloaded. So it is watched
+   * separately. */
+  function checkNetwork(component, announceIt) {
+    return fetch('data/network.json?v=' + Date.now(),
+                 { method: 'HEAD', cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) return;
+        var tag = r.headers.get('etag') || r.headers.get('last-modified') || '';
+        if (seenNetTag === null && tag) { seenNetTag = tag; return; }
+        if (!tag || tag === seenNetTag) return;
+        seenNetTag = tag;
+        lazy.net = null;                  // whatever is held is now stale
+        var scr = component && component.state && component.state.screen;
+        if (scr !== 'net') return;        // the next visit will fetch it
+        window.__AAU.needNetwork(component);
+        if (announceIt !== false) badge('collaboration updated', G);
+      })
+      .catch(function () {});
+  }
 
   function checkForNewData(component, announceIt) {
     // The run watcher owns the page while a run it started is going; two
@@ -1040,6 +1068,7 @@
     if (window.__AAU.status && window.__AAU.status.running) return;
     if (document.hidden) return;
     component = component || window.__AAU.component;
+    checkNetwork(component, announceIt);
     return fetch('data/state.json?v=' + Date.now(),
                  { method: 'HEAD', cache: 'no-store' })
       .then(function (r) {
@@ -1353,7 +1382,9 @@
     // previous file. `no-store` forces the request but does not stop the CDN
     // returning a cached object; a stamp in the query string does, and the
     // stamp is the run's own so it changes exactly when the data does.
-    lazy[name] = fetch('data/' + file + '?v=' + encodeURIComponent(stamp()),
+    lazy[name] = fetch('data/' + file + '?v='
+                         + encodeURIComponent(name === 'net'
+                             ? (seenNetTag || stamp()) : stamp()),
                        { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error(file + ' -> HTTP ' + r.status);
