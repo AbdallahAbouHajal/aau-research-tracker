@@ -39,6 +39,28 @@
   }
   window.__AAU.api = api;
 
+  /* --------------------------------------------------- a mark per college */
+  /* Eight colleges already carry a hue each, and a hue on its own is hard to
+   * name -- you learn it, you do not read it. A mark says which college
+   * before the words do, and it survives where colour cannot: greyscale
+   * print, a colour-blind reader, a 3px rail seen at arm's length.
+   * One per college, from what the college actually does. */
+  var COLLEGE_ICON = {
+    'College of Engineering': '\u2699\ufe0f',
+    'College of Pharmacy': '\ud83d\udc8a',
+    'College of Law': '\u2696\ufe0f',
+    'College of Education, Humanities and Social Sciences': '\ud83c\udf93',
+    'College of Business': '\ud83d\udcc8',
+    'College of Communication and Media': '\ud83c\udf99\ufe0f',
+    'College of Dentistry': '\ud83e\uddb7',
+    'College of Nursing': '\ud83e\ude7a',
+  };
+  window.__AAU.collegeIcon = function (name) {
+    // Anything unrecognised gets the neutral one rather than an empty gap,
+    // so a college added later still lines up with the other eight.
+    return COLLEGE_ICON[name] || '\ud83c\udfdb\ufe0f';
+  };
+
   /* ------------------------------------------------------------ the badge  */
   function badge(text, color) {
     var b = document.getElementById('__aau_badge');
