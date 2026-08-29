@@ -192,6 +192,23 @@ def main():
         import network as NET
         _rb = RUNS.load(blob.get("run")) or {}
         net = NET.build(_rb, blob.get("authors") or [])
+        # The chart generator reads only colleges, stats and authors today, so
+        # it can plot none of what this app has learned. These three are
+        # already in scope here; attaching them is cheaper than re-deriving
+        # them inside exports.py, and vm["papers"] is capped at fifty rows per
+        # author so a per-year total built from it would undercount.
+        vm["network"] = net
+        vm["paper_rows"] = [
+            {"eid": e, "year": int(p_.get("year") or 0),
+             "cited_by": int(p_.get("cited_by") or 0),
+             "college": None}
+            for e, p_ in (_rb.get("papers") or {}).items()]
+        _col_of = {}
+        for sl in (_rb.get("slots") or []):
+            if sl.get("eid") and sl.get("college"):
+                _col_of.setdefault(sl["eid"], set()).add(sl["college"])
+        for r_ in vm["paper_rows"]:
+            r_["college"] = sorted(_col_of.get(r_["eid"], ()))
         np_ = os.path.join(os.path.dirname(out), "network.json")
         with open(np_, "w", encoding="utf-8") as fh:
             json.dump(dict(net, generated=blob["generated"], run=blob.get("run")),

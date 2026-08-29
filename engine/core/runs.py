@@ -412,6 +412,31 @@ def _xlsx(b, path):
           ["College", "People", "Faculty", "Papers", "Citations"],
           [[c["college"], c["people"], c["faculty"], c["papers"], c["citations"]]
            for c in res["colleges"]], [40, 10, 10, 10, 12])
+    # Every programme with every figure the dashboard shows, so the workbook
+    # can be checked against the screen rather than taken on trust. Imported
+    # locally: viewmodel imports this module, and at module level that would
+    # be a cycle.
+    try:
+        import viewmodel as _VM
+        _pr = (_VM.build(run_id=b.get("run") or b.get("id")) or {}).get("programs") or []
+    except Exception:
+        _pr = []
+    if _pr:
+        sheet(wb, "Programmes",
+              ["Programme", "College", "Staff AAU lists", "With a Scopus record",
+               "Papers", "Citations", "Papers per staff",
+               "Citations per staff", "Citations per paper",
+               "Average h-index (career)", "Membership inferred"],
+              [[p_["name"], p_["college"], p_.get("tagged") or 0,
+                p_.get("people") or 0, p_.get("papers") or 0,
+                p_.get("citations") or 0,
+                round((p_.get("papers") or 0) / p_["tagged"], 2) if p_.get("tagged") else "",
+                round((p_.get("citations") or 0) / p_["tagged"], 2) if p_.get("tagged") else "",
+                round((p_.get("citations") or 0) / p_["papers"], 2) if p_.get("papers") else "",
+                p_.get("avg_h") or "", "yes" if p_.get("assumed") else ""]
+               for p_ in sorted(_pr, key=lambda x: -(x.get("papers") or 0))],
+              [46, 38, 15, 20, 9, 11, 15, 17, 17, 22, 18])
+
     sug = b.get("suggestions") or []
     if sug:
         sheet(wb, "Suggested additions",

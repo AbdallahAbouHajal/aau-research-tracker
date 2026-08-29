@@ -1950,6 +1950,31 @@ ROUND2 = [
      '<div style="padding:24px 26px 30px">\n\n    \n    </div>\n\n    <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;padding:0 26px 30px">',
      '<div style="display:grid;grid-template-columns:1fr;gap:16px;padding:24px 26px 30px">'),
 
+    # The screen listed five charts and six sheets; the pack now holds eleven
+    # and seven, and a list that misdescribes what downloads is worse than no
+    # list.
+    ("exports: name the charts that actually ship",
+     "    const CHART_LIST = [\n"
+     "      ['Papers by college', 'bar'],\n"
+     "      ['Faculty on the roster, by college', 'bar'],\n"
+     "      ['Every author on an AAU paper', 'split bar'],\n"
+     "      ['Most published on the roster', 'bar'],\n"
+     "      ['Career standing against output', 'scatter'],\n"
+     "    ];",
+     "    const CHART_LIST = [\n"
+     "      ['Papers by college', 'bar'],\n"
+     "      ['Faculty on the roster, by college', 'bar'],\n"
+     "      ['Every author on an AAU paper', 'split bar'],\n"
+     "      ['Most published on the roster', 'bar'],\n"
+     "      ['Career standing against output', 'scatter'],\n"
+     "      ['Papers per year, by college', 'stacked bar'],\n"
+     "      ['Programmes by papers per member of staff', 'bar'],\n"
+     "      ['Impact against volume', 'bubble'],\n"
+     "      ['Who Al Ain University publishes with', 'paired bar'],\n"
+     "      ['Where the partners are', 'bar'],\n"
+     "      ['How concentrated the citations are', 'curve'],\n"
+     "    ];"),
+
     ("roster: the college subtitle names the programme when one is chosen",
      '<div style="font-size:13.5px;color:#63736A;margin-top:3px">{{ colMeta }}'
      '</div>',
