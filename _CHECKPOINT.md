@@ -145,7 +145,6 @@ hand-off wrote `sid` where the reader wanted `scopus_id`.
 - The proxy still holds Abdallah's `gh` CLI OAuth token, which reaches all his
   repos. Swap it for a fine-grained PAT scoped to `aau-research-tracker` with
   Actions: Read and write. He has been told.
-- Tell him to delete `~/Downloads/PASTE_INTO_GITHUB_SCOPUS_KEYS.json`.
 - Six people still need a decision on the Review screen; the directory publishes
   no id for them.
 - 11 of 165 academics carry no programme, confirmed by the browser pass to be
