@@ -622,6 +622,27 @@ def build(roster_people=None, run_id=None):
         if rows_:
             out_co[a_["key"]] = [[n_, c_, col_of.get(n_, "")] for n_, c_ in rows_[:14]]
 
+    # Each college's own totals, for the dashboard's first level. Citations are
+    # over the college's DISTINCT papers: summing its programmes' citations
+    # would count a paper once per programme it touches, and five of
+    # Communication's programmes share a single staff list.
+    _col_eids = collections.defaultdict(set)
+    for a_ in authors:
+        c_ = a_.get("college")
+        if not c_ or a_.get("tag") != "Faculty":
+            continue
+        rows_ = ((by_auid.get(a_.get("auid") or "") or []) if a_.get("auid")
+                 else (by_name.get(X.name_key(a_.get("name") or "")) or []))
+        for r_ in rows_:
+            if len(r_) > 5 and r_[5]:
+                _col_eids[c_].add(r_[5])
+    for c_ in colleges:
+        n_ = c_["name"]
+        c_["citations"] = sum(cit_by_eid.get(e, 0) for e in _col_eids.get(n_, ()))
+        mine_ = [p_ for p_ in programs if p_["college"] == n_]
+        c_["programs"] = len(mine_)
+        c_["staff"] = sum(p_.get("tagged") or 0 for p_ in mine_)
+
     return {
         "coauthors": out_co,
         "paper_authors": paper_authors,
