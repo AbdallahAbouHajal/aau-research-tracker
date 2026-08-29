@@ -1077,6 +1077,47 @@ VALS = r"""
           assumedShow: p.assumed ? 'block' : 'none',
         };
       })(),
+      // The wall of faces, above the ranked list. NOT on the ranked rows:
+      // progPeople sorts by papers descending, so everyone without a
+      // portrait would land in one contiguous block at the bottom. A
+      // scattered gap is invisible; a sorted trailing block of them is a
+      // wall of shame. Alphabetical and identically sized instead --
+      // same-size tiles in name order are a census, ranked or resized tiles
+      // are a judgement. It also gives this screen the membership view it
+      // never had, since the list below slices to 14 and this does not.
+      progFaces: (() => {
+        const p = PROGRAMS.find(x => x.name === this.state.prog);
+        if (!p) return [];
+        const pk = (n) => String(n || '').replace(/\([^)]*\)/g, ' ')
+          .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        const want = pk(p.name);
+        const hue = (COLLEGE_DATA.find(c => c.name === p.college) || {}).color
+                    || accent;
+        return AUTHORS
+          .filter(a => (a.programs || []).some(x => pk(x) === want))
+          .slice().sort((x, y) => x.name.localeCompare(y.name))
+          .slice(0, 48)
+          .map(a => ({
+            name: a.name,
+            initials: window.__AAU.initialsOf(a.name),
+            src: window.__AAU.faceOf(a).src,
+            show: window.__AAU.faceOf(a).show,
+            tint: hue + '1F', rule: hue + '66',
+            open: () => this.setState({ screen: 'author', author: a.key }),
+          }));
+      })(),
+      progFacesNote: (() => {
+        const p = PROGRAMS.find(x => x.name === this.state.prog);
+        if (!p) return '';
+        const pk = (n) => String(n || '').replace(/\([^)]*\)/g, ' ')
+          .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        const want = pk(p.name);
+        const n = AUTHORS.filter(a =>
+          (a.programs || []).some(x => pk(x) === want)).length;
+        // The count, never a rank.
+        return n + (n === 1 ? ' person is filed under this programme.'
+                            : ' people are filed under this programme.');
+      })(),
       progPeople: (() => {
         const p = PROGRAMS.find(x => x.name === this.state.prog);
         if (!p) return [];
@@ -2564,6 +2605,116 @@ ROUND2 = [
 
     # The Roster's own title, onto the same ramp as everywhere else. 25px at
     # 700 is the heaviest thing on either screen and it is a caption.
+    # ---- the faces AAU publishes ----------------------------------------
+    # The face goes INSIDE the existing first cell, never as a new grid
+    # column. `1.7fr 1.1fr 90px 78px 90px 120px` is the join key for four
+    # mobile rules; prepending a track un-matches all four silently, shifts
+    # every nth-child index by one, and hands a 500px viewport seven columns
+    # of mostly fixed track -- horizontal scroll, reported by the patch log
+    # as a success. The header row carries the identical literal and would
+    # drift the moment one of them is edited.
+    ("roster: the per-row face data",
+     "    const colAuthorRows = filled.map(a => ({\n"
+     "      name: a.name, title: a.title, papers: a.papers, h: a.h,",
+     "    const _colHue = (COLLEGE_DATA.find(c => c.name === sel) || {}).color\n"
+     "                    || accent;\n"
+     "    const colAuthorRows = filled.map(a => ({\n"
+     "      name: a.name, title: a.title, papers: a.papers, h: a.h,\n"
+     "      // Resolved in Python and handed over as a filename or ''. The\n"
+     "      // monogram is the resting state and the photograph is laid over\n"
+     "      // it, so a face that never loads leaves a finished tile rather\n"
+     "      // than a broken-image glyph, and the row never reflows.\n"
+     "      initials: window.__AAU.initialsOf(a.name),\n"
+     "      faceSrc: window.__AAU.faceOf(a).src,\n"
+     "      faceShow: window.__AAU.faceOf(a).show,\n"
+     "      // Tint and rule carry the college; the ink does not. Setting the\n"
+     "      // initials in the college colour puts Nursing's #8FB89E at about\n"
+     "      // 2.2:1 on its own tint. Fixed ink passes for all eight.\n"
+     "      faceTint: _colHue + '1F',\n"
+     "      faceRule: _colHue + '66',"),
+
+    ("roster: a face beside each name",
+     '<div style="min-width:0"><button type="button" '
+     'sc-camel-on-click="{{ a.open }}"',
+     '<div style="min-width:0;display:flex;align-items:center;gap:11px">'
+     '<div aria-hidden="true" style="position:relative;width:44px;height:44px;'
+     'flex:0 0 auto;border-radius:8px;overflow:hidden;background:{{ a.faceTint }};'
+     'border:1px solid {{ a.faceRule }};display:flex;align-items:center;'
+     'justify-content:center;font-size:15px;font-weight:600;color:#3A4A41;'
+     'letter-spacing:.02em">{{ a.initials }}'
+     '<img src="{{ a.faceSrc }}" alt="" width="44" height="44" loading="lazy" '
+     'decoding="async" style="position:absolute;left:0;top:0;width:44px;'
+     'height:44px;display:{{ a.faceShow }};pointer-events:none"></div>'
+     '<div style="min-width:0"><button type="button" '
+     'sc-camel-on-click="{{ a.open }}"'),
+
+    # The flex wrapper above opens one more div than the original cell did.
+    ("roster: close the face wrapper",
+     '{{ a.flag }}</span></div>',
+     '{{ a.flag }}</span></div></div>'),
+
+    ("dashboard: the wall above the ranked list",
+     '<div style="font-size:12px;color:#63736A;margin:6px 0 12px">Papers in '
+     'this window.</div>\n            <sc-for list="{{ progPeople }}" as="r"',
+     '<div style="font-size:12px;color:#63736A;margin:6px 0 12px">Papers in '
+     'this window.</div>\n'
+     '            <div style="display:flex;flex-wrap:wrap;gap:7px;'
+     'margin:0 0 11px">\n'
+     '              <sc-for list="{{ progFaces }}" as="f" '
+     'hint-placeholder-count="8">\n'
+     '                <button type="button" sc-camel-on-click="{{ f.open }}" '
+     'aria-label="{{ f.name }}" title="{{ f.name }}" '
+     'style="position:relative;width:44px;height:44px;padding:0;flex:0 0 auto;'
+     'border-radius:8px;overflow:hidden;cursor:pointer;background:{{ f.tint }};'
+     'border:1px solid {{ f.rule }};font-family:Archivo,sans-serif;'
+     'font-size:15px;font-weight:600;color:#3A4A41">{{ f.initials }}'
+     '<img src="{{ f.src }}" alt="" width="44" height="44" loading="lazy" '
+     'decoding="async" style="position:absolute;left:0;top:0;width:44px;'
+     'height:44px;display:{{ f.show }};pointer-events:none"></button>\n'
+     '              </sc-for>\n'
+     '            </div>\n'
+     '            <div style="font-size:12px;color:#8C9A92;margin:0 0 12px">'
+     '{{ progFacesNote }}</div>\n'
+     '            <sc-for list="{{ progPeople }}" as="r"'),
+
+    # `pick` is built by the base template, so its face keys arrive by patch.
+    ("authors: the opened person's face data",
+     "      initials: p.name.split(' ').filter(w => /^[A-Z]/.test(w))"
+     ".slice(0, 2).map(w => w[0]).join(''),",
+     "      initials: p.name.split(' ').filter(w => /^[A-Z]/.test(w))"
+     ".slice(0, 2).map(w => w[0]).join(''),\n"
+     "      faceSrc: window.__AAU.faceOf(p).src,\n"
+     "      faceShow: window.__AAU.faceOf(p).show,\n"
+     "      faceTint: ((COLLEGE_DATA.find(c => c.name === p.college) || {})"
+     ".color || accent) + '1F',\n"
+     "      faceRule: ((COLLEGE_DATA.find(c => c.name === p.college) || {})"
+     ".color || accent) + '66',"),
+
+    # ---- the one face the reader asked for -------------------------------
+    # The Authors RAIL gets none: 555 rows of which about two thirds are
+    # external co-authors with no AAU card and no portrait that could ever
+    # exist. A monogram column there would be mostly monograms, and the
+    # monogram would read as a public mark saying "not one of ours", printed
+    # against named people from other institutions.
+    #
+    # The detail header gets exactly one, and it is the only 60px face in the
+    # app. No loading="lazy": it is above the fold and it is the only image on
+    # the screen, so lazy would only delay it. The disc becomes a rounded
+    # square so there is one face shape on the page.
+    ("authors: a face on the person you opened",
+     '<div style="width:60px;height:60px;border-radius:50%;background:'
+     '{{ accent }};color:#ffffff;display:flex;align-items:center;'
+     'justify-content:center;font-size:22px;font-weight:700;flex:0 0 auto">'
+     '{{ pick.initials }}</div>',
+     '<div aria-hidden="true" style="position:relative;width:60px;height:60px;'
+     'border-radius:8px;overflow:hidden;flex:0 0 auto;'
+     'background:{{ pick.faceTint }};border:1px solid {{ pick.faceRule }};'
+     'display:flex;align-items:center;justify-content:center;font-size:20px;'
+     'font-weight:600;color:#3A4A41">{{ pick.initials }}'
+     '<img src="{{ pick.faceSrc }}" alt="" width="60" height="60" '
+     'decoding="async" style="position:absolute;left:0;top:0;width:60px;'
+     'height:60px;display:{{ pick.faceShow }};pointer-events:none"></div>'),
+
     ("roster: heading onto the type ramp",
      '<div style="font-size:25px;font-weight:700;letter-spacing:-.02em;'
      'margin-top:6px">{{ rosterHead }}</div>',

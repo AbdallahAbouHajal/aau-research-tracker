@@ -25,8 +25,16 @@ import census as X            # noqa: E402
 import exports as EX          # noqa: E402
 import faculty as FAC         # noqa: E402
 
-DEFAULT_OUT = os.path.join(ROOT, "..", "AAU_Tracker_Site", "docs", "data",
-                           "state.json")
+# The engine has two homes -- ~/Downloads/AAU_Research_Tracker (the master
+# copy) and AAU_Tracker_Site/engine (the one CI runs) -- and the old
+# expression, ROOT/../AAU_Tracker_Site/docs, is right only in the first. Run
+# from the second it resolves to AAU_Tracker_Site/AAU_Tracker_Site/docs, and
+# quietly writes a whole second copy of the site one directory down. So look
+# for a docs/ beside us first, and fall back to the sibling layout.
+_HERE = os.path.join(os.path.dirname(ROOT), "docs", "data", "state.json")
+DEFAULT_OUT = _HERE if os.path.isdir(os.path.dirname(os.path.dirname(_HERE))) \
+    else os.path.join(ROOT, "..", "AAU_Tracker_Site", "docs", "data",
+                      "state.json")
 
 
 def build(run_id=None):
@@ -346,6 +354,32 @@ def main():
                                       "did not publish a full paper list)"))
 
     blob.pop("paper_authors", None)
+
+    # The portraits AAU publishes, keyed by the same slug every author record
+    # already carries -- so the page needs no matching, only the set of slugs
+    # a photograph exists for. Filenames are derived (slug + ".webp"), so only
+    # the set is published: ~3KB against a map's 6KB, and one fewer thing that
+    # can disagree with what is on disk.
+    #
+    # Harvested by engine/fetch_photos.py, which runs on its own schedule
+    # rather than every census -- staff photographs change when people join,
+    # not when papers appear. A missing manifest is not an error: the page
+    # draws initials for everyone and says nothing about it.
+    try:
+        _pm = os.path.join(os.path.dirname(out), "photos.json")
+        with open(_pm, encoding="utf-8") as fh:
+            _p = json.load(fh)
+        _slugs = sorted((_p.get("photos") or {}).keys())
+        if _slugs:
+            blob["photos"] = _slugs
+            blob["photos_meta"] = {"size": _p.get("size"),
+                                   "generated": _p.get("generated")}
+            print("  portraits  %d slugs carry one" % len(_slugs))
+    except FileNotFoundError:
+        pass
+    except Exception as exc:
+        print("  portraits: could not read the manifest (%s)" % str(exc)[:60])
+
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(blob, fh, ensure_ascii=False, separators=(",", ":"))
     # The three downloadables, written beside state.json under a stable name

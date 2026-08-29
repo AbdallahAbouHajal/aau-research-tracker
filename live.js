@@ -39,6 +39,32 @@
   }
   window.__AAU.api = api;
 
+  /* ------------------------------------------------------ a face per person */
+  /* AAU publishes a portrait for most of its academic staff, and the roster
+   * already holds each person's profile URL, so the join is AAU's own
+   * statement of who is who -- no name matching happens in the browser at
+   * all. The engine resolves it through the same resolver that gave each
+   * person their college, and hands the page a filename or an empty string.
+   *
+   * `src` must NEVER be set to '': an empty src resolves to the document URL,
+   * so on a screen of 500 rows that is 500 fetches of index.html. The absent
+   * case is a 43-byte transparent GIF plus display:none -- and a hidden lazy
+   * image is never fetched at all. */
+  var BLANK = 'data:image/gif;base64,'
+            + 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  window.__AAU.faceOf = function (a) {
+    var f = a && a.photo;
+    return f ? { src: 'photos/' + f, show: 'block' }
+             : { src: BLANK, show: 'none' };
+  };
+  /* The same rule the author panel already uses, so a person's monogram is
+   * identical wherever it is drawn. */
+  window.__AAU.initialsOf = function (name) {
+    return String(name || '').split(' ')
+      .filter(function (w) { return /^[A-Z]/.test(w); })
+      .slice(0, 2).map(function (w) { return w[0]; }).join('');
+  };
+
   /* --------------------------------------------------- a mark per college */
   /* Eight colleges already carry a hue each, and a hue on its own is hard to
    * name -- you learn it, you do not read it. A mark says which college

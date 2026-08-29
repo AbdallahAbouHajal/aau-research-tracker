@@ -10,3 +10,10 @@ worker/.wrangler/
 .wrangler/
 engine/data/directory_programs.json
 engine/handoff.json
+
+# Running export_state.py from inside engine/ resolves its default output to
+# ROOT/../AAU_Tracker_Site/docs/..., which from engine/ is this directory
+# nested inside itself. It is never the real output -- docs/ is -- and a copy
+# of a whole site published by accident is worse than a stale one.
+/AAU_Tracker_Site/
+__pycache__/

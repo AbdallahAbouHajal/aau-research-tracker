@@ -251,6 +251,32 @@ def build(roster_people=None, run_id=None):
                 return cand
         return None
 
+    # ---- the portraits AAU publishes --------------------------------------
+    # Resolved HERE and never in the browser. The page's `slug` is the
+    # directory slug only where a profile_url exists and a name-derived one
+    # otherwise, so a slug join reaches about two thirds of the faculty --
+    # Haythem Bany Salameh is `haythem-bany-salameh-1` on the page and
+    # `haythem-bany-salameh` on disk, and he has 25 papers. The identity
+    # question is already answered by _roster_hit, which is the resolver that
+    # got each of these people their college; the photograph rides along on
+    # that answer rather than inventing a second, weaker one.
+    _photos = {}
+    try:
+        _pp = os.path.abspath(os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "..", "docs", "data", "photos.json"))
+        with open(_pp, encoding="utf-8") as _fh:
+            _photos = (json.load(_fh).get("photos") or {})
+    except Exception:
+        _photos = {}
+
+    def _face(hit):
+        """The filename for a roster person, or '' -- never a guess."""
+        u = ((hit or {}).get("profile_url") or "").rstrip("/")
+        if not u or "/staff/" not in u:
+            return ""
+        return _photos.get(u.rsplit("/", 1)[-1], "")
+
     # AAU prints a Scopus id on most directory cards and a Google Scholar id
     # beside it. Someone with neither is not a failure of ours to find them --
     # the university lists no record -- and the roster should say which it is
@@ -296,6 +322,8 @@ def build(roster_people=None, run_id=None):
                 first[fld] = max(first[fld] or 0, rec.get(src) or 0)
             if not first["slug"]:
                 first["slug"] = _slug(rec.get("directory_url"), name)
+            if not first.get("photo"):
+                first["photo"] = _face(hit)
             continue
         k = _key(name, taken)
         college = CLS.map_college((hit or {}).get("college")
@@ -318,6 +346,7 @@ def build(roster_people=None, run_id=None):
             "auid": auid,
             "tag": "Faculty" if hit else "Student / external",
             "slug": _slug(rec.get("directory_url"), name),
+            "photo": _face(hit),
             # From the roster record this author already matched, by the same
             # transliteration that got them their college. Keying on the name
             # or the slug instead loses everyone whose census spelling differs
@@ -364,6 +393,7 @@ def build(roster_people=None, run_id=None):
             "auid": auid,
             "tag": "Faculty",
             "slug": _slug(r.get("profile_url"), r.get("name") or ""),
+            "photo": _face(r),
             "suggest": False,
             "programs": list(r.get("programs") or []),
         })
@@ -395,6 +425,7 @@ def build(roster_people=None, run_id=None):
             "auid": aid,
             "tag": "Faculty",
             "slug": _slug(r.get("profile_url"), r.get("name") or ""),
+            "photo": _face(r),
             "suggest": False,
             "programs": list(r.get("programs") or []),
             "scholar": d_.get("google_scholar_id") or "",
@@ -480,6 +511,22 @@ def build(roster_people=None, run_id=None):
         a_["listed_by_aau"] = bool(d_)
         # Only meaningful for people the university actually lists.
         a_["no_scopus"] = bool(d_) and not (a_.get("auid") or d_.get("scopus_auid"))
+
+    # ONE PORTRAIT, ONE PERSON. If two author rows resolve to the same face,
+    # neither keeps it. Putting one colleague's photograph against another's
+    # name is the worst thing this feature could do, and it is worse than a
+    # blank by a wide margin -- so the tie is not broken, it is refused.
+    #
+    # It surfaces real faults rather than hiding them. Two live ones: "Mohamed
+    # Shaker Ahmed" and "Mohammad Al Omari" resolve to the SAME roster person,
+    # which is wrong; and "Ala'aldin Zahra" appears twice under a straight and
+    # a curly apostrophe, which is one person counted as two.
+    _claims = collections.Counter(a_["photo"] for a_ in authors if a_.get("photo"))
+    _contested = {f for f, n in _claims.items() if n > 1}
+    for a_ in authors:
+        if a_.get("photo") and a_["photo"] in _contested:
+            a_["photo"] = ""
+            a_["photo_contested"] = True
 
     prog_blob = PROG.load() or {}
     by_slug = {k.lower(): v for k, v in (prog_blob.get("by_slug") or {}).items()}
