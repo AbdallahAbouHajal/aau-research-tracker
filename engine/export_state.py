@@ -185,6 +185,13 @@ def main():
     blob["paper_authors"] = _paper_authors
     os.makedirs(os.path.dirname(out), exist_ok=True)
 
+    # The charts need the run's own paper list and the collaboration blob,
+    # and both are in scope here -- but `vm` is not built until further
+    # down, so they are stashed and attached when it is. Referencing `vm`
+    # here cost a run: every chart that depends on either was skipped and
+    # the pack shipped seven instead of eleven.
+    _chart_extra = {}
+
     # Who AAU publishes with. Its own file for the same reason as the papers:
     # the Networking screen fetches it when opened and the dashboard needs only
     # the top ten, which ride along in state.json.
@@ -197,8 +204,8 @@ def main():
         # already in scope here; attaching them is cheaper than re-deriving
         # them inside exports.py, and vm["papers"] is capped at fifty rows per
         # author so a per-year total built from it would undercount.
-        vm["network"] = net
-        vm["paper_rows"] = [
+        _chart_extra["network"] = net
+        _chart_extra["paper_rows"] = [
             {"eid": e, "year": int(p_.get("year") or 0),
              "cited_by": int(p_.get("cited_by") or 0),
              "college": None}
@@ -207,7 +214,7 @@ def main():
         for sl in (_rb.get("slots") or []):
             if sl.get("eid") and sl.get("college"):
                 _col_of.setdefault(sl["eid"], set()).add(sl["college"])
-        for r_ in vm["paper_rows"]:
+        for r_ in _chart_extra["paper_rows"]:
             r_["college"] = sorted(_col_of.get(r_["eid"], ()))
         np_ = os.path.join(os.path.dirname(out), "network.json")
         with open(np_, "w", encoding="utf-8") as fh:
@@ -358,6 +365,7 @@ def main():
     if not a.no_files and d:
         vm = VM.build(run_id=blob.get("run"))
         vm["stats"] = blob["stats"]
+        vm.update(_chart_extra)
         # Each generator below is caught so a late failure cannot throw away a
         # run that has already done all the work. That is right, but it was
         # also silent: on CI all three raised ImportError every time, the run
