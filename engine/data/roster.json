@@ -6438,6 +6438,23 @@
     "Bachelor of Public Relations"
    ],
    "n_programs": 5
+  },
+  {
+   "name": "Khaleel Alarabi",
+   "college": "College of Education, Humanities and Social Sciences",
+   "title": "",
+   "profile_url": "",
+   "email": "",
+   "department": "",
+   "staff_type": "academic",
+   "is_academic": true,
+   "colleges": [
+    "College of Education, Humanities and Social Sciences"
+   ],
+   "scopus_auid": "",
+   "auid_tier": "",
+   "auid_candidates": [],
+   "added_from_page": true
   }
  ],
  "id_source": "Scopus author ids as Al Ain University publishes them on its own directory cards, verified to resolve to a real author before being stored.",
